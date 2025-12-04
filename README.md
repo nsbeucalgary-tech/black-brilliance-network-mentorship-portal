@@ -12,7 +12,7 @@ npm run dev
 ```
 
 ## Branch Convention:
-For each Page in the application please create a branch ant the branch name should be based on the jira tickets for example - "Login-Page"
+For each Page in the application please create a branch and the branch name should be based on the jira tickets for example - "Login-Page"
 
 ## Commit Convention:
 ### General Commit
