@@ -1,4 +1,3 @@
-// User's active file:
 import React, { useState } from "react";
 
 type AuthProps = {
