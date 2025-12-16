@@ -4,7 +4,7 @@ import "./Landing.css";
 export default function LandingPage() {
     return (
         <div className="landing">
-            <h1>Welcome to the Landing Page</h1>
+            <h1>BBN</h1>
 
             {/* NAVBAR */}
             <header className="nav">
