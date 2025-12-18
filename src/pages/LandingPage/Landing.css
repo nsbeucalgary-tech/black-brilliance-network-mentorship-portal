@@ -1,11 +1,16 @@
 /* LANDING PAGE STYLES */
 
+html {
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+}
+
 html, body {
   width: 100%; 
   height: 100%; 
   margin: 0;
   padding: 0;
-  overflow-x: hidden; 
+  overflow-x: hidden;
 }
 
 /* Box sizing */
@@ -18,7 +23,7 @@ html, body {
 /* Main container */
 .landing {
   width: 100%;  
-  height: 100vh; 
+  min-height: 100vh; 
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
@@ -29,10 +34,12 @@ html, body {
 /* Navbar */
 .nav {
   width: 100%; 
-  padding: 20px 40px 20px 0;
+  padding: 475px 40px 30px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #ffffff;
+  flex-shrink: 0;
 }
 
 .nav-left {
@@ -109,13 +116,13 @@ html, body {
 
 /* Hero Section */
 .hero {
-  width: 100%;  
-  height: 100vh; 
-  padding: 0 60px;
+  width: 100%;
+  padding: 60px 60px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
   align-items: center;
+  background-color: #ffffff;
 }
 
 .hero-text h1 {
@@ -204,6 +211,7 @@ html, body {
   justify-content: center;
   position: relative;
   overflow: hidden;
+  border-radius: 24px;
 }
 
 .hero-image-placeholder {
@@ -222,15 +230,17 @@ html, body {
 /* About Section */
 
 .about {
-  width: 100%;
-  margin: 80px 0;
+  width: calc(100% - 80px);
+  max-width: 1200px;
+  margin: 80px auto 80px auto;
   padding: 60px;
   display: grid;
   grid-template-columns: 400px 1fr;
   gap: 60px;
   align-items: start;
   background-color: #e8f3dd;
-  margin-bottom: 80px;
+  border-radius: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .about-image {
@@ -298,8 +308,9 @@ html, body {
 .footer {
   width: 100%; 
   padding: 32px 20px;
-  background-color: #2d3a1f;
+  background-color: #3d4a2b;
   color: rgba(255, 255, 255, 0.9);
+  margin-top: auto;
 }
 
 .footer-content {
