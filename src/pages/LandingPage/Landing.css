@@ -342,7 +342,6 @@ html, body {
 }
 
 /* Responsive */
-
 @media (max-width: 1024px) {
   .hero {
     grid-template-columns: 1fr;
@@ -360,34 +359,61 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  .hero-text h1 {
-    font-size: 36px;
+  .about {
+    width: 100%;
+    padding: 30px 20px;
+    gap: 30px;
   }
 
-  .about-content h2 {
-    font-size: 28px;
+  .about-content h3 {
+    font-size: 12px;
   }
 
-  .nav-links {
-    gap: 16px;
-  }
-
-  .nav-links a {
+  .about-content p {
     font-size: 14px;
   }
 
   .about-gallery {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .about-image {
+    height: 200px;
+  }
+
+  .hero-text h1 {
+    font-size: 32px;  /* Adjust heading size for better fit */
+  }
+
+  .hero-text p {
+    font-size: 14px; /* Adjust paragraph font size */
+  }
+
+  .hero-image-box {
+    height: 300px;  /* Adjust height for mobile */
+  }
 }
 
 @media (max-width: 480px) {
+  .nav {
+    padding: 20px 15px;
+  }
+
+  .hero {
+    padding: 20px 15px;
+  }
+
+  .about {
+    width: 100%;
+    padding: 20px 15px;
+  }
+
   .hero-text h1 {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .about-content h2 {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .about-gallery {
