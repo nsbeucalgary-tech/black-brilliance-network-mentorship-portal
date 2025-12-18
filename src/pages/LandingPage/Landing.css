@@ -22,14 +22,14 @@ html, body {
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
-  margin: 0;  /* No margin */
-  padding: 0;  /* No padding */
+  margin: 0;
+  padding: 0;
 }
 
 /* Navbar */
 .nav {
   width: 100%; 
-  padding: 20px 0;
+  padding: 20px 40px 20px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,27 +41,38 @@ html, body {
   gap: 12px;
 }
 
-/*.logo-mark {
+.logo-mark {
   width: 32px;
   height: 32px;
   display: flex;
   gap: 4px;
 }
-*/
 
-/* .logo-dot {
+.logo-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: #2d3a1f;
 }
-*/
+
+.logo-dot:last-child {
+  margin-top: 8px;
+}
 
 .logo-text {
   font-weight: 500;
   font-size: 16px;
   line-height: 1.2;
+}
+
+.logo-text-black {
   color: #2d3a1f;
+  display: block;
+}
+
+.logo-text-green {
+  color: #7a9b5c;
+  display: block;
 }
 
 .nav-links {
@@ -75,10 +86,25 @@ html, body {
   text-decoration: none;
   color: #6b7280;
   font-weight: 500;
+  position: relative;
 }
 
 .nav-links a:hover {
   color: #2d3a1f;
+}
+
+.nav-links a.active {
+  color: #2d3a1f;
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #2d3a1f;
 }
 
 /* Hero Section */
@@ -98,6 +124,8 @@ html, body {
   margin-bottom: 24px;
   color: #1f2937;
   font-weight: 600;
+  border-left: 4px solid #a8c78e;
+  padding-left: 16px;
 }
 
 .hero-text p {
@@ -123,6 +151,7 @@ html, body {
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .sign-up-button {
@@ -167,7 +196,7 @@ html, body {
 }
 
 .hero-image-box {
-  width: 100%;  /* Full width */
+  width: 100%;
   height: 400px;
   background: linear-gradient(135deg, #e8f3dd 0%, #d9e8c9 100%);
   display: flex;
@@ -193,16 +222,15 @@ html, body {
 /* About Section */
 
 .about {
-  width: 100%; /* Full width */
-  margin: 80px auto;
-  padding: 20px 40px;
+  width: 100%;
+  margin: 80px 0;
+  padding: 60px;
   display: grid;
   grid-template-columns: 400px 1fr;
   gap: 60px;
   align-items: start;
   background-color: #e8f3dd;
-  border-radius: 24px;
-  padding: 60px;
+  margin-bottom: 80px;
 }
 
 .about-image {
@@ -242,8 +270,8 @@ html, body {
   overflow: hidden;
 }
 
-.about-content h2 {
-  font-size: 25px;
+.about-content h3 {
+  font-size: 14px;
   color: #6b7280;
   margin-bottom: 8px;
   font-weight: 500;
@@ -251,8 +279,8 @@ html, body {
   letter-spacing: 0.5px;
 }
 
-.about-content h1 strong {
-  font-size: 50px;
+.about-content h2 {
+  font-size: 36px;
   margin-bottom: 20px;
   color: #1f2937;
   font-weight: 600;
@@ -269,11 +297,9 @@ html, body {
 
 .footer {
   width: 100%; 
-  padding: 20px;
+  padding: 32px 20px;
   background-color: #2d3a1f;
   color: rgba(255, 255, 255, 0.9);
-  margin-top: auto;
-  text-align: center;
 }
 
 .footer-content {

@@ -35,6 +35,10 @@ export default function LandingPage() {
                         mentorship initiative by <strong>the National Society of Black Engineers.</strong>
                     </p>
 
+                    <p>
+                        Random text.
+                    </p>
+
                     <div className="hero-buttons">
                         <button className="sign-up-button">Sign Up</button>
                         <button className="log-in-button">Log In</button>
