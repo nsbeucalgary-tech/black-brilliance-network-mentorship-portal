@@ -7,11 +7,11 @@ export default function LandingPage() {
             <header className="nav">
                 <div className="nav-left">
                     <div className="logo-mark">
-                        <div className="logo-dot" />
-                        <div className="logo-dot" />
+                        <div className="logo-dot"/>
+                        <div className="logo-dot"/>
                     </div>
                     <div className="logo-text">
-                        <span className="logo-text-black">Black</span>
+                        <span className="logo-text-black">Black </span>
                         <span className="logo-text-green">Brilliance</span>
                     </div>
                 </div>
@@ -27,7 +27,8 @@ export default function LandingPage() {
             {/* HERO SECTION */}
             <section className="hero">
                 <div className="hero-text"> 
-                    <h1>The Black Brilliance Network.</h1>
+                    <h1>The Black</h1> 
+                    <h1>Brilliance Network.</h1>
                     <p>
                         Bridging black undergraduate and graduate students in STEM with 
                         industry professionals, alumni, and advanced-degree mentors — a 
@@ -68,8 +69,9 @@ export default function LandingPage() {
                 </div>
 
                 <div className="about-content">
-                    <h3>About Us</h3>
-                    <h2>NSBE UCalgary</h2>
+                    <h2>About Us</h2>
+                    <h1><strong>NSBE UCalgary</strong></h1>
+                    <p></p>
                     <p>
                         Paragraph.
                     </p>
@@ -80,7 +82,7 @@ export default function LandingPage() {
             <footer className="footer">
                 <div className="footer-content">
                     <div className="social-links">
-                        <a href="#reddit">⊚</a>
+                        <a href="#reddit">r</a>
                         <a href="#facebook">f</a>
                         <a href="#twitter">𝕏</a>
                         <a href="#linkedin">in</a>
