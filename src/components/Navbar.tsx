@@ -174,11 +174,11 @@ export default function Navbar() {
             <aside
                 aria-expanded={isOpen}
                 className={`hidden md:h-screen md:flex flex-col bg-gray-200
-                transition-all duration-300 will-change-[width]
+                transition-all duration-300 will-change-[width] rounded-3xl
                 ${isOpen ? 'w-72' : 'w-20'}`}
             >
                 {/* Green Background Stripe */}
-                <div className="absolute top-0 left-0 bottom-0 w-20 bg-BBNDarkGreen rounded-r-lg z-0" />
+                <div className="absolute top-0 left-0 bottom-0 w-20 bg-BBNDarkGreen rounded-r-3xl z-0" />
 
                 <div className="relative z-10 flex flex-col h-full">
                     <div className="h-40 flex items-center shrink-0">
