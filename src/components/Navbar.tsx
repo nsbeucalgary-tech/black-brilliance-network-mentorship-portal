@@ -99,8 +99,8 @@ function MobileMenu() {
                 ${open ? 'translate-x-0' : 'translate-x-full'}`}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-4 h-16 border-b border-white/20">
-                    <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center justify-between px-4 py-2 border-b border-white">
+                    <div className="flex items-center gap-3">
                                 <img src={BBNLogoWhite} alt="BBN Logo" className="w-14 h-14" />
                                 <div className="flex flex-col text-xl font-semibold leading-tight">
                                     <span className="text-white">Black</span>
