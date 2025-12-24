@@ -21,7 +21,7 @@ const NavLinks = [
 
 const NavFooterLinks = [
     { to: '/settings', label: 'Settings', icon: MdSettings },
-    { to: '/logout', label: 'Log Out', icon: MdLogout }
+    { to: '/', label: 'Log Out', icon: MdLogout }
 ];
 
 
@@ -101,12 +101,12 @@ function MobileMenu() {
                 {/* Header */}
                 <div className="flex items-center justify-between px-4 py-2 border-b border-white">
                     <div className="flex items-center gap-3">
-                                <img src={BBNLogoWhite} alt="BBN Logo" className="w-14 h-14" />
-                                <div className="flex flex-col text-xl font-semibold leading-tight">
-                                    <span className="text-white">Black</span>
-                                    <span className="text-[#aad576]">Brilliance</span>
-                                </div>
-                            </div>
+                        <img src={BBNLogoWhite} alt="BBN Logo" className="w-14 h-14" />
+                        <div className="flex flex-col text-xl font-semibold leading-tight">
+                            <span className="text-white">Black</span>
+                            <span className="text-[#aad576]">Brilliance</span>
+                        </div>
+                    </div>
                     <button
                         onClick={() => setOpen(false)}
                         aria-label="Close Menu"
@@ -163,14 +163,13 @@ function MobileMenu() {
     );
 }
 
-
-export default function Navbar() {
+function DesktopMenu() {
+    {/* Function for Desktop Sidebar when window size is 'md' or greater. */ }
     const [isOpen, setIsOpen] = useState(true);
     const ToggleIcon = isOpen ? LuPanelLeftClose : LuPanelRightClose;
 
     return (
         <>
-            {/* Desktop Sidebar */}
             <aside
                 aria-expanded={isOpen}
                 className={`hidden md:h-screen md:flex flex-col bg-gray-200
@@ -230,8 +229,16 @@ export default function Navbar() {
                     </div>
                 </div>
             </aside>
+        </>
+    );
+}
 
-            {/* Mobile Navbar */}
+
+export default function Navbar() {
+
+    return (
+        <>
+            <DesktopMenu />
             <MobileMenu />
         </>
     );
