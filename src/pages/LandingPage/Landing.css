@@ -352,6 +352,7 @@ html, body {
   .hero {
     grid-template-columns: 1fr;
     gap: 40px;
+    padding: 40px 24px;
   }
 
   .about {
