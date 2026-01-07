@@ -2,7 +2,6 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-y: scroll;
   scroll-padding-top: var(--nav-h, 80px);
 }
 
@@ -125,6 +124,7 @@ html, body {
 .hero {
   width: 100%;
   padding: 60px 60px;
+  min-height: calc(100vh - var(--nav-h, 80px));
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;

@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import "./Landing.css";
 
 export default function LandingPage() {
     const navRef = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updateNavHeight = () => {
       const h = navRef.current?.offsetHeight ?? 0;
       document.documentElement.style.setProperty("--nav-h", `${h}px`);
