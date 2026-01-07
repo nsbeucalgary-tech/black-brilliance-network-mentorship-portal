@@ -1,6 +1,21 @@
+import { useEffect, useRef } from "react";
 import "./Landing.css";
 
 export default function LandingPage() {
+    const navRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const updateNavHeight = () => {
+      const h = navRef.current?.offsetHeight ?? 0;
+      document.documentElement.style.setProperty("--nav-h", `${h}px`);
+    };
+
+    updateNavHeight();
+    window.addEventListener("resize", updateNavHeight);
+    return () => window.removeEventListener("resize", updateNavHeight);
+  }, []);
+
+  
     return (
         <div className="landing">
             {/* NAVBAR */}
