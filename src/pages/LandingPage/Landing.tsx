@@ -15,11 +15,11 @@ export default function LandingPage() {
     return () => window.removeEventListener("resize", updateNavHeight);
   }, []);
 
-  
+
     return (
         <div className="landing">
             {/* NAVBAR */}
-            <header className="nav">
+            <header ref={navRef} className="nav">
                 <div className="nav-left">
                     <div className="logo-mark">
                         <div className="logo-dot"/>
