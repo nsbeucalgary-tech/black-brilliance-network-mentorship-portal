@@ -1,23 +1,6 @@
 import "./Landing.css";
-import { useEffect } from "react";
 
 export default function LandingPage() {
-    useEffect(() => {
-    const nav = document.querySelector(".nav") as HTMLElement;
-    const hero = document.querySelector(".hero") as HTMLElement;
-
-    const adjustHeroPadding = () => {
-      if (nav && hero) {
-        const height = nav.offsetHeight;
-        hero.style.paddingTop = `${height + 40}px`; // small visual offset
-      }
-    };
-
-    adjustHeroPadding();
-    window.addEventListener("resize", adjustHeroPadding);
-    return () => window.removeEventListener("resize", adjustHeroPadding);
-  }, []);
-  
     return (
         <div className="landing">
             {/* NAVBAR */}
@@ -94,7 +77,14 @@ export default function LandingPage() {
                     <h1><strong>NSBE UCalgary</strong></h1>
                     <p></p>
                     <p>
-                        Paragraph.
+                        The University of Calgary chapter of the National Society of Black Engineers 
+                        is committed to increasing the number of culturally responsible Black engineers 
+                        who excel academically, succeed professionally, and positively impact the community.
+                    </p>
+                    <p>
+                        Through mentorship, professional development, and community building, we create 
+                        pathways for Black students to thrive in STEM fields and become the next generation 
+                        of engineering leaders.
                     </p>
                 </div>
             </section>
@@ -103,10 +93,11 @@ export default function LandingPage() {
             <footer className="footer">
                 <div className="footer-content">
                     <div className="social-links">
-                        <a href="#reddit">r</a>
-                        <a href="#facebook">f</a>
-                        <a href="#twitter">𝕏</a>
-                        <a href="#linkedin">in</a>
+                        <a href="#facebook">Facebook</a>
+                        <a href="#X">X</a>
+                        <a href="#linkedin">LinkedIn</a>
+                        <a href="#email">Email</a>
+                        <a href="#discord">Discord</a>
                     </div>
                     <p className="footer-text">©Black Brilliance Network 2025. All rights reserved.</p>
                 </div>
