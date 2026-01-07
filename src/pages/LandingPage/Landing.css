@@ -124,6 +124,7 @@ html, body {
 .hero {
   width: 100%;
   padding: 100px 60px;
+  padding-top: 550px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
