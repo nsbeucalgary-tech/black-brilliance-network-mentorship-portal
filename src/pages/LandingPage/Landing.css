@@ -30,6 +30,7 @@ html, body {
   background-color: #ffffff;
   margin: 0;
   padding: 0;
+  padding-top: var(--nav-h, 80px);
 }
 
 /* Navbar */
@@ -123,8 +124,7 @@ html, body {
 /* Hero Section */
 .hero {
   width: 100%;
-  padding: 100px 60px;
-  padding-top: 550px;
+  padding: 60px 60px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
@@ -352,7 +352,6 @@ html, body {
   .hero {
     grid-template-columns: 1fr;
     gap: 40px;
-    padding-top: 400px;
   }
 
   .about {
@@ -390,7 +389,6 @@ html, body {
 
   .hero {
     padding: 80px 30px;
-    padding-top: 350px;
     gap: 60px;
   }
 
@@ -414,7 +412,6 @@ html, body {
 
   .hero {
     padding: 20px 15px;
-    padding-top: 220px;
   }
 
   .about {
