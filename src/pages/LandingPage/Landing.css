@@ -377,9 +377,6 @@ html, body {
     gap: 12px;
   }
 
-  .landing {
-    padding-top: 0;
-  }
   .about {
     width: 100%;
     padding: 30px 20px;
