@@ -389,8 +389,9 @@ html, body {
   } 
 
   .hero {
-    padding: 80px 30px;
-    gap: 60px;
+    grid-template-columns: 1fr;
+    padding: 24px 16px;
+    gap: 24px;
   }
 
   .hero-text h1 {
@@ -408,27 +409,30 @@ html, body {
 
 @media (max-width: 480px) {
   .nav {
-    padding: 15px;
+    padding: 12px 16px;
+    gap: 10px;
+    flex-wrap: wrap;           
+    align-items: center;
   }
 
-  .hero {
-    padding: 20px 15px;
+  .nav-left {
+    flex: 1 1 auto;            
+    min-width: 140px;
   }
 
-  .about {
-    width: 100%;
-    padding: 20px 15px;
+  .nav-links {
+    flex: 1 1 100%;          
+    justify-content: flex-end; 
+    gap: 16px;
+    flex-wrap: wrap;           
   }
 
-  .hero-text h1 {
-    font-size: 24px;
+  .nav-links a {
+    font-size: 14px;
   }
 
-  .about-content h2 {
-    font-size: 20px;
-  }
-
-  .about-gallery {
-    grid-template-columns: repeat(2, 1fr);
+  .register-button {
+    padding: 10px 16px;
+    border-radius: 10px;
   }
 }
