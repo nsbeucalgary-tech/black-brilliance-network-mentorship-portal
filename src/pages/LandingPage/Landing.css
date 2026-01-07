@@ -122,7 +122,7 @@ html, body {
 /* Hero Section */
 .hero {
   width: 100%;
-  padding: 60px 60px;
+  padding: 100px 60px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
