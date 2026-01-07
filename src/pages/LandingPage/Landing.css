@@ -40,8 +40,9 @@ html, body {
   justify-content: space-between;
   align-items: center;
   background-color: #ffffff;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   z-index: 1000;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -123,7 +124,6 @@ html, body {
 .hero {
   width: 100%;
   padding: 100px 60px;
-  margin-top: 93px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
