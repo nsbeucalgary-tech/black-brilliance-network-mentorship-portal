@@ -2,7 +2,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: var(--nav-h, 80px);
+  scroll-padding-top: 84px;
 }
 
 html, body {
@@ -29,21 +29,25 @@ html, body {
   background-color: #ffffff;
   margin: 0;
   padding: 0;
-  padding-top: var(--nav-h, 80px);
+  padding-top: 84px;
 }
 
 /* Navbar */
 .nav {
-  width: 100%;
-  padding: 24px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #ffffff;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
+
+  height: 84px;
+  width: 100%;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+  background-color: #ffffff;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -124,7 +128,7 @@ html, body {
 .hero {
   width: 100%;
   padding: 60px 60px;
-  min-height: calc(100vh - var(--nav-h, 80px));
+  min-height: calc(100vh - 84px);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
@@ -366,6 +370,16 @@ html, body {
 }
 
 @media (max-width: 768px) {
+  .nav {
+    height: auto;
+    padding: 16px 20px;
+    flex-wrap: wrap;     
+    gap: 12px;
+  }
+
+  .landing {
+    padding-top: 0;
+  }
   .about {
     width: 100%;
     padding: 30px 20px;
@@ -390,7 +404,8 @@ html, body {
 
   .hero {
     grid-template-columns: 1fr;
-    padding: 24px 16px;
+    min-height: auto;
+    padding: 24px 20px;
     gap: 24px;
   }
 

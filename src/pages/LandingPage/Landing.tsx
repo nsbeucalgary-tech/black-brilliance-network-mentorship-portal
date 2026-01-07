@@ -1,25 +1,10 @@
-import { useLayoutEffect, useRef } from "react";
 import "./Landing.css";
 
 export default function LandingPage() {
-    const navRef = useRef<HTMLElement | null>(null);
-
-  useLayoutEffect(() => {
-    const updateNavHeight = () => {
-      const h = navRef.current?.offsetHeight ?? 0;
-      document.documentElement.style.setProperty("--nav-h", `${h}px`);
-    };
-
-    updateNavHeight();
-    window.addEventListener("resize", updateNavHeight);
-    return () => window.removeEventListener("resize", updateNavHeight);
-  }, []);
-
-
     return (
         <div className="landing">
             {/* NAVBAR */}
-            <header ref={navRef} className="nav">
+            <header className="nav">
                 <div className="nav-left">
                     <div className="logo-mark">
                         <div className="logo-dot"/>
