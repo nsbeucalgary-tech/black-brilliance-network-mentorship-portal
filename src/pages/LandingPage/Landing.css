@@ -352,6 +352,7 @@ html, body {
   .hero {
     grid-template-columns: 1fr;
     gap: 40px;
+    padding-top: 400px;
   }
 
   .about {
@@ -387,6 +388,12 @@ html, body {
     height: 200px;
   } 
 
+  .hero {
+    padding: 80px 30px;
+    padding-top: 350px;
+    gap: 60px;
+  }
+
   .hero-text h1 {
     font-size: 32px;  
   }
@@ -407,6 +414,7 @@ html, body {
 
   .hero {
     padding: 20px 15px;
+    padding-top: 220px;
   }
 
   .about {

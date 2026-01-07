@@ -1,6 +1,23 @@
 import "./Landing.css";
+import { useEffect } from "react";
 
 export default function LandingPage() {
+    useEffect(() => {
+    const nav = document.querySelector(".nav") as HTMLElement;
+    const hero = document.querySelector(".hero") as HTMLElement;
+
+    const adjustHeroPadding = () => {
+      if (nav && hero) {
+        const height = nav.offsetHeight;
+        hero.style.paddingTop = `${height + 40}px`; // small visual offset
+      }
+    };
+
+    adjustHeroPadding();
+    window.addEventListener("resize", adjustHeroPadding);
+    return () => window.removeEventListener("resize", adjustHeroPadding);
+  }, []);
+  
     return (
         <div className="landing">
             {/* NAVBAR */}
