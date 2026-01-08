@@ -4,81 +4,6 @@ type AuthProps = {
   onSubmit?: (email: string, password: string, remember: boolean) => void;
 };
 
-const containerStyle: React.CSSProperties = {
-  display: "flex",
-  minHeight: "100vh",
-  fontFamily: "'Inter', system-ui, Arial, sans-serif",
-  background: "#fff",
-  color: "#1b2b20",
-};
-
-const leftStyle: React.CSSProperties = {
-  flex: 1,
-  padding: "64px 48px",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  gap: 24,
-};
-
-const rightStyle: React.CSSProperties = {
-  flex: 1,
-  background: "url('/assets/auth-illustration.png') center/contain no-repeat",
-  // fallback background color similar to image area
-  backgroundColor: "#f6faf4",
-  display: "none",
-};
-
-const cardStyle: React.CSSProperties = {
-  maxWidth: 420,
-  width: "100%",
-};
-
-const titleStyle: React.CSSProperties = {
-  fontSize: 28,
-  fontWeight: 600,
-  marginBottom: 8,
-};
-
-const socialRowStyle: React.CSSProperties = {
-  display: "flex",
-  gap: 12,
-  alignItems: "center",
-  marginBottom: 12,
-};
-
-const socialBtnStyle: React.CSSProperties = {
-  flex: 1,
-  height: 56,
-  borderRadius: 999,
-  border: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: 12,
-  cursor: "pointer",
-};
-
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  height: 44,
-  borderRadius: 12,
-  border: "none",
-  padding: "0 16px",
-  background: "#eaf7e7",
-  boxSizing: "border-box",
-};
-
-const signInBtnStyle: React.CSSProperties = {
-  height: 40,
-  padding: "0 20px",
-  borderRadius: 12,
-  border: "none",
-  background: "#2f4b2f",
-  color: "#fff",
-  cursor: "pointer",
-};
-
 export default function Login({ onSubmit }: AuthProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -101,59 +26,40 @@ export default function Login({ onSubmit }: AuthProps) {
   };
 
   return (
-    <div style={containerStyle}>
-      <div style={leftStyle}>
-        <header
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: 6,
-                background: "#23311f",
-              }}
-            />
-            <div style={{ color: "#2f7b2f", fontWeight: 700 }}>Black</div>
-            <div style={{ color: "#9fd3a0", fontWeight: 700 }}>Brilliance</div>
+    <div className="flex min-h-screen bg-white text-[#1b2b20]">
+      <div className="flex-1 py-16 px-12 flex flex-col justify-center gap-6">
+        <header className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-md bg-[#23311f]" />
+            <div className="text-[#2f7b2f] font-bold">Black</div>
+            <div className="text-[#9fd3a0] font-bold">Brilliance</div>
           </div>
-          <nav style={{ display: "flex", gap: 18, alignItems: "center" }}>
-            <a href="#" style={{ color: "#333", textDecoration: "none" }}>
+          <nav className="flex items-center gap-5">
+            <a href="#" className="text-[#333] no-underline">
               About
             </a>
-            <a href="#" style={{ color: "#333", textDecoration: "none" }}>
+            <a href="#" className="text-[#333] no-underline">
               Gallery
             </a>
-            <a href="#" style={{ color: "#333", textDecoration: "none" }}>
+            <a href="#" className="text-[#333] no-underline">
               Blog
             </a>
             <a
               href="#"
-              style={{
-                background: "#2f4b2f",
-                color: "#fff",
-                padding: "8px 14px",
-                borderRadius: 18,
-                textDecoration: "none",
-              }}
+              className="bg-[#2f4b2f] text-white py-2 px-3 rounded-full no-underline"
             >
               Register
             </a>
           </nav>
         </header>
 
-        <main style={cardStyle}>
-          <h1 style={titleStyle}>Sign Up</h1>
+        <main className="max-w-[420px] w-full">
+          <h1 className="text-[28px] font-semibold mb-2">Sign Up</h1>
 
-          <div style={socialRowStyle}>
+          <div className="flex items-center gap-3 mb-3">
             <button
               aria-label="Sign in with Google"
-              style={{ ...socialBtnStyle, background: "#e9f7ee" }}
+              className="flex-1 h-14 rounded-full flex items-center justify-center gap-3 cursor-pointer bg-[#e9f7ee]"
               onClick={() => alert("Google OAuth placeholder")}
             >
               <svg
@@ -180,12 +86,12 @@ export default function Login({ onSubmit }: AuthProps) {
                   d="M272 107.7c38.6-.6 76.3 13.8 104.5 39.8l78.1-78.1C404.9 24.9 344 0 272 0 168.6 0 78.5 60.4 33.9 158.5l87.4 69.8C142.5 155 201.9 107.7 272 107.7z"
                 />
               </svg>
-              <span style={{ fontWeight: 600 }}>Google</span>
+              <span className="font-semibold">Google</span>
             </button>
 
             <button
               aria-label="Sign in with Microsoft"
-              style={{ ...socialBtnStyle, background: "#eaf7ee" }}
+              className="flex-1 h-14 rounded-full flex items-center justify-center gap-3 cursor-pointer bg-[#eaf7ee]"
               onClick={() => alert("Microsoft OAuth placeholder")}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
@@ -197,50 +103,29 @@ export default function Login({ onSubmit }: AuthProps) {
             </button>
           </div>
 
-          <div
-            style={{ textAlign: "center", color: "#7b8b78", margin: "8px 0" }}
-          >
-            or via email
-          </div>
+          <div className="text-center text-[#7b8b78] my-2">or via email</div>
 
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column", gap: 12 }}
-          >
-            <label style={{ fontSize: 12, color: "#6b6b6b" }}>Email</label>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <label className="text-xs text-[#6b6b6b]">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="janedoe@gmail.com"
-              style={inputStyle}
+              className="w-full h-11 rounded-xl border-0 px-4 bg-[#eaf7e7]"
             />
 
-            <label style={{ fontSize: 12, color: "#6b6b6b" }}>Password</label>
+            <label className="text-xs text-[#6b6b6b]">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="************"
-              style={inputStyle}
+              className="w-full h-11 rounded-xl border-0 px-4 bg-[#eaf7e7]"
             />
 
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginTop: 8,
-              }}
-            >
-              <label
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  fontSize: 14,
-                }}
-              >
+            <div className="flex items-center justify-between mt-2">
+              <label className="flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
                   checked={remember}
@@ -249,25 +134,23 @@ export default function Login({ onSubmit }: AuthProps) {
                 Remember me
               </label>
 
-              <button type="submit" style={signInBtnStyle}>
+              <button
+                type="submit"
+                className="h-10 px-5 rounded-xl bg-[#2f4b2f] text-white"
+              >
                 Sign In
               </button>
             </div>
           </form>
         </main>
 
-        <footer style={{ marginTop: 32, color: "#889a87", fontSize: 13 }}>
+        <footer className="mt-8 text-[#889a87] text-sm">
           © Copyright Black Brilliance Network 2025
         </footer>
       </div>
 
       {/* right illustration panel - hidden on small screens */}
-      <div
-        style={{
-          ...rightStyle,
-          display: window.innerWidth > 900 ? "block" : "none",
-        }}
-      />
+      <div className="flex-1 hidden lg:block bg-[url('/assets/auth-illustration.png')] bg-[#f6faf4] bg-center bg-contain bg-no-repeat" />
     </div>
   );
 }
