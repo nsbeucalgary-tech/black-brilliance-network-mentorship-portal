@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type SignupProps = {
   onSubmit?: (
@@ -10,6 +11,7 @@ type SignupProps = {
 };
 
 export default function Signup({ onSubmit }: SignupProps) {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,34 +41,38 @@ export default function Signup({ onSubmit }: SignupProps) {
   };
 
   return (
-    <div className="flex min-h-screen bg-white text-[#1b2b20]">
-      <div className="flex-1 py-16 px-12 flex flex-col justify-center gap-6">
-        <header className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-md bg-[#23311f]" />
-            <div className="text-[#2f7b2f] font-bold">Black</div>
-            <div className="text-[#9fd3a0] font-bold">Brilliance</div>
+    <div className="landing">
+      {/* NAVBAR */}
+      <header className="nav">
+        <div className="nav-left">
+          <div className="logo-mark">
+            <div className="logo-dot" />
+            <div className="logo-dot" />
           </div>
-          <nav className="flex items-center gap-5">
-            <a href="#" className="text-[#333] no-underline">
-              About
-            </a>
-            <a href="#" className="text-[#333] no-underline">
-              Gallery
-            </a>
-            <a href="#" className="text-[#333] no-underline">
-              Blog
-            </a>
-            <a
-              href="#"
-              className="bg-[#2f4b2f] text-white py-2 px-3 rounded-full no-underline"
-            >
-              Register
-            </a>
-          </nav>
-        </header>
+          <div className="logo-text">
+            <span className="logo-text-black">Black </span>
+            <span className="logo-text-green">Brilliance</span>
+          </div>
+        </div>
 
-        <main className="max-w-[420px] w-full">
+        <nav className="nav-links">
+          <a href="#about" className="active">
+            About
+          </a>
+          <a href="#gallery">Gallery</a>
+          <a href="#blog">Blog</a>
+          <button
+            className="register-button"
+            onClick={() => navigate("/signup")}
+          >
+            Register
+          </button>
+        </nav>
+      </header>
+
+      {/* SIGNUP FORM SECTION */}
+      <section className="auth-section">
+        <div className="auth-container">
           <h1 className="text-[28px] font-semibold mb-2">Sign Up</h1>
 
           <div className="flex items-center gap-3 mb-3">
@@ -124,7 +130,7 @@ export default function Signup({ onSubmit }: SignupProps) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Jane Doe"
+              placeholder=" Jane Doe"
               className="w-full h-11 rounded-xl border-0 px-4 bg-[#eaf7e7]"
             />
 
@@ -133,7 +139,7 @@ export default function Signup({ onSubmit }: SignupProps) {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="janedoe@gmail.com"
+              placeholder=" janedoe@gmail.com"
               className="w-full h-11 rounded-xl border-0 px-4 bg-[#eaf7e7]"
             />
 
@@ -142,7 +148,7 @@ export default function Signup({ onSubmit }: SignupProps) {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Create a password"
+              placeholder=" Create a password"
               className="w-full h-11 rounded-xl border-0 px-4 bg-[#eaf7e7]"
             />
 
@@ -151,12 +157,12 @@ export default function Signup({ onSubmit }: SignupProps) {
               type="password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              placeholder="Confirm password"
+              placeholder=" Confirm password"
               className="w-full h-11 rounded-xl border-0 px-4 bg-[#eaf7e7]"
             />
 
             <div className="flex items-center justify-between mt-2">
-              <label className="flex items-center gap-2 text-sm">
+              <label className="flex items-center gap-2 text-sm cursor-pointer">
                 <input
                   type="checkbox"
                   checked={remember}
@@ -165,22 +171,16 @@ export default function Signup({ onSubmit }: SignupProps) {
                 Remember me
               </label>
 
-              <button
-                type="submit"
-                className="h-10 px-5 rounded-xl bg-[#2f4b2f] text-white"
-              >
+              <button type="submit" className="submit-button">
                 Create Account
               </button>
             </div>
           </form>
-        </main>
-
+        </div>
         <footer className="mt-8 text-[#889a87] text-sm">
           © Copyright Black Brilliance Network 2025
         </footer>
-      </div>
-
-      <div className="flex-1 hidden lg:block bg-[url('/assets/auth-illustration.png')] bg-[#f6faf4] bg-center bg-contain bg-no-repeat" />
+      </section>
     </div>
   );
 }
