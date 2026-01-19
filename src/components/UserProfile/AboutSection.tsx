@@ -6,9 +6,9 @@ interface AboutSectionProps {
 
 export default function AboutSection({ content }: AboutSectionProps) {
     return (
-        <section className="section-card">
+        <section className="grid gap-3">
             <SectionHeader title="About" />
-            <p className="about-text">{content}</p>
+            <p className="m-0 text-[15px] leading-[1.65] text-[#4b5145]">{content}</p>
         </section>
     );
 }
