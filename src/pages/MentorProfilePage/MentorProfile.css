@@ -87,7 +87,7 @@ body {
 
 .mentor-layout {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
   gap: 32px;
   padding: 20px 56px 72px;
   margin-top: 120px;
@@ -106,6 +106,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .mentor-name {
@@ -113,6 +114,7 @@ body {
   font-size: 32px;
   font-weight: 800;
   letter-spacing: -0.3px;
+  overflow-wrap: anywhere;
 }
 
 .mentor-pronoun {
@@ -125,6 +127,7 @@ body {
   margin: 0;
   color: #3c4452;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .mentor-location {
@@ -152,6 +155,7 @@ body {
 .mentor-links {
   position: sticky;
   top: 20px;
+  min-width: 0;
 }
 
 .mentor-links-inner {
@@ -171,6 +175,8 @@ body {
   gap: 10px;
   color: #1f2430;
   font-weight: 700;
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
 }
 
 .mentor-chat {
@@ -189,6 +195,7 @@ body {
 .mentor-main {
   display: grid;
   gap: 32px;
+  min-width: 0;
 }
 
 .mentor-section {
@@ -305,8 +312,11 @@ body {
   }
 
   .mentor-avatar {
-    left: 20px;
-    bottom: -80px;
+    left: 50%;
+    bottom: -72px;
+    width: 150px;
+    height: 150px;
+    transform: translateX(-50%);
   }
 
   .mentor-badges {
@@ -320,7 +330,81 @@ body {
   }
 
   .mentor-identity-block {
+    position: static;
     padding: 0 20px;
-    margin-top: 110px;
+    margin-top: 96px;
+    text-align: center;
+    justify-items: center;
+  }
+
+  .mentor-name-row {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 720px) {
+  .mentor-hero {
+    height: 220px;
+  }
+
+  .mentor-avatar {
+    width: 130px;
+    height: 130px;
+    bottom: -64px;
+  }
+
+  .mentor-layout {
+    padding: 24px 18px 40px;
+    gap: 24px;
+    margin-top: 96px;
+  }
+
+  .mentor-badges-block {
+    padding: 0 18px;
+    align-items: center;
+    text-align: center;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .mentor-name {
+    font-size: 26px;
+  }
+
+  .mentor-title {
+    font-size: 14px;
+  }
+
+  .mentor-chat {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .mentor-hero {
+    height: 200px;
+  }
+
+  .mentor-avatar {
+    width: 112px;
+    height: 112px;
+    bottom: -56px;
+    border-width: 4px;
+  }
+
+  .mentor-layout {
+    padding: 20px 14px 32px;
+    margin-top: 88px;
+  }
+
+  .mentor-identity-block {
+    padding: 0 14px;
+    margin-top: 84px;
+  }
+
+  .mentor-section-title {
+    font-size: 20px;
   }
 }
