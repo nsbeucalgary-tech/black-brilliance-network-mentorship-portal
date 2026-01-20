@@ -8,6 +8,7 @@ type SignupProps = {
     password: string,
     remember: boolean
   ) => void;
+  onBack: () => void;
 };
 
 export default function Signup({ onSubmit }: SignupProps) {

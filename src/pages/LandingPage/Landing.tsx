@@ -1,126 +1,168 @@
 import "./Landing.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,  } from "react-router-dom";
+import { useState } from "react";
+import Login from "../LoginPage/Login";
+import Signup from "../SignupPage/Signup.tsx";
+
+
+
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [showLogin, setShowLogin] = useState<boolean>(false);
+  const [showSignUp, setShowSignUp] = useState<boolean>(false);
+  const [hideButtons, setHideButtons] = useState<boolean>(false);
+
   return (
-    <div className="landing">
-      {/* NAVBAR */}
-      <header className="nav">
-        <div className="nav-left">
-          <div className="logo-mark">
-            <div className="logo-dot" />
-            <div className="logo-dot" />
+      <div className="landing">
+        {/* NAVBAR */}
+        <header className="nav">
+          <div className="nav-left">
+            <div className="logo-mark">
+              <div className="logo-dot" />
+              <div className="logo-dot" />
+            </div>
+            <div className="logo-text">
+              <span className="logo-text-black">Black </span>
+              <span className="logo-text-green">Brilliance</span>
+            </div>
           </div>
-          <div className="logo-text">
-            <span className="logo-text-black">Black </span>
-            <span className="logo-text-green">Brilliance</span>
-          </div>
-        </div>
 
-        <nav className="nav-links">
-          <a href="#about" className="active">
-            About
-          </a>
-          <a href="#gallery">Gallery</a>
-          <a href="#blog">Blog</a>
-          <button
-            className="register-button"
-            onClick={() => navigate("/signup")}
-          >
-            Register
-          </button>
-        </nav>
-      </header>
-
-      {/* HERO SECTION */}
-      <section className="hero">
-        <div className="hero-text">
-          <h1>The Black</h1>
-          <h1>Brilliance Network.</h1>
-          <p>
-            Bridging black undergraduate and graduate students in STEM with
-            industry professionals, alumni, and advanced-degree mentors — a
-            mentorship initiative by{" "}
-            <strong>the National Society of Black Engineers.</strong>
-          </p>
-
-          <p>Random text.</p>
-
-          <div className="hero-buttons">
+          <nav className="nav-links">
+            <a href="#about" className="active">
+              About
+            </a>
+            <a href="#gallery">Gallery</a>
+            <a href="#blog">Blog</a>
             <button
-              className="sign-up-button"
-              onClick={() => navigate("/signup")}
+                className="register-button"
+                onClick={() => navigate("/signup")}
             >
-              Sign Up
+              Register
             </button>
-            <button
-              className="log-in-button"
-              onClick={() => navigate("/login")}
-            >
-              Log In
-            </button>
-          </div>
-        </div>
+          </nav>
+        </header>
 
-        <div className="hero-image">
-          <div className="hero-image-box">
-            <div className="hero-image-placeholder">[Image Placeholder...]</div>
-          </div>
-        </div>
-      </section>
+        {/* HERO SECTION */}
+        <section className="hero">
+          {!hideButtons && (
+              <div className="hero-text">
+                <h1>The Black</h1>
+                <h1>Brilliance Network.</h1>
 
-      {/* ABOUT SECTION */}
-      <section className="about">
-        <div className="about-left">
-          <div className="about-image">
-            <div className="about-image-placeholder">[Group photo]</div>
-          </div>
-          <div className="about-gallery">
-            <div className="gallery-item" />
-            <div className="gallery-item" />
-            <div className="gallery-item" />
-            <div className="gallery-item" />
-            <div className="gallery-item" />
-            <div className="gallery-item" />
-          </div>
-        </div>
+                <p>
+                  Bridging black undergraduate and graduate students in STEM with
+                  industry professionals, alumni, and advanced-degree mentors — a
+                  mentorship initiative by{" "}
+                  <strong>the National Society of Black Engineers.</strong>
+                </p>
 
-        <div className="about-content">
-          <h2>About Us</h2>
-          <h1>
-            <strong>NSBE UCalgary</strong>
-          </h1>
-          <p></p>
-          <p>
-            The University of Calgary chapter of the National Society of Black
-            Engineers is committed to increasing the number of culturally
-            responsible Black engineers who excel academically, succeed
-            professionally, and positively impact the community.
-          </p>
-          <p>
-            Through mentorship, professional development, and community
-            building, we create pathways for Black students to thrive in STEM
-            fields and become the next generation of engineering leaders.
-          </p>
-        </div>
-      </section>
+                <p>Random text.</p>
 
-      {/* FOOTER */}
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="social-links">
-            <a href="#facebook">Facebook</a>
-            <a href="#X">X</a>
-            <a href="#linkedin">LinkedIn</a>
-            <a href="#email">Email</a>
-            <a href="#discord">Discord</a>
+                <div className="hero-buttons">
+                  <button
+                      className="sign-up-button"
+                      onClick={() => {
+                        setHideButtons(true);
+                        setShowSignUp(true);
+                        setShowLogin(false);
+                      }}
+                  >
+                    Sign Up
+                  </button>
+
+                  <button
+                      className="log-in-button"
+                      onClick={() => {
+                        setHideButtons(true);
+                        setShowLogin(true);
+                        setShowSignUp(false);
+                      }}
+                  >
+                    Log In
+                  </button>
+                </div>
+              </div>
+          )}
+
+          {/* Show login/signup when hero is hidden */}
+          {showLogin && (
+              <Login
+                  onBack={() => {
+                    setShowLogin(false);
+                    setHideButtons(false);
+                  }}
+              />
+          )}
+
+          {showSignUp && (
+              <Signup
+                  onBack={() => {
+                    setShowSignUp(false);
+                    setHideButtons(false);
+                  }}
+              />
+          )}
+
+          <div className="hero-image">
+            <div className="hero-image-box">
+              <div className="hero-image-placeholder">[Image Placeholder...]</div>
+            </div>
           </div>
-          <p className="footer-text">
-            ©Black Brilliance Network 2025. All rights reserved.
-          </p>
-        </div>
-      </footer>
-    </div>
+        </section>
+
+
+        {/* ABOUT SECTION */}
+        <section className="about">
+          <div className="about-left">
+            <div className="about-image">
+              <div className="about-image-placeholder">[Group photo]</div>
+            </div>
+            <div className="about-gallery">
+              <div className="gallery-item" />
+              <div className="gallery-item" />
+              <div className="gallery-item" />
+              <div className="gallery-item" />
+              <div className="gallery-item" />
+              <div className="gallery-item" />
+            </div>
+          </div>
+
+          <div className="about-content">
+            <h2>About Us</h2>
+            <h1>
+              <strong>NSBE UCalgary</strong>
+            </h1>
+            <p></p>
+            <p>
+              The University of Calgary chapter of the National Society of Black
+              Engineers is committed to increasing the number of culturally
+              responsible Black engineers who excel academically, succeed
+              professionally, and positively impact the community.
+            </p>
+            <p>
+              Through mentorship, professional development, and community
+              building, we create pathways for Black students to thrive in STEM
+              fields and become the next generation of engineering leaders.
+            </p>
+          </div>
+        </section>
+
+        {/* FOOTER */}
+        <footer className="footer">
+          <div className="footer-content">
+            <div className="social-links">
+              <a href="#facebook">Facebook</a>
+              <a href="#X">X</a>
+              <a href="#linkedin">LinkedIn</a>
+              <a href="#email">Email</a>
+              <a href="#discord">Discord</a>
+            </div>
+            <p className="footer-text">
+              ©Black Brilliance Network 2025. All rights reserved.
+            </p>
+          </div>
+        </footer>
+      </div>
   );
 }
