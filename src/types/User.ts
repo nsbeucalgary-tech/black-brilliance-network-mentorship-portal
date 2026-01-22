@@ -12,9 +12,6 @@ export interface User {
   /** User's email address */
   email: string;
 
-  /** Hashed password (never store plain text passwords) */
-  password_hash: string;
-
   /** User's organizational affiliation */
   affiliation: string;
 
@@ -49,7 +46,6 @@ export interface UserFirestoreData {
   user_id: string;
   full_name: string;
   email: string;
-  password_hash: string;
   affiliation: string;
   role: UserRole;
   admin_status: boolean;
