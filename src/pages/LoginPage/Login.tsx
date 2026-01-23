@@ -4,6 +4,7 @@ import "../LandingPage/Landing.css";
 
 type AuthProps = {
   onSubmit?: (email: string, password: string, remember: boolean) => void;
+  onBack: () => void;
 };
 
 export default function Login({ onSubmit }: AuthProps) {
