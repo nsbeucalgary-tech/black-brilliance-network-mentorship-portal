@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import type { User } from "firebase/auth";
 import { auth } from "../_db_controller/init";
-import { Navigate } from "react-router-dom";
 
 
 interface AuthContextType {
@@ -12,7 +11,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -43,7 +41,6 @@ export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
     console.log("Context", context);
-    <Navigate to="/login" />;
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;

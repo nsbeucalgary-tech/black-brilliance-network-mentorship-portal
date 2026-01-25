@@ -1,44 +1,57 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signUpWithEmailAndPassword, validateUserPassword } from "../../auth/AuthFunctions";
 
-type SignupProps = {
-  onSubmit?: (
-    name: string,
-    email: string,
-    password: string,
-    remember: boolean
-  ) => void;
-};
-
-export default function Signup({ onSubmit }: SignupProps) {
+export default function Signup() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [remember, setRemember] = useState(false);
+  const [signupError, setSignupError] = useState<string>("");
+  const [passwordValidationError, setPasswordValidationError] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e?: React.FormEvent) => {
-    e?.preventDefault();
-    if (!name) {
-      alert("Please enter your name.");
+const handleSubmit = async (e?: React.FormEvent) => {
+  e?.preventDefault();
+
+  if (!name) return alert("Please enter your name.");
+  if (!email) return alert("Please enter an email.");
+  if (!password) return alert("Please enter a password.");
+  if (password !== confirm) return alert("Passwords do not match.");
+
+  setLoading(true);
+
+  try {
+    const errors = await validateUserPassword(password);
+    if (errors.length > 0) {
+      setPasswordValidationError(errors);
       return;
     }
-    if (!email) {
-      alert("Please enter an email.");
-      return;
+
+    setPasswordValidationError([]);
+
+    const error = await signUpWithEmailAndPassword(
+      name,
+      email,
+      password,
+      navigate
+    );
+
+    if (error) {
+      setSignupError(error);
+    } else {
+      setSignupError("");
     }
-    if (!password) {
-      alert("Please enter a password.");
-      return;
-    }
-    if (password !== confirm) {
-      alert("Passwords do not match.");
-      return;
-    }
-    onSubmit?.(name, email, password, remember);
-    console.log("Sign up:", { name, email, remember });
-  };
+  } catch (err) {
+    console.log(err);
+    setSignupError("Error occurred. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="landing">
@@ -124,6 +137,18 @@ export default function Signup({ onSubmit }: SignupProps) {
 
           <div className="text-center text-[#7b8b78] my-2">or via email</div>
 
+          {signupError && <div className="text-red-500">
+            {signupError}
+          </div>}
+
+          {(passwordValidationError.length > 0) && <div className="text-red-500">
+            <ul>
+              {passwordValidationError.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>}
+
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <label className="text-xs text-[#6b6b6b]">Full name</label>
             <input
@@ -171,7 +196,7 @@ export default function Signup({ onSubmit }: SignupProps) {
                 Remember me
               </label>
 
-              <button type="submit" className="submit-button">
+              <button type="submit" className="submit-button disabled:opacity-50" disabled={loading}>
                 Create Account
               </button>
             </div>
