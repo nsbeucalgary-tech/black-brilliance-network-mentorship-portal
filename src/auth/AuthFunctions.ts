@@ -6,42 +6,65 @@ export async function signUpWithEmailAndPassword(
   name: string,
   email: string,
   password: string,
-  navigate: (path: string) => void,
 ): Promise<string | null> {
   try {
     const createdUser = await createUserWithEmailAndPassword(auth, email, password);
     console.log(createdUser.user);
     // <        -----> Create a User with the name
-    navigate('/dashboard');
     return null;
   } catch (e) {
-    let returnedError = "";
     if (e instanceof FirebaseError) {
       switch (e.code) {
         case "auth/email-already-in-use":
-          returnedError = "This email is already registered.";
-          break;
+          return "This email is already registered.";
         case "auth/invalid-email":
-          returnedError = "Please enter a valid email address.";
-          break;
+          return "Please enter a valid email address.";
         case "auth/weak-password":
-          returnedError = "Password must be at least 6 characters.";
-          break;
+          return "Password must be at least 6 characters.";
         case "auth/network-request-failed":
-          returnedError = "Network error. Please try again.";
-          break;
+          return "Network error. Please try again.";
         case "auth/too-many-requests":
-          returnedError = "Too many attempts. Try again later.";
-          break;
+          return "Too many attempts. Try again later.";
         default:
-          returnedError = "Something went wrong. Please try again.";
+          return "Something went wrong. Please try again.";
       }
-    } else {
-      returnedError = "Something went wrong. Please try again.";
     }
-    return returnedError;
+
+    return "Something went wrong. Please try again.";
   }
 }
+
+export async function logInWithEmailAndPassword(
+  email: string,
+  password: string,
+): Promise<string | null> {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    return null;
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      switch (e.code) {
+        case "auth/user-not-found":
+          return "No account found with this email.";
+        case "auth/wrong-password":
+          return "Incorrect password.";
+        case "auth/invalid-email":
+          return "Please enter a valid email address.";
+        case "auth/user-disabled":
+          return "This account has been disabled.";
+        case "auth/network-request-failed":
+          return "Network error. Please try again.";
+        case "auth/too-many-requests":
+          return "Too many attempts. Try again later.";
+        default:
+          return "Invalid email or password.";
+      }
+    }
+
+    return "Something went wrong. Please try again.";
+  }
+}
+
 
 export async function validateUserPassword(password: string): Promise<string[]> {
   const status = await validatePassword(auth, password);
@@ -60,7 +83,7 @@ export async function validateUserPassword(password: string): Promise<string[]> 
   ];
 
   return rules
-    .filter(([passes]) => !passes)
+    .filter(([passes]) => passes === false)
     .map(([, message]) => message);
 }
 

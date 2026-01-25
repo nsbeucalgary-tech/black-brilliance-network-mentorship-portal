@@ -1,32 +1,41 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../LandingPage/Landing.css";
+import { logInWithEmailAndPassword } from "../../auth/AuthFunctions";
 
-type AuthProps = {
-  onSubmit?: (email: string, password: string, remember: boolean) => void;
-};
 
-export default function Login({ onSubmit }: AuthProps) {
+export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [signInError, setSignInError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     // simple client-side validation
-    if (!email) {
-      alert("Please enter an email.");
-      return;
+  if (!email) return alert("Please enter an email.");
+  if (!password) return alert("Please enter a password.");
+
+  setLoading(true);
+
+  try {
+    const error = await logInWithEmailAndPassword(email, password);
+    if (error) {
+      setSignInError(error);
+    } else {
+      setSignInError("");
+      navigate('/dashboard');
     }
-    if (!password) {
-      alert("Please enter a password.");
-      return;
-    }
-    onSubmit?.(email, password, remember);
-    // placeholder: replace with real auth flow
-    console.log("Sign in:", { email, password, remember });
-  };
+  } catch (err) {
+    console.log(err);
+    setSignInError("Error occurred. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="landing">
@@ -112,6 +121,10 @@ export default function Login({ onSubmit }: AuthProps) {
 
           <div className="text-center text-[#7b8b78] my-2">or via email</div>
 
+          {signInError && <div className="text-red-500">
+            {signInError}
+          </div>}
+
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <label className="text-xs text-[#6b6b6b]">Email</label>
             <input
@@ -141,7 +154,7 @@ export default function Login({ onSubmit }: AuthProps) {
                 Remember me
               </label>
 
-              <button type="submit" className="submit-button">
+              <button type="submit" className="submit-button disabled:opacity-50" disabled={loading}>
                 Sign In
               </button>
             </div>

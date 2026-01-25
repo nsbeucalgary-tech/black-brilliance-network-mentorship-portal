@@ -9,7 +9,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [remember, setRemember] = useState(false);
-  const [signupError, setSignupError] = useState<string>("");
+  const [signUpError, setSignUpError] = useState<string>("");
   const [passwordValidationError, setPasswordValidationError] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -35,18 +35,18 @@ const handleSubmit = async (e?: React.FormEvent) => {
     const error = await signUpWithEmailAndPassword(
       name,
       email,
-      password,
-      navigate
+      password
     );
 
     if (error) {
-      setSignupError(error);
+      setSignUpError(error);
     } else {
-      setSignupError("");
+      setSignUpError("");
+      navigate('/dashboard');
     }
   } catch (err) {
     console.log(err);
-    setSignupError("Error occurred. Please try again.");
+    setSignUpError("Error occurred. Please try again.");
   } finally {
     setLoading(false);
   }
@@ -137,8 +137,8 @@ const handleSubmit = async (e?: React.FormEvent) => {
 
           <div className="text-center text-[#7b8b78] my-2">or via email</div>
 
-          {signupError && <div className="text-red-500">
-            {signupError}
+          {signUpError && <div className="text-red-500">
+            {signUpError}
           </div>}
 
           {(passwordValidationError.length > 0) && <div className="text-red-500">
