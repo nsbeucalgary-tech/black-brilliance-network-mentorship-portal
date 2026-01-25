@@ -11,31 +11,31 @@ export default function Login() {
   const [remember, setRemember] = useState(false);
   const [signInError, setSignInError] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  
+
 
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     // simple client-side validation
-  if (!email) return alert("Please enter an email.");
-  if (!password) return alert("Please enter a password.");
+    if (!email) return alert("Please enter an email.");
+    if (!password) return alert("Please enter a password.");
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    const error = await logInWithEmailAndPassword(email, password);
-    if (error) {
-      setSignInError(error);
-    } else {
-      setSignInError("");
-      navigate('/dashboard');
+    try {
+      const error = await logInWithEmailAndPassword(email, password);
+      if (error) {
+        setSignInError(error);
+      } else {
+        setSignInError("");
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      console.log(err);
+      setSignInError("Error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.log(err);
-    setSignInError("Error occurred. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="landing">
