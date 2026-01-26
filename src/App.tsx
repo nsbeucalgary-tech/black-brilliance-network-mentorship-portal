@@ -10,6 +10,7 @@ import ExamplePage from "./_db_controller/example/page";
 import LoginPage from "./pages/LoginPage/Login";
 import SignupPage from "./pages/SignupPage/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { PublicOnlyRoute } from "./components/PublicRoute";
 import { AuthProvider } from "./auth/AuthContext";
 
 function App() {
@@ -18,8 +19,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
+          <Route path="/signup" element={<PublicOnlyRoute><SignupPage /></PublicOnlyRoute>} />
           <Route path="/example" element={<ExamplePage />} />
           <Route element={<ProtectedRoute><LoggedInLayout /></ProtectedRoute>}>
             <Route path="/dashboard" element={<DashboardPage />} />

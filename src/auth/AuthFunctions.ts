@@ -10,7 +10,7 @@ export async function signUpWithEmailAndPassword(
 ): Promise<string | null> {
   try {
     const createdUser = await createUserWithEmailAndPassword(auth, email, password);
-    console.log(createdUser.user);
+    console.log(name, createdUser);
     // <        -----> Create a User with the name
     return null;
   } catch (e) {
