@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../LandingPage/Landing.css";
-import { logInWithEmailAndPassword } from "../../auth/AuthFunctions";
+import { logInWithEmailAndPassword, signInWithProvider } from "../../auth/AuthFunctions";
+import { googleProvider } from "../../_db_controller/init";
+import type { AuthProvider } from "firebase/auth";
 
 
 export default function Login() {
@@ -32,6 +34,24 @@ export default function Login() {
     } catch (err) {
       console.log(err);
       setSignInError("Error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleProviderSignIn = async (
+    provider: AuthProvider,
+    providerName: string
+  ) => {
+    setLoading(true);
+    try {
+      const error = await signInWithProvider(provider, providerName);
+      if (error) {
+        setSignInError(error);
+      } else {
+        setSignInError("");
+        navigate("/dashboard");
+      }
     } finally {
       setLoading(false);
     }
@@ -76,7 +96,7 @@ export default function Login() {
             <button
               aria-label="Sign in with Google"
               className="flex-1 h-14 rounded-full flex items-center justify-center gap-3 cursor-pointer bg-[#e9f7ee]"
-              onClick={() => alert("Google OAuth placeholder")}
+              onClick={() => handleProviderSignIn(googleProvider, "Google")}
             >
               <svg
                 width="22"

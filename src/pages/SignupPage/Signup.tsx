@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signUpWithEmailAndPassword, validateUserPassword } from "../../auth/AuthFunctions";
+import { signInWithProvider, signUpWithEmailAndPassword, validateUserPassword } from "../../auth/AuthFunctions";
+import type { AuthProvider } from "firebase/auth";
+import { googleProvider } from "../../_db_controller/init";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -52,6 +54,23 @@ const handleSubmit = async (e?: React.FormEvent) => {
   }
 };
 
+  const handleProviderSignIn = async (
+    provider: AuthProvider,
+    providerName: string
+  ) => {
+    setLoading(true);
+    try {
+      const error = await signInWithProvider(provider, providerName);
+      if (error) {
+        setSignUpError(error);
+      } else {
+        setSignUpError("");
+        navigate("/dashboard");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="landing">
@@ -92,7 +111,7 @@ const handleSubmit = async (e?: React.FormEvent) => {
             <button
               aria-label="Sign up with Google"
               className="flex-1 h-14 rounded-full flex items-center justify-center gap-3 cursor-pointer bg-[#e9f7ee]"
-              onClick={() => alert("Google OAuth placeholder")}
+              onClick={() => handleProviderSignIn(googleProvider, "Google")}
             >
               <svg
                 width="22"

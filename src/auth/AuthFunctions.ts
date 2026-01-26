@@ -1,4 +1,5 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, validatePassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, validatePassword, signInWithPopup } from "firebase/auth";
+import type { AuthProvider } from "firebase/auth";
 import { FirebaseError } from "firebase/app"
 import { auth } from "../_db_controller/init"
 
@@ -65,6 +66,30 @@ export async function logInWithEmailAndPassword(
   }
 }
 
+export async function signInWithProvider(provider: AuthProvider, providerName: string): Promise<string | null> {
+  try {
+    const user = await signInWithPopup(auth, provider);
+    console.log(user);
+    return null;
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      switch (e.code) {
+        case "auth/popup-closed-by-user":
+          return "Sign-in was cancelled.";
+        case "auth/popup-blocked":
+          return "Popup was blocked. Please allow popups and try again.";
+        case "auth/network-request-failed":
+          return "Network error. Please try again.";
+        case "auth/account-exists-with-different-credential":
+          return "An account already exists with this email using a different sign-in method.";
+        default:
+          return `${providerName} sign-in failed. Please try again.`;
+      }
+    }
+
+    return `${providerName} sign-in failed. Please try again.`;
+  }
+}
 
 export async function validateUserPassword(password: string): Promise<string[]> {
   const status = await validatePassword(auth, password);
