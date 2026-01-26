@@ -38,7 +38,7 @@ export default function MatchCard({ match }: Props) {
         <span className={fav ? "text-red-400" : "text-neutral-300"}>♥</span>
       </button>
 
-      <div className="!m-5 mx-auto mt-2 h-24 w-24 overflow-hidden rounded-full bg-neutral-200">
+      <div className="inline-flex items-center !m-5 mx-auto mt-2 h-24 w-24 overflow-hidden rounded-full bg-neutral-200">
         <img src={match.avatarUrl} alt={match.name} className="h-full w-full object-cover" />
       </div>
 

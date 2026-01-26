@@ -76,16 +76,16 @@ export default function Matching() {
 
   return (
     // Fullscreen overlay so Matching ignores the sidebar layout without editing LoggedInLayout
-    <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+    <div className="!mt-2 fixed inset-0 z-50 bg-white overflow-y-auto">
       <FiltersDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
 
       {/* Top navbar */}
       <header className="w-full border-b bg-white">
-        <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-10 py-3">
+        <div className="flex w-full items-center justify-between px-10 py-3">
           {/* Logo */}
           <button
             type="button"
-            className="flex items-center gap-3"
+            className="!ml-3 flex items-center gap-3"
             onClick={() => navigate("/home")}
             aria-label="Go Home"
           >
@@ -93,7 +93,7 @@ export default function Matching() {
           </button>
 
           {/* Nav links */}
-          <nav className="flex items-center gap-6">
+          <nav className="!ml-3 flex items-center gap-6">
             <NavLink
               to="/home"
               className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}
@@ -131,7 +131,7 @@ export default function Matching() {
           <div className="relative" ref={profileRef}>
             <button
               type="button"
-              className="flex items-center gap-2 rounded-full px-2 py-1 hover:bg-neutral-100"
+              className="flex align-left items-center gap-2 rounded-full px-2 py-1 hover:bg-neutral-100 !mb-2"
               onClick={() => setProfileOpen((v) => !v)}
               aria-haspopup="menu"
               aria-expanded={profileOpen}
@@ -143,7 +143,7 @@ export default function Matching() {
             </button>
 
             {profileOpen && (
-              <div className="absolute right-0 mt-2 w-60 overflow-hidden rounded-xl border bg-white shadow-[0_6px_18px_rgba(0,0,0,0.08)]">
+              <div className="!z-70 text-center absolute right-0 mt-2 w-60 overflow-hidden rounded-xl border bg-white shadow-[0_6px_18px_rgba(0,0,0,0.08)]">
                 <div className="border-b px-4 py-3">
                   <p className="text-sm font-semibold text-neutral-900">Jane Doe</p>
                   <p className="text-xs text-neutral-500">jane.doe@email.com</p>
@@ -152,7 +152,7 @@ export default function Matching() {
                 <div className="p-2">
                   <button
                     type="button"
-                    className="w-full rounded-lg px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100"
+                    className="w-full !ml-1.5 rounded-lg px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100"
                     onClick={() => {
                       setProfileOpen(false);
                       navigate("/profile");
@@ -163,7 +163,7 @@ export default function Matching() {
 
                   <button
                     type="button"
-                    className="w-full rounded-lg px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100"
+                    className="w-full !ml-1.5 rounded-lg px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100"
                     onClick={() => alert("Settings (todo)")}
                   >
                     Settings
@@ -171,7 +171,7 @@ export default function Matching() {
 
                   <button
                     type="button"
-                    className="w-full rounded-lg px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100"
+                    className="w-full !ml-1.5 rounded-lg px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100"
                     onClick={() => alert("Log out (todo)")}
                   >
                     Log out
@@ -179,7 +179,7 @@ export default function Matching() {
 
                   <button
                     type="button"
-                    className="w-full rounded-lg px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100"
+                    className="w-full !ml-1.5 rounded-lg px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-100"
                     onClick={() => alert("Help (todo)")}
                   >
                     Help
@@ -192,7 +192,7 @@ export default function Matching() {
       </header>
 
       {/* Page content */}
-      <main className="mx-auto w-full max-w-[1400px] px-10 py-8">
+      <main className="!mx-3 max-w-none px-10 py-8">
         <div className="space-y-6">
           {/* Tabs */}
           <div className="flex items-center gap-12">
@@ -263,7 +263,7 @@ export default function Matching() {
 
               <button
                 type="button"
-                className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+                className="inline-flex !pr-2 items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
                 onClick={() => setDrawerOpen(true)}
               >
                 <span className="text-neutral-500"></span>
