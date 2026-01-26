@@ -124,19 +124,6 @@ export default function Login() {
               </svg>
               <span className="font-semibold">Google</span>
             </button>
-
-            <button
-              aria-label="Sign in with Microsoft"
-              className="flex-1 h-14 rounded-full flex items-center justify-center gap-3 cursor-pointer bg-[#eaf7ee]"
-              onClick={() => alert("Microsoft OAuth placeholder")}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-                <path fill="#f35325" d="M3 3h8v8H3z" />
-                <path fill="#81bc06" d="M13 3h8v8h-8z" />
-                <path fill="#05a6f0" d="M3 13h8v8H3z" />
-                <path fill="#ffba08" d="M13 13h8v8h-8z" />
-              </svg>
-            </button>
           </div>
 
           <div className="text-center text-[#7b8b78] my-2">or via email</div>
