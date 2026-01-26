@@ -10,7 +10,6 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [remember, setRemember] = useState(false);
   const [signUpError, setSignUpError] = useState<string>("");
   const [passwordValidationError, setPasswordValidationError] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -193,15 +192,6 @@ const handleSubmit = async (e?: React.FormEvent) => {
             />
 
             <div className="flex items-center justify-between mt-2">
-              <label className="flex items-center gap-2 text-sm cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={remember}
-                  onChange={(e) => setRemember(e.target.checked)}
-                />
-                Remember me
-              </label>
-
               <button type="submit" className="submit-button disabled:opacity-50" disabled={loading}>
                 Create Account
               </button>

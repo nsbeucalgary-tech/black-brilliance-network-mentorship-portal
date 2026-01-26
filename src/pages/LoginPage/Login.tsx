@@ -10,7 +10,6 @@ export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
   const [signInError, setSignInError] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -152,15 +151,6 @@ export default function Login() {
             />
 
             <div className="flex items-center justify-between mt-2">
-              <label className="flex items-center gap-2 text-sm cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={remember}
-                  onChange={(e) => setRemember(e.target.checked)}
-                />
-                Remember me
-              </label>
-
               <button type="submit" className="submit-button disabled:opacity-50" disabled={loading}>
                 Sign In
               </button>
