@@ -35,10 +35,10 @@ export default function MatchCard({ match }: Props) {
         }}
         className="absolute right-4 top-4 text-lg"
       >
-        <span className={fav ? "text-BBNDarkGreen" : "text-neutral-300"}>♥</span>
+        <span className={fav ? "text-red-400" : "text-neutral-300"}>♥</span>
       </button>
 
-      <div className="mx-auto mt-2 h-24 w-24 overflow-hidden rounded-full bg-neutral-200">
+      <div className="!m-5 mx-auto mt-2 h-24 w-24 overflow-hidden rounded-full bg-neutral-200">
         <img src={match.avatarUrl} alt={match.name} className="h-full w-full object-cover" />
       </div>
 
@@ -50,7 +50,7 @@ export default function MatchCard({ match }: Props) {
       </div>
 
       <div className="mt-6 flex justify-center">
-        <span className="rounded-full bg-[#eaf2df] px-4 py-1 text-[11px] font-medium text-[#3a4a2a]">
+        <span className="!mb-2 rounded-full bg-[#eaf2df] px-4 text-[11px] font-medium text-[#3a4a2a]">
           {match.matchPercent}% Match
         </span>
       </div>
