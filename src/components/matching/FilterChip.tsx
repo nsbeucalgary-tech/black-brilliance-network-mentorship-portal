@@ -9,7 +9,7 @@ export default function FilterChip({ label, onClick }: Props) {
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-2 rounded-full bg-BBNDarkGreen px-4 py-2 text-xs font-semibold text-white hover:opacity-90"
+      className="inline-flex items-center gap-2 rounded-full bg-BBNDarkGreen !px-4 py-6 text-xs font-semibold text-white hover:opacity-90"
     >
       {label}
       <span className="text-white/80">▾</span>

@@ -34,56 +34,16 @@ export default function Matching() {
 
   // Mock profiles (swap for DB later)
   const matches: Match[] = [
-    {
-      id: "1",
-      name: "Temidayo ope",
-      title: "Marketing and Operation Manager",
-      company: "Google",
-      matchPercent: 99,
-      avatarUrl:
-        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop",
-      isFavourite: true,
-    },
-    {
-      id: "2",
-      name: "Collin Bobbins",
-      title: "Marketing and Operation Manager",
-      company: "Google",
-      matchPercent: 99,
-      avatarUrl:
-        "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop",
-      isFavourite: false,
-    },
-    {
-      id: "3",
-      name: "Temidayo ope",
-      title: "Marketing and Operation Manager",
-      company: "Google",
-      matchPercent: 99,
-      avatarUrl:
-        "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=300&fit=crop",
-      isFavourite: true,
-    },
-    {
-      id: "4",
-      name: "Temidayo ope",
-      title: "Marketing and Operation Manager",
-      company: "Google",
-      matchPercent: 99,
-      avatarUrl:
-        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop",
-      isFavourite: false,
-    },
-    ...Array.from({ length: 8 }).map((_, i) => ({
+    ...Array.from({ length: 12 }).map((_, i) => ({
       id: `seed-${i}`,
       name: i % 2 === 0 ? "Temidayo ope" : "Collin Bobbins",
       title: "Marketing and Operation Manager",
       company: "Google",
-      matchPercent: 99,
+      matchPercent: i % 5 !== 0 ? 99 : 87,
       avatarUrl:
         i % 2 === 0
-          ? "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop"
-          : "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop",
+          ? "https://i.pinimg.com/236x/74/7f/bb/747fbb0ba576d5453583a8e26c51fa2e.jpg"
+          : "https://i.pinimg.com/170x/b5/4f/c0/b54fc0fc3bd8a5775a08061ee30843a1.jpg",
       isFavourite: i % 3 === 0,
     })),
   ];

@@ -24,10 +24,10 @@ export default function FiltersDrawer({ open, onClose }: Props) {
         aria-hidden={!open}
       >
         <div className="flex items-center justify-between border-b px-5 py-4">
-          <h2 className="text-sm font-semibold text-neutral-900">Filters</h2>
+          <h2 className="!ml-3 text-xl font-semibold text-neutral-900">Filters</h2>
           <button
             type="button"
-            className="rounded-lg px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-100"
+            className="rounded-lg !mr-3 px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-100"
             onClick={onClose}
           >
             Close
@@ -35,24 +35,24 @@ export default function FiltersDrawer({ open, onClose }: Props) {
         </div>
 
         <div className="space-y-4 p-5">
-          <div className="rounded-xl border border-neutral-200 p-4">
+          <div className="text-center rounded-xl border border-neutral-200 !m-4 p-4">
             <p className="text-sm font-semibold text-neutral-800">Company</p>
             <p className="mt-1 text-xs text-neutral-500">Placeholder</p>
           </div>
 
-          <div className="rounded-xl border border-neutral-200 p-4">
+          <div className="text-center rounded-xl border border-neutral-200 !m-4 p-4">
             <p className="text-sm font-semibold text-neutral-800">Location</p>
             <p className="mt-1 text-xs text-neutral-500">Placeholder</p>
           </div>
 
-          <div className="rounded-xl border border-neutral-200 p-4">
+          <div className="text-center rounded-xl border border-neutral-200 !m-4 p-4">
             <p className="text-sm font-semibold text-neutral-800">School</p>
             <p className="mt-1 text-xs text-neutral-500">Placeholder</p>
           </div>
 
           <button
             type="button"
-            className="w-full rounded-lg bg-neutral-900 px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+            className="w-50 rounded-lg bg-neutral-900 !mx-20 px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
             onClick={() => alert("Apply (todo)")}
           >
             Apply
