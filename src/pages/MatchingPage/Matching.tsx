@@ -80,7 +80,7 @@ export default function Matching() {
       <FiltersDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
 
       {/* Top navbar */}
-      <header className="w-full border-b bg-white">
+      <header className="flex w-full border-b bg-white">
         <div className="flex w-full items-center justify-between px-10 py-3">
           {/* Logo */}
           <button
