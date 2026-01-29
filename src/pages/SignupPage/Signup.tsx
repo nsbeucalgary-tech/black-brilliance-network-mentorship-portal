@@ -11,7 +11,7 @@ type SignupProps = {
   onBack: () => void;
 };
 
-export default function Signup({ onSubmit }: SignupProps) {
+export default function Signup({ onSubmit, onBack }: SignupProps) {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -75,6 +75,9 @@ export default function Signup({ onSubmit }: SignupProps) {
       <section className="auth-section">
         <div className="auth-container">
           <h1 className="text-[28px] font-semibold mb-2">Sign Up</h1>
+          <button onClick={onBack}>
+            <text>back</text>
+          </button>
 
           <div className="flex items-center gap-3 mb-3">
             <button
