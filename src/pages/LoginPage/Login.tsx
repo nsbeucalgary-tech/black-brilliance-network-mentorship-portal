@@ -7,7 +7,7 @@ type AuthProps = {
   onBack: () => void;
 };
 
-export default function Login({ onSubmit }: AuthProps) {
+export default function Login({ onSubmit, onBack }: AuthProps) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,6 +63,9 @@ export default function Login({ onSubmit }: AuthProps) {
       <section className="auth-section">
         <div className="auth-container">
           <h1 className="text-[28px] font-semibold mb-2">Login</h1>
+          <button>
+            <text id="back-button" onClick={(onBack)}>back</text>
+          </button>
 
           <div className="flex items-center gap-3 mb-3">
             <button
