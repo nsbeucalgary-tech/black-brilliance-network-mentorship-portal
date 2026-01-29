@@ -75,7 +75,7 @@ export default function Signup({ onSubmit, onBack }: SignupProps) {
       <section className="auth-section">
         <div className="auth-container">
           <h1 className="text-[28px] font-semibold mb-2">Sign Up</h1>
-          <button onClick={onBack}>
+          <button id="back-button" onClick={onBack}>
             <text>back</text>
           </button>
 
