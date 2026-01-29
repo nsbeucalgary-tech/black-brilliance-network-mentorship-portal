@@ -538,3 +538,75 @@ html, body {
 .auth-container .submit-button:hover {
   background-color: #2f4b2f;
 }
+/* back button */
+.auth-container {
+  position: relative; /* so arrow positions correctly */
+}
+.auth-title {
+  padding-left: 56px;
+  margin-top: 0;
+}
+.back-arrow {
+  position: absolute;
+  top: 30px;
+  left: 5px;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  border: none;
+  background: #eaf7e7;
+  color: #0b0b0b;
+
+  font-size: 22px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.back-arrow:hover {
+  background: #dff1dc;
+  transform: translateX(-2px);
+}
+
+.back-arrow:active {
+  transform: translateX(-4px) scale(0.95);
+}
+.back-arrow-login {
+  position: absolute;
+  top: 115px;
+  left: 5px;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  border: none;
+  background: #eaf7e7;
+  color: #0b0b0b;
+
+  font-size: 22px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.back-arrow-login:hover {
+  background: #dff1dc;
+  transform: translateX(-2px);
+}
+
+.back-arrow-login:active {
+  transform: translateX(-4px) scale(0.95);
+}

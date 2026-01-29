@@ -62,10 +62,11 @@ export default function Login({ onSubmit, onBack }: AuthProps) {
       {/* LOGIN FORM SECTION */}
       <section className="auth-section">
         <div className="auth-container">
-          <h1 className="text-[28px] font-semibold mb-2">Login</h1>
-          <button>
-            <text id="back-button" onClick={(onBack)}>back</text>
+          <button className="back-arrow-login" onClick={onBack} aria-label="Go back">
+            ←
           </button>
+          <h1 className="auth-title text-[28px] font-semibold mb-2">Login</h1>
+
 
           <div className="flex items-center gap-3 mb-3">
             <button
