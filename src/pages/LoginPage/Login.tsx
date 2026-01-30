@@ -31,7 +31,7 @@ export default function Login() {
         navigate('/dashboard');
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setSignInError("Error occurred. Please try again.");
     } finally {
       setLoading(false);

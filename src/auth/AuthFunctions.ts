@@ -10,7 +10,6 @@ export async function signUpWithEmailAndPassword(
 ): Promise<string | null> {
   try {
     const createdUser = await createUserWithEmailAndPassword(auth, email, password);
-    console.log(name, createdUser);
     // <        -----> Create a User with the name
     return null;
   } catch (e) {
@@ -69,7 +68,6 @@ export async function logInWithEmailAndPassword(
 export async function signInWithProvider(provider: AuthProvider, providerName: string): Promise<string | null> {
   try {
     const user = await signInWithPopup(auth, provider);
-    console.log(user);
     return null;
   } catch (e) {
     if (e instanceof FirebaseError) {

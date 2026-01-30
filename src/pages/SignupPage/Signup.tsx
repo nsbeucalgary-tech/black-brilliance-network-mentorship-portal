@@ -46,7 +46,7 @@ const handleSubmit = async (e?: React.FormEvent) => {
       navigate('/dashboard');
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     setSignUpError("Error occurred. Please try again.");
   } finally {
     setLoading(false);

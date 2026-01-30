@@ -7,7 +7,7 @@ import { FaPeopleArrows } from 'react-icons/fa';
 import { IoNewspaperOutline, IoHome } from 'react-icons/io5';
 import { MdSettings, MdLogout } from 'react-icons/md';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../auth/useAuthContext';
 import { useNavigate } from 'react-router-dom';
 
 import BBNLogo from '../assets/BBNLogo.svg';
@@ -45,7 +45,6 @@ function NavItem({ to, label, icon: Icon, navType, desktopOpen, mobileOnClick }:
     const handleLogout = async () => {
         try {
             await logout();
-            console.log("User logged out");
             navigate('/');
         } catch (err) {
             console.error("Logout failed", err);
