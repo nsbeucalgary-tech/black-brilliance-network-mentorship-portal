@@ -1,43 +1,74 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signInWithProvider, signUpWithEmailAndPassword, validateUserPassword } from "../../auth/AuthFunctions";
+import type { AuthProvider } from "firebase/auth";
+import { googleProvider } from "../../_db_controller/init";
 
-type SignupProps = {
-  onSubmit?: (
-    name: string,
-    email: string,
-    password: string,
-    remember: boolean
-  ) => void;
-};
-
-export default function Signup({ onSubmit }: SignupProps) {
+export default function Signup() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [remember, setRemember] = useState(false);
+  const [signUpError, setSignUpError] = useState<string>("");
+  const [passwordValidationError, setPasswordValidationError] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e?: React.FormEvent) => {
-    e?.preventDefault();
-    if (!name) {
-      alert("Please enter your name.");
+const handleSubmit = async (e?: React.FormEvent) => {
+  e?.preventDefault();
+
+  if (!name) return alert("Please enter your name.");
+  if (!email) return alert("Please enter an email.");
+  if (!password) return alert("Please enter a password.");
+  if (password !== confirm) return alert("Passwords do not match.");
+
+  setLoading(true);
+
+  try {
+    const errors = await validateUserPassword(password);
+    if (errors.length > 0) {
+      setPasswordValidationError(errors);
       return;
     }
-    if (!email) {
-      alert("Please enter an email.");
-      return;
+
+    setPasswordValidationError([]);
+
+    const error = await signUpWithEmailAndPassword(
+      name,
+      email,
+      password
+    );
+
+    if (error) {
+      setSignUpError(error);
+    } else {
+      setSignUpError("");
+      navigate('/dashboard');
     }
-    if (!password) {
-      alert("Please enter a password.");
-      return;
+  } catch (err) {
+    console.error(err);
+    setSignUpError("Error occurred. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+  const handleProviderSignIn = async (
+    provider: AuthProvider,
+    providerName: string
+  ) => {
+    setLoading(true);
+    try {
+      const error = await signInWithProvider(provider, providerName);
+      if (error) {
+        setSignUpError(error);
+      } else {
+        setSignUpError("");
+        navigate("/dashboard");
+      }
+    } finally {
+      setLoading(false);
     }
-    if (password !== confirm) {
-      alert("Passwords do not match.");
-      return;
-    }
-    onSubmit?.(name, email, password, remember);
-    console.log("Sign up:", { name, email, remember });
   };
 
   return (
@@ -79,7 +110,7 @@ export default function Signup({ onSubmit }: SignupProps) {
             <button
               aria-label="Sign up with Google"
               className="flex-1 h-14 rounded-full flex items-center justify-center gap-3 cursor-pointer bg-[#e9f7ee]"
-              onClick={() => alert("Google OAuth placeholder")}
+              onClick={() => handleProviderSignIn(googleProvider, "Google")}
             >
               <svg
                 width="22"
@@ -107,22 +138,21 @@ export default function Signup({ onSubmit }: SignupProps) {
               </svg>
               <span className="font-semibold">Google</span>
             </button>
-
-            <button
-              aria-label="Sign up with Microsoft"
-              className="flex-1 h-14 rounded-full flex items-center justify-center gap-3 cursor-pointer bg-[#eaf7ee]"
-              onClick={() => alert("Microsoft OAuth placeholder")}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-                <path fill="#f35325" d="M3 3h8v8H3z" />
-                <path fill="#81bc06" d="M13 3h8v8h-8z" />
-                <path fill="#05a6f0" d="M3 13h8v8H3z" />
-                <path fill="#ffba08" d="M13 13h8v8h-8z" />
-              </svg>
-            </button>
           </div>
 
           <div className="text-center text-[#7b8b78] my-2">or via email</div>
+
+          {signUpError && <div className="text-red-500">
+            {signUpError}
+          </div>}
+
+          {(passwordValidationError.length > 0) && <div className="text-red-500">
+            <ul>
+              {passwordValidationError.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <label className="text-xs text-[#6b6b6b]">Full name</label>
@@ -162,16 +192,7 @@ export default function Signup({ onSubmit }: SignupProps) {
             />
 
             <div className="flex items-center justify-between mt-2">
-              <label className="flex items-center gap-2 text-sm cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={remember}
-                  onChange={(e) => setRemember(e.target.checked)}
-                />
-                Remember me
-              </label>
-
-              <button type="submit" className="submit-button">
+              <button type="submit" className="submit-button disabled:opacity-50" disabled={loading}>
                 Create Account
               </button>
             </div>

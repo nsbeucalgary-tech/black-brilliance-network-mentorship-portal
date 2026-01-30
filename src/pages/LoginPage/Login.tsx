@@ -1,31 +1,59 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../LandingPage/Landing.css";
+import { logInWithEmailAndPassword, signInWithProvider } from "../../auth/AuthFunctions";
+import { googleProvider } from "../../_db_controller/init";
+import type { AuthProvider } from "firebase/auth";
 
-type AuthProps = {
-  onSubmit?: (email: string, password: string, remember: boolean) => void;
-};
 
-export default function Login({ onSubmit }: AuthProps) {
+export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
+  const [signInError, setSignInError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e?: React.FormEvent) => {
+
+  const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     // simple client-side validation
-    if (!email) {
-      alert("Please enter an email.");
-      return;
+    if (!email) return alert("Please enter an email.");
+    if (!password) return alert("Please enter a password.");
+
+    setLoading(true);
+
+    try {
+      const error = await logInWithEmailAndPassword(email, password);
+      if (error) {
+        setSignInError(error);
+      } else {
+        setSignInError("");
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      console.error(err);
+      setSignInError("Error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    if (!password) {
-      alert("Please enter a password.");
-      return;
+  };
+
+  const handleProviderSignIn = async (
+    provider: AuthProvider,
+    providerName: string
+  ) => {
+    setLoading(true);
+    try {
+      const error = await signInWithProvider(provider, providerName);
+      if (error) {
+        setSignInError(error);
+      } else {
+        setSignInError("");
+        navigate("/dashboard");
+      }
+    } finally {
+      setLoading(false);
     }
-    onSubmit?.(email, password, remember);
-    // placeholder: replace with real auth flow
-    console.log("Sign in:", { email, password, remember });
   };
 
   return (
@@ -67,7 +95,7 @@ export default function Login({ onSubmit }: AuthProps) {
             <button
               aria-label="Sign in with Google"
               className="flex-1 h-14 rounded-full flex items-center justify-center gap-3 cursor-pointer bg-[#e9f7ee]"
-              onClick={() => alert("Google OAuth placeholder")}
+              onClick={() => handleProviderSignIn(googleProvider, "Google")}
             >
               <svg
                 width="22"
@@ -95,22 +123,13 @@ export default function Login({ onSubmit }: AuthProps) {
               </svg>
               <span className="font-semibold">Google</span>
             </button>
-
-            <button
-              aria-label="Sign in with Microsoft"
-              className="flex-1 h-14 rounded-full flex items-center justify-center gap-3 cursor-pointer bg-[#eaf7ee]"
-              onClick={() => alert("Microsoft OAuth placeholder")}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-                <path fill="#f35325" d="M3 3h8v8H3z" />
-                <path fill="#81bc06" d="M13 3h8v8h-8z" />
-                <path fill="#05a6f0" d="M3 13h8v8H3z" />
-                <path fill="#ffba08" d="M13 13h8v8h-8z" />
-              </svg>
-            </button>
           </div>
 
           <div className="text-center text-[#7b8b78] my-2">or via email</div>
+
+          {signInError && <div className="text-red-500">
+            {signInError}
+          </div>}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <label className="text-xs text-[#6b6b6b]">Email</label>
@@ -132,16 +151,7 @@ export default function Login({ onSubmit }: AuthProps) {
             />
 
             <div className="flex items-center justify-between mt-2">
-              <label className="flex items-center gap-2 text-sm cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={remember}
-                  onChange={(e) => setRemember(e.target.checked)}
-                />
-                Remember me
-              </label>
-
-              <button type="submit" className="submit-button">
+              <button type="submit" className="submit-button disabled:opacity-50" disabled={loading}>
                 Sign In
               </button>
             </div>
