@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --color-BBNDarkGreen: #283618;
+}
+
 @layer base {
   body {
     @apply bg-white text-slate-900 antialiased;
