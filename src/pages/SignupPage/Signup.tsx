@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../LandingPage/Landing.css";
-
 type SignupProps = {
   onSubmit?: (
     name: string,
@@ -9,7 +8,7 @@ type SignupProps = {
     password: string,
     remember: boolean
   ) => void;
-  onBack: () => void;
+  onBack?: () => void;
 };
 
 export default function Signup({ onSubmit, onBack }: SignupProps) {
@@ -75,7 +74,7 @@ export default function Signup({ onSubmit, onBack }: SignupProps) {
       {/* SIGNUP FORM SECTION */}
       <section className="auth-section">
         <div className="auth-container">
-          <button className="back-arrow" onClick={onBack} aria-label="Go back">
+          <button className="back-arrow" onClick={() => (onBack ? onBack() : navigate(-1))} aria-label="Go back">
             ←
           </button>
           <h1 className="auth-title text-[28px] font-semibold mb-2">Sign Up</h1>
