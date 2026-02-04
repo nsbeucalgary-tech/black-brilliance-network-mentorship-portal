@@ -1,4 +1,15 @@
+import { useState } from "react";
+
+const navLinkBase =
+    "text-[15px] font-medium transition-colors sm:text-sm";
+const navLinkActive =
+    "relative text-[#2d3a1f] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-[#2d3a1f] after:content-['']";
+const navLinkInactive =
+    "text-gray-500 no-underline hover:text-[#2d3a1f]";
+
 export default function LandingPage() {
+    const [activeSection, setActiveSection] = useState<"about" | "gallery" | "blog">("about");
+
     return (
         <div className="flex min-h-dvh w-full flex-col bg-white pt-[84px]">
             {/* NAVBAR */}
@@ -17,25 +28,32 @@ export default function LandingPage() {
                 <nav className="flex items-center gap-8 md:gap-4 sm:flex-wrap sm:gap-4">
                     <a
                         href="#about"
-                        className="relative text-[15px] font-medium text-[#2d3a1f] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-[#2d3a1f] after:content-[''] sm:text-sm"
+                        className={`${navLinkBase} ${activeSection === "about" ? navLinkActive : navLinkInactive}`}
+                        onClick={() => setActiveSection("about")}
                     >
                         About
                     </a>
                     <a
                         href="#gallery"
-                        className="text-[15px] font-medium text-gray-500 no-underline transition-colors hover:text-[#2d3a1f] sm:text-sm"
+                        className={`${navLinkBase} ${activeSection === "gallery" ? navLinkActive : navLinkInactive}`}
+                        onClick={() => setActiveSection("gallery")}
                     >
                         Gallery
                     </a>
                     <a
                         href="#blog"
-                        className="text-[15px] font-medium text-gray-500 no-underline transition-colors hover:text-[#2d3a1f] sm:text-sm"
+                        className={`${navLinkBase} ${activeSection === "blog" ? navLinkActive : navLinkInactive}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setActiveSection("blog");
+                        }}
                     >
                         Blog
                     </a>
                     <button
                         type="button"
                         className="cursor-pointer rounded-lg border-none bg-[#3d4a2b] px-7 py-3 text-[15px] font-medium text-white transition-colors hover:bg-[#2d3a1f] sm:rounded-[10px] sm:px-4 sm:py-2.5"
+                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                     >
                         Register
                     </button>
@@ -88,8 +106,8 @@ export default function LandingPage() {
             </section>
 
             {/* ABOUT SECTION */}
-            <section className="mx-auto my-20 grid w-[calc(100%-80px)] max-w-[1200px] grid-cols-1 gap-[60px] rounded-3xl bg-[#e8f3dd] p-[60px] shadow-md md:my-20 md:w-full md:gap-10 md:px-6 sm:my-20 sm:gap-[30px] sm:p-5 lg:grid-cols-[400px_1fr] lg:gap-[60px] lg:p-[60px]">
-                <div className="about-left">
+            <section id="about" className="mx-auto my-20 grid w-[calc(100%-80px)] max-w-[1200px] grid-cols-1 gap-[60px] rounded-3xl bg-[#e8f3dd] p-[60px] shadow-md md:my-20 md:w-full md:gap-10 md:px-6 sm:my-20 sm:gap-[30px] sm:p-5 lg:grid-cols-[400px_1fr] lg:gap-[60px] lg:p-[60px]">
+                <div id="gallery" className="about-left scroll-mt-[100px]">
                     <div className="flex h-[280px] w-full items-center justify-center overflow-hidden rounded-2xl bg-[#d4e5c3] sm:h-[200px]">
                         <div className="flex h-full w-full items-center justify-center bg-white/50 text-base text-gray-400">
                             [Group photo]
