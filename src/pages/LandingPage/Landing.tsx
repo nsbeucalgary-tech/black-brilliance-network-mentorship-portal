@@ -12,6 +12,17 @@ const LIGHTBOX_ITEMS = 1 + CAROUSEL_ITEMS; // main photo + carousel thumbnails
 const CAROUSEL_ITEM_WIDTH = 120;
 const CAROUSEL_GAP = 8;
 
+// Mock gallery images: index 0 = main group photo, 1–6 = carousel thumbnails
+const GALLERY_IMAGES = [
+    "https://picsum.photos/seed/bbn-main/560/280",
+    "https://picsum.photos/seed/bbn-1/120/60",
+    "https://picsum.photos/seed/bbn-2/120/60",
+    "https://picsum.photos/seed/bbn-3/120/60",
+    "https://picsum.photos/seed/bbn-4/120/60",
+    "https://picsum.photos/seed/bbn-5/120/60",
+    "https://picsum.photos/seed/bbn-6/120/60",
+];
+
 export default function LandingPage() {
     const [activeSection, setActiveSection] = useState<"about" | "gallery" | "blog">("about");
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -170,9 +181,11 @@ export default function LandingPage() {
                         onClick={() => setLightboxIndex(0)}
                         aria-label="View group photo"
                     >
-                        <div className="flex h-full w-full items-center justify-center bg-white/50 text-base text-gray-400">
-                            [Group photo]
-                        </div>
+                        <img
+                            src={GALLERY_IMAGES[0]}
+                            alt="Group photo"
+                            className="h-full w-full object-cover"
+                        />
                     </button>
                     <div className="mt-3 flex items-center gap-2">
                         <button
@@ -195,7 +208,13 @@ export default function LandingPage() {
                                     style={{ minWidth: CAROUSEL_ITEM_WIDTH }}
                                     onClick={() => setLightboxIndex(i + 1)}
                                     aria-label={`View image ${i + 1}`}
-                                />
+                                >
+                                    <img
+                                        src={GALLERY_IMAGES[i + 1]}
+                                        alt={`Gallery image ${i + 1}`}
+                                        className="h-full w-full object-cover"
+                                    />
+                                </button>
                             ))}
                         </div>
                         <button
@@ -250,11 +269,15 @@ export default function LandingPage() {
                             ‹
                         </button>
                         <div className="flex max-h-[90vh] min-h-[200px] min-w-[200px] items-center justify-center overflow-hidden rounded-xl bg-[#d4e5c3] shadow-xl">
-                            <span className="text-gray-500">
-                                {lightboxIndex === 0
-                                    ? "Group photo"
-                                    : `Image ${lightboxIndex} of ${CAROUSEL_ITEMS}`}
-                            </span>
+                            <img
+                                src={
+                                    lightboxIndex === 0
+                                        ? GALLERY_IMAGES[0]
+                                        : `https://picsum.photos/seed/bbn-${lightboxIndex}/800/400`
+                                }
+                                alt={lightboxIndex === 0 ? "Group photo" : `Gallery image ${lightboxIndex}`}
+                                className="max-h-[90vh] max-w-full object-contain"
+                            />
                         </div>
                         <button
                             type="button"
