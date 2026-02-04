@@ -8,6 +8,7 @@ const navLinkInactive =
     "text-gray-500 no-underline hover:text-[#2d3a1f]";
 
 const CAROUSEL_ITEMS = 6;
+const LIGHTBOX_ITEMS = 1 + CAROUSEL_ITEMS; // main photo + carousel thumbnails
 const CAROUSEL_ITEM_WIDTH = 120;
 const CAROUSEL_GAP = 8;
 
@@ -27,8 +28,8 @@ export default function LandingPage() {
         setLightboxIndex((prev) => {
             if (prev === null) return 0;
             const next = direction === "prev" ? prev - 1 : prev + 1;
-            if (next < 0) return CAROUSEL_ITEMS - 1;
-            if (next >= CAROUSEL_ITEMS) return 0;
+            if (next < 0) return LIGHTBOX_ITEMS - 1;
+            if (next >= LIGHTBOX_ITEMS) return 0;
             return next;
         });
     };
@@ -97,13 +98,34 @@ export default function LandingPage() {
             {/* HERO SECTION */}
             <section className="grid min-h-[calc(100dvh-84px)] grid-cols-1 items-center gap-20 bg-white p-[60px] md:min-h-0 md:gap-10 md:p-6 sm:gap-6 sm:p-5 sm:min-h-0 lg:grid-cols-2 lg:gap-20 lg:p-[60px]">
                 <div className="hero-text">
-                    <h1 className="mb-6 border-l-4 border-[#a8c78e] pl-4 text-5xl font-semibold leading-tight text-gray-800 sm:text-3xl">
-                        The Black
-                    </h1>
-                    <h1 className="mb-6 border-l-4 border-[#a8c78e] pl-4 text-5xl font-semibold leading-tight text-gray-800 sm:text-3xl">
-                        Brilliance Network.
-                    </h1>
-                    <p className="mb-8 text-base leading-relaxed text-gray-600 sm:text-sm">
+                    {/* Main title with L-brackets */}
+                    <div className="relative inline-block pl-3 pt-3 pr-3 pb-3">
+                        {/* Top-left L bracket: horizontal + vertical */}
+                        <span
+                            className="absolute left-0 top-0 h-1 w-16 bg-[#7a9b5c] sm:w-12"
+                            aria-hidden
+                        />
+                        <span
+                            className="absolute left-0 top-0 h-16 w-1 bg-[#7a9b5c] sm:h-12"
+                            aria-hidden
+                        />
+                        {/* Bottom-right L bracket */}
+                        <span
+                            className="absolute bottom-0 right-0 h-1 w-48 bg-[#7a9b5c] sm:w-36"
+                            aria-hidden
+                        />
+                        <span
+                            className="absolute bottom-0 right-0 h-16 w-1 bg-[#7a9b5c] sm:h-12"
+                            aria-hidden
+                        />
+                        <h1 className="text-5xl font-bold leading-tight text-[#2d3a1f] sm:text-3xl">
+                            The Black
+                        </h1>
+                        <h1 className="text-5xl font-bold leading-tight text-[#2d3a1f] sm:text-3xl">
+                            Brilliance Network.
+                        </h1>
+                    </div>
+                    <p className="mb-8 mt-8 text-base leading-relaxed text-gray-600 sm:text-sm">
                         Bridging black undergraduate and graduate students in STEM with
                         industry professionals, alumni, and advanced-degree mentors, a
                         mentorship initiative by{" "}
@@ -142,11 +164,16 @@ export default function LandingPage() {
             {/* ABOUT SECTION */}
             <section id="about" className="mx-auto my-20 grid w-[calc(100%-80px)] max-w-[1200px] grid-cols-1 gap-[60px] rounded-3xl bg-[#e8f3dd] p-[60px] shadow-md md:my-20 md:w-full md:gap-10 md:px-6 sm:my-20 sm:gap-[30px] sm:p-5 lg:grid-cols-[400px_1fr] lg:gap-[60px] lg:p-[60px]">
                 <div id="gallery" className="about-left scroll-mt-[100px]">
-                    <div className="flex h-[280px] w-full items-center justify-center overflow-hidden rounded-2xl bg-[#d4e5c3] sm:h-[200px]">
+                    <button
+                        type="button"
+                        className="flex h-[280px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-2xl bg-[#d4e5c3] transition-opacity hover:opacity-95 sm:h-[200px]"
+                        onClick={() => setLightboxIndex(0)}
+                        aria-label="View group photo"
+                    >
                         <div className="flex h-full w-full items-center justify-center bg-white/50 text-base text-gray-400">
                             [Group photo]
                         </div>
-                    </div>
+                    </button>
                     <div className="mt-3 flex items-center gap-2">
                         <button
                             type="button"
@@ -166,7 +193,7 @@ export default function LandingPage() {
                                     key={i}
                                     className="h-[60px] w-[120px] shrink-0 cursor-pointer overflow-hidden rounded-lg bg-[#c5dbb0] transition-opacity hover:opacity-90 [scroll-snap-align:start]"
                                     style={{ minWidth: CAROUSEL_ITEM_WIDTH }}
-                                    onClick={() => setLightboxIndex(i)}
+                                    onClick={() => setLightboxIndex(i + 1)}
                                     aria-label={`View image ${i + 1}`}
                                 />
                             ))}
@@ -224,7 +251,9 @@ export default function LandingPage() {
                         </button>
                         <div className="flex max-h-[90vh] min-h-[200px] min-w-[200px] items-center justify-center overflow-hidden rounded-xl bg-[#d4e5c3] shadow-xl">
                             <span className="text-gray-500">
-                                Image {lightboxIndex + 1} of {CAROUSEL_ITEMS}
+                                {lightboxIndex === 0
+                                    ? "Group photo"
+                                    : `Image ${lightboxIndex} of ${CAROUSEL_ITEMS}`}
                             </span>
                         </div>
                         <button
