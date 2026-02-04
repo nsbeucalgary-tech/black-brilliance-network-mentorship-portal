@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const navLinkBase =
     "text-[15px] font-medium transition-colors sm:text-sm";
@@ -7,8 +7,42 @@ const navLinkActive =
 const navLinkInactive =
     "text-gray-500 no-underline hover:text-[#2d3a1f]";
 
+const CAROUSEL_ITEMS = 6;
+const CAROUSEL_ITEM_WIDTH = 120;
+const CAROUSEL_GAP = 8;
+
 export default function LandingPage() {
     const [activeSection, setActiveSection] = useState<"about" | "gallery" | "blog">("about");
+    const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+    const carouselRef = useRef<HTMLDivElement>(null);
+
+    const scrollCarousel = (direction: "prev" | "next") => {
+        const el = carouselRef.current;
+        if (!el) return;
+        const step = CAROUSEL_ITEM_WIDTH + CAROUSEL_GAP;
+        el.scrollBy({ left: direction === "prev" ? -step : step, behavior: "smooth" });
+    };
+
+    const goLightbox = (direction: "prev" | "next") => {
+        setLightboxIndex((prev) => {
+            if (prev === null) return 0;
+            const next = direction === "prev" ? prev - 1 : prev + 1;
+            if (next < 0) return CAROUSEL_ITEMS - 1;
+            if (next >= CAROUSEL_ITEMS) return 0;
+            return next;
+        });
+    };
+
+    useEffect(() => {
+        if (lightboxIndex === null) return;
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setLightboxIndex(null);
+            if (e.key === "ArrowLeft") goLightbox("prev");
+            if (e.key === "ArrowRight") goLightbox("next");
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [lightboxIndex]);
 
     return (
         <div className="flex min-h-dvh w-full flex-col bg-white pt-[84px]">
@@ -71,7 +105,7 @@ export default function LandingPage() {
                     </h1>
                     <p className="mb-8 text-base leading-relaxed text-gray-600 sm:text-sm">
                         Bridging black undergraduate and graduate students in STEM with
-                        industry professionals, alumni, and advanced-degree mentors — a
+                        industry professionals, alumni, and advanced-degree mentors, a
                         mentorship initiative by{" "}
                         <strong>the National Society of Black Engineers.</strong>
                     </p>
@@ -113,13 +147,38 @@ export default function LandingPage() {
                             [Group photo]
                         </div>
                     </div>
-                    <div className="mt-3 grid grid-cols-6 gap-2 sm:grid-cols-3">
-                        <div className="h-[60px] w-full overflow-hidden rounded-lg bg-[#c5dbb0]" />
-                        <div className="h-[60px] w-full overflow-hidden rounded-lg bg-[#c5dbb0]" />
-                        <div className="h-[60px] w-full overflow-hidden rounded-lg bg-[#c5dbb0]" />
-                        <div className="h-[60px] w-full overflow-hidden rounded-lg bg-[#c5dbb0]" />
-                        <div className="h-[60px] w-full overflow-hidden rounded-lg bg-[#c5dbb0]" />
-                        <div className="h-[60px] w-full overflow-hidden rounded-lg bg-[#c5dbb0]" />
+                    <div className="mt-3 flex items-center gap-2">
+                        <button
+                            type="button"
+                            aria-label="Previous images"
+                            className="flex h-[60px] w-8 shrink-0 items-center justify-center rounded-lg bg-[#c5dbb0] text-[#2d3a1f] transition-colors hover:bg-[#b5cb90]"
+                            onClick={() => scrollCarousel("prev")}
+                        >
+                            ‹
+                        </button>
+                        <div
+                            ref={carouselRef}
+                            className="flex w-full gap-2 overflow-x-auto scroll-smooth rounded-lg py-1 scrollbar-hide [scroll-snap-type:x_mandatory]"
+                        >
+                            {Array.from({ length: CAROUSEL_ITEMS }, (_, i) => (
+                                <button
+                                    type="button"
+                                    key={i}
+                                    className="h-[60px] w-[120px] shrink-0 cursor-pointer overflow-hidden rounded-lg bg-[#c5dbb0] transition-opacity hover:opacity-90 [scroll-snap-align:start]"
+                                    style={{ minWidth: CAROUSEL_ITEM_WIDTH }}
+                                    onClick={() => setLightboxIndex(i)}
+                                    aria-label={`View image ${i + 1}`}
+                                />
+                            ))}
+                        </div>
+                        <button
+                            type="button"
+                            aria-label="Next images"
+                            className="flex h-[60px] w-8 shrink-0 items-center justify-center rounded-lg bg-[#c5dbb0] text-[#2d3a1f] transition-colors hover:bg-[#b5cb90]"
+                            onClick={() => scrollCarousel("next")}
+                        >
+                            ›
+                        </button>
                     </div>
                 </div>
 
@@ -141,6 +200,52 @@ export default function LandingPage() {
                     </p>
                 </div>
             </section>
+
+            {/* LIGHTBOX */}
+            {lightboxIndex !== null && (
+                <div
+                    className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/70 p-4"
+                    onClick={() => setLightboxIndex(null)}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Image viewer"
+                >
+                    <div
+                        className="relative flex max-h-[90vh] max-w-4xl items-center gap-2"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            type="button"
+                            aria-label="Previous image"
+                            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/90 text-2xl text-[#2d3a1f] transition-colors hover:bg-white"
+                            onClick={() => goLightbox("prev")}
+                        >
+                            ‹
+                        </button>
+                        <div className="flex max-h-[90vh] min-h-[200px] min-w-[200px] items-center justify-center overflow-hidden rounded-xl bg-[#d4e5c3] shadow-xl">
+                            <span className="text-gray-500">
+                                Image {lightboxIndex + 1} of {CAROUSEL_ITEMS}
+                            </span>
+                        </div>
+                        <button
+                            type="button"
+                            aria-label="Next image"
+                            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/90 text-2xl text-[#2d3a1f] transition-colors hover:bg-white"
+                            onClick={() => goLightbox("next")}
+                        >
+                            ›
+                        </button>
+                        <button
+                            type="button"
+                            aria-label="Close"
+                            className="absolute -right-2 -top-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-xl text-gray-600 transition-colors hover:bg-white hover:text-gray-900"
+                            onClick={() => setLightboxIndex(null)}
+                        >
+                            ×
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* FOOTER */}
             <footer className="mt-auto w-full bg-[#3d4a2b] px-5 py-8 text-white/90">

@@ -62,3 +62,12 @@ h1, h2 {
 button {
   font-family: inherit;
 }
+
+/* Hide scrollbar for carousel strip */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
