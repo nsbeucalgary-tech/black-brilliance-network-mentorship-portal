@@ -17,6 +17,7 @@ import type {
     CreateUserPayload,
     UpdateUserPayload,
 } from "../types/User";
+import { UserRole } from "../types/User";
 
 /**
  * User Database Controller
@@ -59,6 +60,7 @@ export class UserController {
 
   /**
    * Create a new user in Firestore
+   * Users are automatically assigned the USER role and can later be updated to MENTOR or MENTEE
    * @param payload User creation data
    * @returns The created User with generated user_id
    */
@@ -67,8 +69,8 @@ export class UserController {
     const now = new Date();
 
     const user: User = {
-      user_id,
       ...payload,
+      role: payload.role || UserRole.USER,
       created_at: now,
     };
 

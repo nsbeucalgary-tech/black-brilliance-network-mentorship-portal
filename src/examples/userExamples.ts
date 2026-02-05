@@ -12,20 +12,18 @@ const userController = new UserController(db);
 
 /**
  * Example 1: Create a new user
+ * New users are automatically assigned the USER role and can later be updated to MENTOR or MENTEE
  */
 export async function exampleCreateUser() {
   const newUserPayload: CreateUserPayload = {
     full_name: "John Doe",
     email: "john.doe@example.com",
-    password_hash: "hashed_password_here", // In real app, use bcrypt or similar
-    affiliation: "Harvard University",
-    role: UserRole.MENTOR,
-    admin_status: false,
+    role: UserRole.USER,
   };
 
   try {
     const createdUser = await userController.createUser(newUserPayload);
-    console.log("User created:", createdUser);
+    console.log("User created:", createdUser); // Will have role: "user"
     return createdUser;
   } catch (error) {
     console.error("Error creating user:", error);
@@ -93,14 +91,13 @@ export async function exampleGetUsersByRole(role: UserRole) {
 }
 
 /**
- * Example 6: Update user
+ * Example 6: Update user - Promote from USER role to MENTOR or MENTEE
  */
 export async function exampleUpdateUser(userId: string) {
   try {
     const updatedUser = await userController.updateUser(userId, {
       full_name: "Jane Doe",
-      role: UserRole.MENTEE,
-      admin_status: true,
+      role: UserRole.MENTEE, // User can now be promoted to MENTEE from their default USER role
     });
     console.log("User updated:", updatedUser);
     return updatedUser;
@@ -153,13 +150,9 @@ export async function exampleEmailExists(email: string) {
 export function exampleTypeCasting() {
   // Create a user object with proper typing
   const user: User = {
-    user_id: "user123",
     full_name: "Alice Smith",
     email: "alice.smith@example.com",
-    password_hash: "hashed_password",
-    affiliation: "MIT",
     role: UserRole.MENTOR,
-    admin_status: true,
     created_at: new Date(),
   };
 
