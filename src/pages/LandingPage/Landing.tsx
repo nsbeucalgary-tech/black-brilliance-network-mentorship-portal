@@ -1,6 +1,6 @@
 import "./Landing.css";
-import { useNavigate,  } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate,useLocation  } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Login from "../LoginPage/Login";
 import Signup from "../SignupPage/Signup.tsx";
 
@@ -9,9 +9,33 @@ import Signup from "../SignupPage/Signup.tsx";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [showLogin, setShowLogin] = useState<boolean>(false);
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
   const [hideButtons, setHideButtons] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (location.pathname === "/login") {
+      setShowLogin(true);
+      setShowSignUp(false);
+      setHideButtons(true);
+    } else if (location.pathname === "/signup") {
+      setShowSignUp(true);
+      setShowLogin(false);
+      setHideButtons(true);
+    } else {
+      setShowLogin(false);
+      setShowSignUp(false);
+      setHideButtons(false);
+    }
+  }, [location.pathname]);
+
+
+  const openLogin = () => navigate("/login");
+  const openSignup = () => navigate("/signup");
+  const closepopup = () => navigate("/");
+
 
   return (
       <div className="landing">
@@ -36,7 +60,7 @@ export default function LandingPage() {
             <a href="#blog">Blog</a>
             <button
                 className="register-button"
-                onClick={() => navigate("/signup")}
+                onClick={openSignup}
             >
               Register
             </button>
@@ -62,22 +86,14 @@ export default function LandingPage() {
                 <div className="hero-buttons">
                   <button
                       className="sign-up-button"
-                      onClick={() => {
-                        setHideButtons(true);
-                        setShowSignUp(true);
-                        setShowLogin(false);
-                      }}
+                      onClick={openSignup}
                   >
                     Sign Up
                   </button>
 
                   <button
                       className="log-in-button"
-                      onClick={() => {
-                        setHideButtons(true);
-                        setShowLogin(true);
-                        setShowSignUp(false);
-                      }}
+                      onClick={openLogin}
                   >
                     Log In
                   </button>
@@ -88,19 +104,13 @@ export default function LandingPage() {
           {/* Show login/signup when hero is hidden */}
           {showLogin && (
               <Login
-                  onBack={() => {
-                    setShowLogin(false);
-                    setHideButtons(false);
-                  }}
+                  onBack={closepopup}
               />
           )}
 
           {showSignUp && (
               <Signup
-                  onBack={() => {
-                    setShowSignUp(false);
-                    setHideButtons(false);
-                  }}
+                  onBack={closepopup}
               />
           )}
 
