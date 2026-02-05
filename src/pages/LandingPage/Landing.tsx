@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 const navLinkBase =
-    "text-[15px] font-medium transition-colors sm:text-sm";
+    "relative inline-flex items-center px-1 text-sm font-medium tracking-tight transition-colors duration-150 sm:text-xs whitespace-nowrap shrink-0";
 const navLinkActive =
-    "relative text-[#2d3a1f] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-[#2d3a1f] after:content-['']";
+    "text-[#2d3a1f] no-underline after:absolute after:-bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-[#2d3a1f] after:content-[''] after:transition-transform after:duration-200";
 const navLinkInactive =
     "text-gray-500 no-underline hover:text-[#2d3a1f]";
 
@@ -57,21 +57,21 @@ export default function LandingPage() {
     }, [lightboxIndex]);
 
     return (
-        <div className="flex min-h-dvh w-full flex-col bg-white pt-[84px]">
+        <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-white pt-[84px] font-sans text-gray-800">
             {/* NAVBAR */}
-            <header className="fixed left-0 top-0 z-[1000] flex h-[84px] w-full flex-wrap items-center justify-between gap-3 border-b border-gray-200 bg-white px-10 md:h-auto md:px-6 md:py-5 sm:gap-3 sm:px-5 sm:py-4 lg:px-10">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 gap-1">
+            <header className="fixed inset-x-0 top-0 z-[1000] flex flex-col items-start gap-1 border-b border-gray-200 bg-white/95 px-4 py-2 backdrop-blur sm:h-[84px] sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-0 md:px-6">
+                <div className="flex items-center gap-3 sm:gap-2 shrink-0">
+                    <div className="flex h-8 w-8 gap-1 sm:h-7 sm:w-7 sm:gap-[3px]">
                         <div className="h-2 w-2 rounded-full bg-[#2d3a1f]" />
                         <div className="mt-2 h-2 w-2 rounded-full bg-[#2d3a1f]" />
                     </div>
-                    <div className="text-base font-medium leading-tight">
+                    <div className="text-base font-medium leading-tight sm:text-xs">
                         <span className="block text-[#2d3a1f]">Black </span>
                         <span className="block text-[#7a9b5c]">Brilliance</span>
                     </div>
                 </div>
 
-                <nav className="flex items-center gap-8 md:gap-4 sm:flex-wrap sm:gap-4">
+                <nav className="mt-1 flex w-full flex-wrap items-center justify-start gap-3 text-xs sm:mt-0 sm:flex-1 sm:justify-end sm:gap-6 sm:text-[11px] md:gap-6">
                     <a
                         href="#about"
                         className={`${navLinkBase} ${activeSection === "about" ? navLinkActive : navLinkInactive}`}
@@ -98,10 +98,11 @@ export default function LandingPage() {
                     </a>
                     <button
                         type="button"
-                        className="cursor-pointer rounded-lg border-none bg-[#3d4a2b] px-7 py-3 text-[15px] font-medium text-white transition-colors hover:bg-[#2d3a1f] sm:rounded-[10px] sm:px-4 sm:py-2.5"
+                        className="ml-4 cursor-pointer rounded-full border-none bg-[#3d4a2b] px-5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#2d3a1f] md:px-5 md:py-2 md:text-sm sm:px-3 sm:py-1.5 sm:text-xs whitespace-nowrap shrink-0"
                         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                     >
-                        Register
+                        <span className="hidden sm:inline md:hidden">Reg</span>
+                        <span className="sm:hidden md:inline">Register</span>
                     </button>
                 </nav>
             </header>
@@ -173,7 +174,7 @@ export default function LandingPage() {
             </section>
 
             {/* ABOUT SECTION */}
-            <section id="about" className="mx-auto my-20 grid w-[calc(100%-80px)] max-w-[1200px] grid-cols-1 gap-[60px] rounded-3xl bg-[#e8f3dd] p-[60px] shadow-md md:my-20 md:w-full md:gap-10 md:px-6 sm:my-20 sm:gap-[30px] sm:p-5 lg:grid-cols-[400px_1fr] lg:gap-[60px] lg:p-[60px]">
+            <section id="about" className="mx-auto my-20 grid w-[calc(100%-80px)] max-w-[1200px] scroll-mt-[100px] grid-cols-1 gap-[60px] rounded-3xl bg-[#e8f3dd] p-[60px] shadow-md md:my-20 md:w-full md:gap-10 md:px-6 sm:my-20 sm:gap-[30px] sm:p-5 lg:grid-cols-[400px_1fr] lg:gap-[60px] lg:p-[60px]">
                 <div id="gallery" className="about-left scroll-mt-[100px]">
                     <button
                         type="button"
@@ -198,7 +199,7 @@ export default function LandingPage() {
                         </button>
                         <div
                             ref={carouselRef}
-                            className="flex w-full gap-2 overflow-x-auto scroll-smooth rounded-lg py-1 scrollbar-hide [scroll-snap-type:x_mandatory]"
+                            className="flex w-full gap-2 overflow-x-auto scroll-smooth rounded-lg py-1 [scroll-snap-type:x_mandatory] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                         >
                             {Array.from({ length: CAROUSEL_ITEMS }, (_, i) => (
                                 <button
@@ -305,31 +306,31 @@ export default function LandingPage() {
                     <div className="flex gap-5">
                         <a
                             href="#facebook"
-                            className="text-xl text-white/80 transition-colors hover:text-white"
+                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
                         >
                             Facebook
                         </a>
                         <a
                             href="#X"
-                            className="text-xl text-white/80 transition-colors hover:text-white"
+                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
                         >
                             X
                         </a>
                         <a
                             href="#linkedin"
-                            className="text-xl text-white/80 transition-colors hover:text-white"
+                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
                         >
                             LinkedIn
                         </a>
                         <a
                             href="#email"
-                            className="text-xl text-white/80 transition-colors hover:text-white"
+                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
                         >
                             Email
                         </a>
                         <a
                             href="#discord"
-                            className="text-xl text-white/80 transition-colors hover:text-white"
+                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
                         >
                             Discord
                         </a>
