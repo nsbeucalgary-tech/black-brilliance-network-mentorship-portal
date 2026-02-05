@@ -34,7 +34,7 @@ export default function LandingPage() {
 
   const openLogin = () => navigate("/login");
   const openSignup = () => navigate("/signup");
-  const closepopup = () => navigate("/");
+  const closePopup = () => navigate("/");
 
 
   return (
@@ -104,13 +104,13 @@ export default function LandingPage() {
           {/* Show login/signup when hero is hidden */}
           {showLogin && (
               <Login
-                  onBack={closepopup}
+                  onBack={closePopup}
               />
           )}
 
           {showSignUp && (
               <Signup
-                  onBack={closepopup}
+                  onBack={closePopup}
               />
           )}
 
