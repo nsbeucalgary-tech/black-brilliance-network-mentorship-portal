@@ -9,9 +9,9 @@ export default function FilterChip({ label, onClick }: Props) {
     <button
       type="button"
       onClick={onClick}
-      className="!flex items-center justify-center w-42 inline-flex gap-2 rounded-full bg-BBNDarkGreen !px-4 py-6 text-xs font-semibold text-white hover:opacity-90"
+      className="flex items-center justify-center w-full max-w-42 sm:w-42 sm:max-w-none h-4 inline-flex gap-2 rounded-full bg-BBNDarkGreen !px-4 py-6 text-xs font-semibold text-white hover:opacity-90"
     >
-      {label}
+      <span className="truncate">{label}</span>
       <span className="text-white/80">▾</span>
     </button>
   );

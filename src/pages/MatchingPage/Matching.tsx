@@ -236,7 +236,7 @@ export default function Matching() {
 
             {/* Search */}
             <div className="flex-1 flex justify-center">
-              <div className="flex w-[520px] items-center gap-2 rounded-full bg-neutral-100 px-4 py-2">
+              <div className="flex w-full items-center gap-2 rounded-full bg-neutral-100 px-4 py-2">
                 <span className="text-neutral-500"></span>
                 <input
                   className="w-full bg-transparent text-sm outline-none placeholder:text-neutral-400"
