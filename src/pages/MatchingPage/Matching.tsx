@@ -192,7 +192,7 @@ export default function Matching() {
       </header>
 
       {/* Page content */}
-      <main className="!mx-3 max-w-none px-10 py-8">
+      <main className="!mx-3 max-w-none px-10 py-8 !pb-4">
         <div className="space-y-6">
           {/* Tabs */}
           <div className="flex items-center gap-12">
@@ -222,7 +222,7 @@ export default function Matching() {
           </div>
 
           {/* Controls row */}
-          <div className="flex !w-full items-center gap-4 overflow-auto pb-4">
+          <div className="h-13 flex !w-full items-center gap-4 overflow-auto pb-4">
             {/* Chips */}
             <div className="flex items-center gap-3">
               <FilterChip label="Google" onClick={() => alert("Google")} />
