@@ -192,10 +192,10 @@ export default function LandingPage() {
                         <button
                             type="button"
                             aria-label="Previous images"
-                            className="flex h-[60px] w-8 shrink-0 items-center justify-center rounded-lg bg-[#c5dbb0] text-[#2d3a1f] transition-colors hover:bg-[#b5cb90]"
+                            className="flex h-[60px] w-8 shrink-0 items-center justify-center rounded-lg bg-[#c5dbb0] text-xl font-bold text-[#2d3a1f] transition-colors hover:bg-[#b5cb90] leading-none"
                             onClick={() => scrollCarousel("prev")}
                         >
-                            ‹
+                            <span className="flex items-center justify-center leading-none -translate-y-0.5" aria-hidden>‹</span>
                         </button>
                         <div
                             ref={carouselRef}
@@ -221,10 +221,10 @@ export default function LandingPage() {
                         <button
                             type="button"
                             aria-label="Next images"
-                            className="flex h-[60px] w-8 shrink-0 items-center justify-center rounded-lg bg-[#c5dbb0] text-[#2d3a1f] transition-colors hover:bg-[#b5cb90]"
+                            className="flex h-[60px] w-8 shrink-0 items-center justify-center rounded-lg bg-[#c5dbb0] text-xl font-bold text-[#2d3a1f] transition-colors hover:bg-[#b5cb90] leading-none"
                             onClick={() => scrollCarousel("next")}
                         >
-                            ›
+                            <span className="flex items-center justify-center leading-none -translate-y-0.5" aria-hidden>›</span>
                         </button>
                     </div>
                 </div>
@@ -264,10 +264,10 @@ export default function LandingPage() {
                         <button
                             type="button"
                             aria-label="Previous image"
-                            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/90 text-2xl text-[#2d3a1f] transition-colors hover:bg-white"
+                            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/90 text-3xl font-bold text-[#2d3a1f] transition-colors hover:bg-white leading-none"
                             onClick={() => goLightbox("prev")}
                         >
-                            ‹
+                            <span className="flex items-center justify-center leading-none -translate-y-0.5" aria-hidden>‹</span>
                         </button>
                         <div className="flex max-h-[90vh] min-h-[200px] min-w-[200px] items-center justify-center overflow-hidden rounded-xl bg-[#d4e5c3] shadow-xl">
                             <img
@@ -283,18 +283,18 @@ export default function LandingPage() {
                         <button
                             type="button"
                             aria-label="Next image"
-                            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/90 text-2xl text-[#2d3a1f] transition-colors hover:bg-white"
+                            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/90 text-3xl font-bold text-[#2d3a1f] transition-colors hover:bg-white leading-none"
                             onClick={() => goLightbox("next")}
                         >
-                            ›
+                            <span className="flex items-center justify-center leading-none -translate-y-0.5" aria-hidden>›</span>
                         </button>
                         <button
                             type="button"
                             aria-label="Close"
-                            className="absolute -right-2 -top-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-xl text-gray-600 transition-colors hover:bg-white hover:text-gray-900"
+                            className="absolute -right-2 -top-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-2xl font-bold text-gray-600 transition-colors hover:bg-white hover:text-gray-900 leading-none"
                             onClick={() => setLightboxIndex(null)}
                         >
-                            ×
+                            <span className="flex items-center justify-center leading-none -translate-y-0.5" aria-hidden>×</span>
                         </button>
                     </div>
                 </div>
