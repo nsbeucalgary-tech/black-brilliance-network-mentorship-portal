@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../LandingPage/Landing.css";
+import { logInWithEmailAndPassword, signInWithProvider } from "../../auth/AuthFunctions";
+import { googleProvider } from "../../_db_controller/init";
+import type { AuthProvider } from "firebase/auth";
 
 type AuthProps = {
   onSubmit?: (email: string, password: string, remember: boolean) => void;
@@ -13,17 +16,49 @@ export default function Login({ onSubmit, onBack, embedded = false  }: AuthProps
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [signInError, setSignInError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e?: React.FormEvent) => {
+
+  const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     // simple client-side validation
-    if (!email) {
-      alert("Please enter an email.");
-      return;
+    if (!email) return alert("Please enter an email.");
+    if (!password) return alert("Please enter a password.");
+
+    setLoading(true);
+
+    try {
+      const error = await logInWithEmailAndPassword(email, password);
+      if (error) {
+        setSignInError(error);
+      } else {
+        setSignInError("");
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      console.error(err);
+      setSignInError("Error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    if (!password) {
-      alert("Please enter a password.");
-      return;
+  };
+
+  const handleProviderSignIn = async (
+    provider: AuthProvider,
+    providerName: string
+  ) => {
+    setLoading(true);
+    try {
+      const error = await signInWithProvider(provider, providerName);
+      if (error) {
+        setSignInError(error);
+      } else {
+        setSignInError("");
+        navigate("/dashboard");
+      }
+    } finally {
+      setLoading(false);
     }
     onSubmit?.(email, password, remember);
     // placeholder: replace with real auth flow

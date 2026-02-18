@@ -6,6 +6,30 @@ import Signup from "../SignupPage/Signup.tsx";
 
 
 
+import { useEffect, useRef, useState } from "react";
+
+const navLinkBase =
+    "relative inline-flex items-center px-1 text-sm font-medium tracking-tight transition-colors duration-150 sm:text-xs whitespace-nowrap shrink-0";
+const navLinkActive =
+    "text-[#2d3a1f] no-underline after:absolute after:-bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-[#2d3a1f] after:content-[''] after:transition-transform after:duration-200";
+const navLinkInactive =
+    "text-gray-500 no-underline hover:text-[#2d3a1f]";
+
+const CAROUSEL_ITEMS = 6;
+const LIGHTBOX_ITEMS = 1 + CAROUSEL_ITEMS; // main photo + carousel thumbnails
+const CAROUSEL_ITEM_WIDTH = 120;
+const CAROUSEL_GAP = 8;
+
+// Mock gallery images: index 0 = main group photo, 1–6 = carousel thumbnails
+const GALLERY_IMAGES = [
+    "https://picsum.photos/seed/bbn-main/560/280",
+    "https://picsum.photos/seed/bbn-1/120/60",
+    "https://picsum.photos/seed/bbn-2/120/60",
+    "https://picsum.photos/seed/bbn-3/120/60",
+    "https://picsum.photos/seed/bbn-4/120/60",
+    "https://picsum.photos/seed/bbn-5/120/60",
+    "https://picsum.photos/seed/bbn-6/120/60",
+];
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -51,6 +75,52 @@ export default function LandingPage() {
               <span className="logo-text-green">Brilliance</span>
             </div>
           </div>
+    const [activeSection, setActiveSection] = useState<"about" | "gallery" | "blog">("about");
+    const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+    const carouselRef = useRef<HTMLDivElement>(null);
+
+    const scrollCarousel = (direction: "prev" | "next") => {
+        const el = carouselRef.current;
+        if (!el) return;
+        const step = CAROUSEL_ITEM_WIDTH + CAROUSEL_GAP;
+        el.scrollBy({ left: direction === "prev" ? -step : step, behavior: "smooth" });
+    };
+
+    const goLightbox = (direction: "prev" | "next") => {
+        setLightboxIndex((prev) => {
+            if (prev === null) return 0;
+            const next = direction === "prev" ? prev - 1 : prev + 1;
+            if (next < 0) return LIGHTBOX_ITEMS - 1;
+            if (next >= LIGHTBOX_ITEMS) return 0;
+            return next;
+        });
+    };
+
+    useEffect(() => {
+        if (lightboxIndex === null) return;
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setLightboxIndex(null);
+            if (e.key === "ArrowLeft") goLightbox("prev");
+            if (e.key === "ArrowRight") goLightbox("next");
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [lightboxIndex]);
+
+    return (
+        <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-white pt-[84px] font-sans text-gray-800">
+            {/* NAVBAR */}
+            <header className="fixed inset-x-0 top-0 z-[1000] flex flex-col items-start gap-1 border-b border-gray-200 bg-white/95 px-4 py-2 backdrop-blur sm:h-[84px] sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-0 md:px-6">
+                <div className="flex items-center gap-3 sm:gap-2 shrink-0">
+                    <div className="flex h-8 w-8 gap-1 sm:h-7 sm:w-7 sm:gap-[3px]">
+                        <div className="h-2 w-2 rounded-full bg-[#2d3a1f]" />
+                        <div className="mt-2 h-2 w-2 rounded-full bg-[#2d3a1f]" />
+                    </div>
+                    <div className="text-base font-medium leading-tight sm:text-xs">
+                        <span className="block text-[#2d3a1f]">Black </span>
+                        <span className="block text-[#7a9b5c]">Brilliance</span>
+                    </div>
+                </div>
 
           <nav className="nav-links">
             <a href="#about" className="active">
@@ -66,6 +136,41 @@ export default function LandingPage() {
             </button>
           </nav>
         </header>
+                <nav className="mt-1 flex w-full flex-wrap items-center justify-start gap-3 text-xs sm:mt-0 sm:flex-1 sm:justify-end sm:gap-6 sm:text-[11px] md:gap-6">
+                    <a
+                        href="#about"
+                        className={`${navLinkBase} ${activeSection === "about" ? navLinkActive : navLinkInactive}`}
+                        onClick={() => setActiveSection("about")}
+                    >
+                        About
+                    </a>
+                    <a
+                        href="#gallery"
+                        className={`${navLinkBase} ${activeSection === "gallery" ? navLinkActive : navLinkInactive}`}
+                        onClick={() => setActiveSection("gallery")}
+                    >
+                        Gallery
+                    </a>
+                    <a
+                        href="#blog"
+                        className={`${navLinkBase} ${activeSection === "blog" ? navLinkActive : navLinkInactive}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setActiveSection("blog");
+                        }}
+                    >
+                        Blog
+                    </a>
+                    <button
+                        type="button"
+                        className="ml-4 cursor-pointer rounded-full border-none bg-[#3d4a2b] px-5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#2d3a1f] md:px-5 md:py-2 md:text-sm sm:px-3 sm:py-1.5 sm:text-xs whitespace-nowrap shrink-0"
+                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                    >
+                        <span className="hidden sm:inline md:hidden">Reg</span>
+                        <span className="sm:hidden md:inline">Register</span>
+                    </button>
+                </nav>
+            </header>
 
         {/* HERO SECTION */}
         <section className="hero">
