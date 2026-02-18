@@ -546,10 +546,11 @@ html, body {
   padding-left: 56px;
   margin-top: 0;
 }
+
 .back-arrow {
   position: absolute;
-  top: 30px;
-  left: 5px;
+  top: 2px;
+  left: 2px;
 
   width: 40px;
   height: 40px;
@@ -580,8 +581,8 @@ html, body {
 }
 .back-arrow-login {
   position: absolute;
-  top: 115px;
-  left: 5px;
+  top: 2px;
+  left: -2px;
 
   width: 40px;
   height: 40px;
@@ -609,4 +610,9 @@ html, body {
 
 .back-arrow-login:active {
   transform: translateX(-4px) scale(0.95);
+}
+.auth-embedded {
+  min-height: auto;      /* prevents forcing full screen height inside hero */
+  padding: 0;            /* removes extra padding that makes it look pushed down */
+  background: transparent;
 }
