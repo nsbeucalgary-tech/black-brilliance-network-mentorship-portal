@@ -1,4 +1,4 @@
-/* Base wrapper (optional if you rely on Tailwind for layout) */
+/* Base wrapper  */
 .landing {
   min-height: 100dvh;
   background: #fff;
