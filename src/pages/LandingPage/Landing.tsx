@@ -104,14 +104,13 @@ export default function LandingPage() {
           {/* Show login/signup when hero is hidden */}
           {showLogin && (
               <Login
-                  onBack={closePopup}
+                  onBack={closePopup} embedded
               />
           )}
 
           {showSignUp && (
               <Signup
-                  onBack={closePopup}
-              />
+                  onBack={closePopup} embedded />
           )}
 
           <div className="hero-image">
