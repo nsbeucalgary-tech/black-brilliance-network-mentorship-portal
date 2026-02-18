@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../LandingPage/Landing.css";
 import { logInWithEmailAndPassword, signInWithProvider } from "../../auth/AuthFunctions";
 import { googleProvider } from "../../_db_controller/init";
 import type { AuthProvider } from "firebase/auth";
