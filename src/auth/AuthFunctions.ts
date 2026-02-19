@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, validatePassword, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, validatePassword, signInWithPopup, setPersistence, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
 import type { AuthProvider } from "firebase/auth";
 import { FirebaseError } from "firebase/app"
 import { auth } from "../_db_controller/init"
@@ -7,8 +7,14 @@ export async function signUpWithEmailAndPassword(
   name: string,
   email: string,
   password: string,
+  remember: boolean,
 ): Promise<string | null> {
   try {
+    await setPersistence(
+      auth,
+      remember ? browserLocalPersistence : browserSessionPersistence
+    ); 
+
     const createdUser = await createUserWithEmailAndPassword(auth, email, password);
     // <        -----> Create a User with the name
     return null;
@@ -37,8 +43,14 @@ export async function signUpWithEmailAndPassword(
 export async function logInWithEmailAndPassword(
   email: string,
   password: string,
+  remember: boolean,
 ): Promise<string | null> {
   try {
+    await setPersistence(
+      auth,
+      remember ? browserLocalPersistence : browserSessionPersistence
+    );
+
     await signInWithEmailAndPassword(auth, email, password);
     return null;
   } catch (e) {
@@ -65,8 +77,13 @@ export async function logInWithEmailAndPassword(
   }
 }
 
-export async function signInWithProvider(provider: AuthProvider, providerName: string): Promise<string | null> {
+export async function signInWithProvider(provider: AuthProvider, providerName: string, remember: boolean): Promise<string | null> {
   try {
+    await setPersistence(
+      auth,
+      remember ? browserLocalPersistence : browserSessionPersistence
+    );
+
     const user = await signInWithPopup(auth, provider);
     return null;
   } catch (e) {
