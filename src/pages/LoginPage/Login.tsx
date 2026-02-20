@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../LandingPage/Landing.css";
 import { logInWithEmailAndPassword, signInWithProvider } from "../../auth/AuthFunctions";
 import { googleProvider } from "../../_db_controller/init";
 import type { AuthProvider } from "firebase/auth";
@@ -12,6 +11,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [signInError, setSignInError] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [remember, setRemember] = useState(false);
 
 
   const handleSubmit = async (e?: React.FormEvent) => {
@@ -23,7 +23,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const error = await logInWithEmailAndPassword(email, password);
+      const error = await logInWithEmailAndPassword(email, password, remember);
       if (error) {
         setSignInError(error);
       } else {
@@ -44,7 +44,7 @@ export default function Login() {
   ) => {
     setLoading(true);
     try {
-      const error = await signInWithProvider(provider, providerName);
+      const error = await signInWithProvider(provider, providerName, remember);
       if (error) {
         setSignInError(error);
       } else {
@@ -151,6 +151,14 @@ export default function Login() {
             />
 
             <div className="flex items-center justify-between mt-2">
+             <label className="flex items-center gap-2 text-sm cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                />
+                Remember me
+              </label>
               <button type="submit" className="submit-button disabled:opacity-50" disabled={loading}>
                 Sign In
               </button>
