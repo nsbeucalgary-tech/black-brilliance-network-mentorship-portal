@@ -45,7 +45,7 @@ const handleSubmit = async (e?: React.FormEvent) => {
       setSignUpError(error);
     } else {
       setSignUpError("");
-      navigate('/dashboard');
+      navigate("/onboarding");
     }
   } catch (err) {
     console.error(err);
