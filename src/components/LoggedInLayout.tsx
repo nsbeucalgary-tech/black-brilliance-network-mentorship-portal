@@ -9,14 +9,14 @@ export default function LoggedInLayout() {
   const isMatchingPage = location.pathname.startsWith("/matching");
 
   return (
-    <div className="flex w-full">
-      {/* Hide the Navbar on Matching so the page can be fullscreen */}
-      {!isMatchingPage && <Navbar />}
+      <div className="flex h-screen w-full overflow-hidden">
+          {/* Hide the Navbar on Matching so the page can be fullscreen */}
+          {!isMatchingPage && <Navbar />}
 
-      {/* If Navbar is hidden, let Outlet take full width. Otherwise, it sits beside Navbar. */}
-      <div className="flex-1 min-w-0">
-        <Outlet />
+          {/* If Navbar is hidden, let Outlet take full width. Otherwise, it sits beside Navbar. */}
+          <div className="flex-1 min-w-0 overflow-y-auto">
+              <Outlet />
+          </div>
       </div>
-    </div>
   );
 }
