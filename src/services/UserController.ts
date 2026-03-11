@@ -1,15 +1,15 @@
 import {
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-  deleteDoc,
-  getDocs,
-  query,
-  where,
-  Firestore,
-  Timestamp,
+    collection,
+    doc,
+    setDoc,
+    getDoc,
+    updateDoc,
+    deleteDoc,
+    getDocs,
+    query,
+    where,
+    Timestamp,
+    type Firestore,
 } from "firebase/firestore";
 import type {
     User,
@@ -21,191 +21,154 @@ import { UserRole } from "../types/User";
 
 /**
  * User Database Controller
- * Handles all user-related Firestore operations
+ * Handles all user-related Firestore operations.
+ *
+ * Document IDs in the "users" collection are always the Firebase Auth UID,
+ * so Auth and Firestore stay in sync automatically.
  */
 export class UserController {
-  private db: Firestore;
-  private collectionName = "users";
+    private db: Firestore;
+    private collectionName = "users";
 
-  constructor(db: Firestore) {
-    this.db = db;
-  }
-
-  /**
-   * Convert Firestore user data to User type
-   * Ensures proper date conversion from Firestore timestamps
-   */
-  private firestoreDataToUser(data: UserFirestoreData): User {
-    return {
-      ...data,
-      created_at:
-        data.created_at instanceof Timestamp
-          ? data.created_at.toDate()
-          : (data.created_at as Date),
-    };
-  }
-
-  /**
-   * Convert User object to Firestore-compatible data
-   */
-  private userToFirestoreData(user: User): UserFirestoreData {
-    return {
-      ...user,
-      created_at:
-        user.created_at instanceof Date
-          ? Timestamp.fromDate(user.created_at)
-          : user.created_at,
-    };
-  }
-
-  /**
-   * Create a new user in Firestore
-   * Users are automatically assigned the USER role and can later be updated to MENTOR or MENTEE
-   * @param payload User creation data
-   * @returns The created User with generated user_id
-   */
-  async createUser(payload: CreateUserPayload): Promise<User> {
-    const user_id = doc(collection(this.db, this.collectionName)).id;
-    const now = new Date();
-
-    const user: User = {
-      ...payload,
-      role: payload.role || UserRole.USER,
-      created_at: now,
-    };
-
-    const firestoreData = this.userToFirestoreData(user);
-
-    await setDoc(
-      doc(this.db, this.collectionName, user_id),
-      firestoreData
-    );
-
-    return user;
-  }
-
-  /**
-   * Get a user by ID
-   * @param user_id The user's ID
-   * @returns The User object or null if not found
-   */
-  async getUserById(user_id: string): Promise<User | null> {
-    const docSnap = await getDoc(
-      doc(this.db, this.collectionName, user_id)
-    );
-
-    if (!docSnap.exists()) {
-      return null;
+    constructor(db: Firestore) {
+        this.db = db;
     }
 
-    return this.firestoreDataToUser(docSnap.data() as UserFirestoreData);
-  }
+    // ── Private helpers ──────────────────────────────────────────────────────
 
-  /**
-   * Get a user by email
-   * @param email The user's email
-   * @returns The User object or null if not found
-   */
-  async getUserByEmail(email: string): Promise<User | null> {
-    const q = query(
-      collection(this.db, this.collectionName),
-      where("email", "==", email)
-    );
-
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.empty) {
-      return null;
+    private firestoreDataToUser(uid: string, data: UserFirestoreData): User {
+        return {
+            ...data,
+            uid,
+            created_at:
+                data.created_at instanceof Timestamp
+                    ? data.created_at.toDate()
+                    : (data.created_at as Date),
+        };
     }
 
-    const docSnap = querySnapshot.docs[0];
-    return this.firestoreDataToUser(docSnap.data() as UserFirestoreData);
-  }
-
-  /**
-   * Get all users
-   * @returns Array of all User objects
-   */
-  async getAllUsers(): Promise<User[]> {
-    const querySnapshot = await getDocs(
-      collection(this.db, this.collectionName)
-    );
-
-    return querySnapshot.docs.map((doc) =>
-      this.firestoreDataToUser(doc.data() as UserFirestoreData)
-    );
-  }
-
-  /**
-   * Get users by role
-   * @param role The role to filter by
-   * @returns Array of User objects with the specified role
-   */
-  async getUsersByRole(role: string): Promise<User[]> {
-    const q = query(
-      collection(this.db, this.collectionName),
-      where("role", "==", role)
-    );
-
-    const querySnapshot = await getDocs(q);
-
-    return querySnapshot.docs.map((doc) =>
-      this.firestoreDataToUser(doc.data() as UserFirestoreData)
-    );
-  }
-
-  /**
-   * Update a user
-   * @param user_id The user's ID
-   * @param payload The fields to update
-   * @returns The updated User object
-   */
-  async updateUser(
-    user_id: string,
-    payload: Partial<Omit<UpdateUserPayload, "user_id">>
-  ): Promise<User> {
-    const firestoreData: Record<string, unknown> = {};
-
-    // Copy all fields from payload
-    Object.entries(payload).forEach(([key, value]) => {
-      firestoreData[key] = value;
-    });
-
-    await updateDoc(doc(this.db, this.collectionName, user_id), firestoreData);
-
-    const updatedUser = await this.getUserById(user_id);
-    if (!updatedUser) {
-      throw new Error(`User with ID ${user_id} not found after update`);
+    private userToFirestoreData(user: User): UserFirestoreData {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { uid, ...rest } = user; // uid lives as the doc ID, not a field
+        return {
+            ...rest,
+            created_at:
+                user.created_at instanceof Date
+                    ? Timestamp.fromDate(user.created_at)
+                    : user.created_at,
+        };
     }
 
-    return updatedUser;
-  }
+    // ── Public API ───────────────────────────────────────────────────────────
 
-  /**
-   * Delete a user
-   * @param user_id The user's ID
-   */
-  async deleteUser(user_id: string): Promise<void> {
-    await deleteDoc(doc(this.db, this.collectionName, user_id));
-  }
+    /**
+     * Create a Firestore document for a newly registered user.
+     * Uses the Firebase Auth UID as the document ID so the two records
+     * are always linked by the same key.
+     *
+     * Call this immediately after `createUserWithEmailAndPassword` or
+     * `signInWithPopup` (for first-time OAuth users).
+     */
+    async createUser(payload: CreateUserPayload): Promise<User> {
+        const now = new Date();
 
-  /**
-   * Check if a user exists by ID
-   * @param user_id The user's ID
-   * @returns true if user exists, false otherwise
-   */
-  async userExists(user_id: string): Promise<boolean> {
-    const user = await this.getUserById(user_id);
-    return user !== null;
-  }
+        const user: User = {
+            uid: payload.uid,
+            full_name: payload.full_name,
+            email: payload.email,
+            role: payload.role ?? UserRole.USER,
+            created_at: now,
+        };
 
-  /**
-   * Check if an email is already registered
-   * @param email The email to check
-   * @returns true if email exists, false otherwise
-   */
-  async emailExists(email: string): Promise<boolean> {
-    const user = await this.getUserByEmail(email);
-    return user !== null;
-  }
+        await setDoc(
+            doc(this.db, this.collectionName, payload.uid),
+            this.userToFirestoreData(user),
+        );
+
+        return user;
+    }
+
+    /**
+     * Fetch a user by their Firebase Auth UID.
+     * Returns null if no Firestore document exists yet.
+     */
+    async getUserById(uid: string): Promise<User | null> {
+        const snap = await getDoc(doc(this.db, this.collectionName, uid));
+        if (!snap.exists()) return null;
+        return this.firestoreDataToUser(
+            snap.id,
+            snap.data() as UserFirestoreData,
+        );
+    }
+
+    /**
+     * Fetch a user by email address.
+     * Useful when you only have an email (e.g. OAuth sign-in check).
+     */
+    async getUserByEmail(email: string): Promise<User | null> {
+        const q = query(
+            collection(this.db, this.collectionName),
+            where("email", "==", email),
+        );
+        const snap = await getDocs(q);
+        if (snap.empty) return null;
+        const d = snap.docs[0];
+        return this.firestoreDataToUser(d.id, d.data() as UserFirestoreData);
+    }
+
+    /** Fetch every user document. */
+    async getAllUsers(): Promise<User[]> {
+        const snap = await getDocs(collection(this.db, this.collectionName));
+        return snap.docs.map((d) =>
+            this.firestoreDataToUser(d.id, d.data() as UserFirestoreData),
+        );
+    }
+
+    /** Fetch all users with a specific role. */
+    async getUsersByRole(role: UserRole): Promise<User[]> {
+        const q = query(
+            collection(this.db, this.collectionName),
+            where("role", "==", role),
+        );
+        const snap = await getDocs(q);
+        return snap.docs.map((d) =>
+            this.firestoreDataToUser(d.id, d.data() as UserFirestoreData),
+        );
+    }
+
+    /**
+     * Update profile fields for a user.
+     * Only the fields included in `payload` are written — everything else
+     * is left untouched (Firestore merge/updateDoc semantics).
+     */
+    async updateUser(uid: string, payload: UpdateUserPayload): Promise<User> {
+        const ref = doc(this.db, this.collectionName, uid);
+
+        // Build a plain object so Firestore doesn't receive undefined values
+        const updates: Record<string, unknown> = {};
+        for (const [key, value] of Object.entries(payload)) {
+            if (value !== undefined) updates[key] = value;
+        }
+
+        await updateDoc(ref, updates);
+
+        const updated = await this.getUserById(uid);
+        if (!updated) throw new Error(`User ${uid} not found after update`);
+        return updated;
+    }
+
+    /** Delete a user's Firestore document (does NOT delete their Auth account). */
+    async deleteUser(uid: string): Promise<void> {
+        await deleteDoc(doc(this.db, this.collectionName, uid));
+    }
+
+    /** Returns true if a Firestore document exists for this UID. */
+    async userExists(uid: string): Promise<boolean> {
+        return (await this.getUserById(uid)) !== null;
+    }
+
+    /** Returns true if an email address is already registered in Firestore. */
+    async emailExists(email: string): Promise<boolean> {
+        return (await this.getUserByEmail(email)) !== null;
+    }
 }

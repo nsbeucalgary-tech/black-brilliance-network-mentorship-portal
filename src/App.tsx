@@ -17,52 +17,72 @@ import LoggedInLayout from "./components/LoggedInLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { PublicOnlyRoute } from "./components/PublicRoute";
 import { AuthProvider } from "./auth/AuthContext";
+import OnboardingPage from "./components/Onboarding";
 
 function App() {
-  return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<LandingPage />} />
-          <Route
-            path="/login"
-            element={
-              <PublicOnlyRoute>
-                <LoginPage />
-              </PublicOnlyRoute>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <PublicOnlyRoute>
-                <SignupPage />
-              </PublicOnlyRoute>
-            }
-          />
-          <Route path="/example" element={<ExamplePage />} />
+    return (
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    {/* Public routes */}
+                    <Route path="/" element={<LandingPage />} />
+                    <Route
+                        path="/login"
+                        element={
+                            <PublicOnlyRoute>
+                                <LoginPage />
+                            </PublicOnlyRoute>
+                        }
+                    />
+                    <Route
+                        path="/signup"
+                        element={
+                            <PublicOnlyRoute>
+                                <SignupPage />
+                            </PublicOnlyRoute>
+                        }
+                    />
+                    <Route path="/example" element={<ExamplePage />} />
 
-          {/* Protected routes */}
-          <Route
-            element={
-              <ProtectedRoute>
-                <LoggedInLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/matching" element={<MatchingPage />} />
-            <Route path="/newsletter" element={<NewsletterPage />} />
-            <Route path="/user-profile" element={<UserProfilePage />} />
-            <Route path="/mentor-profile" element={<MentorProfilePage />} />
-          </Route>
-        </Routes>
-      </Router>
-    </AuthProvider>
-  );
+                    {/* Onboarding — protected but outside the sidebar layout */}
+                    <Route
+                        path="/onboarding"
+                        element={
+                            <ProtectedRoute>
+                                <OnboardingPage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    {/* Protected routes with sidebar */}
+                    <Route
+                        element={
+                            <ProtectedRoute>
+                                <LoggedInLayout />
+                            </ProtectedRoute>
+                        }
+                    >
+                        <Route path="/dashboard" element={<DashboardPage />} />
+                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/calendar" element={<CalendarPage />} />
+                        <Route path="/matching" element={<MatchingPage />} />
+                        <Route
+                            path="/newsletter"
+                            element={<NewsletterPage />}
+                        />
+                        <Route
+                            path="/user-profile"
+                            element={<UserProfilePage />}
+                        />
+                        <Route
+                            path="/mentor-profile"
+                            element={<MentorProfilePage />}
+                        />
+                    </Route>
+                </Routes>
+            </Router>
+        </AuthProvider>
+    );
 }
 
 export default App;
