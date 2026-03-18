@@ -68,7 +68,7 @@ export default function DashboardPage() {
                                 <span className="h-2 w-2 rounded-full bg-white opacity-80" />
                             </div>
 
-                            <div className="mt-10 flex flex-1 flex-col items-center gap-6 text-white">
+                            <div className="mt-[72px] flex flex-1 flex-col items-center gap-6 text-white">
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav("dashboard")}
@@ -332,7 +332,7 @@ export default function DashboardPage() {
                                 </div>
                             </nav>
 
-                            <div className="mt-auto flex flex-col gap-6 pb-2 pt-14 text-[18px]">
+                            <div className="mt-auto flex flex-col gap-6 pb-4 text-[18px]">
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav("settings")}
