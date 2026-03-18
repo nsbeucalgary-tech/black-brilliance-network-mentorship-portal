@@ -1,19 +1,5 @@
 import { useMemo } from "react";
 
-function Icon({
-    children,
-    className = "",
-}: {
-    children: React.ReactNode;
-    className?: string;
-}) {
-    return (
-        <span className={`inline-flex h-5 w-5 items-center justify-center ${className}`}>
-            {children}
-        </span>
-    );
-}
-
 function Star({ filled }: { filled: boolean }) {
     return (
         <svg
@@ -70,113 +56,173 @@ export default function DashboardPage() {
         <div className="min-h-dvh w-full bg-[#eef0ee] text-[#223018]">
             <div className="flex min-h-dvh w-full">
                 {/* Sidebar */}
-                <aside className="hidden w-[260px] shrink-0 px-7 py-6 md:block">
-                    <div className="flex h-full flex-col rounded-3xl bg-gradient-to-b from-[#2f3c20] to-[#283318] px-6 py-7 text-white shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
-                        <div className="flex items-start gap-3">
-                            <div className="mt-1 flex h-8 w-8 flex-col gap-1">
+                <aside className="hidden shrink-0 px-6 py-6 md:block">
+                    <div className="flex h-full overflow-hidden rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
+                        {/* Icon rail */}
+                        <div className="flex w-[72px] flex-col items-center bg-gradient-to-b from-[#2f3c20] to-[#283318] py-6">
+                            <div className="flex flex-col items-center gap-1">
                                 <span className="h-2 w-2 rounded-full bg-white" />
-                                <span className="ml-3 h-2 w-2 rounded-full bg-white" />
+                                <span className="h-2 w-2 rounded-full bg-white opacity-80" />
                             </div>
-                            <div className="leading-tight">
-                                <div className="text-lg font-semibold">Black</div>
-                                <div className="text-lg font-semibold text-[#a7c77f]">Brilliance</div>
+
+                            <div className="mt-10 flex flex-1 flex-col items-center gap-6 text-white">
+                                {/* Dashboard (monitor) */}
+                                <button
+                                    type="button"
+                                    className="grid h-11 w-11 place-items-center rounded-xl bg-white/10"
+                                    aria-label="Dashboard"
+                                >
+                                    <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+                                        <path
+                                            d="M4 5h16v10H4V5Zm6 14h4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.8"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+
+                                {/* Calendar */}
+                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Calendar">
+                                    <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+                                        <path
+                                            d="M7 4v2m10-2v2M5 8h14M6 6h12a2 2 0 0 1 2 2v12H4V8a2 2 0 0 1 2-2Z"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+
+                                {/* Matchmaking (handshake-ish) */}
+                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Matchmaking">
+                                    <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+                                        <path
+                                            d="M8.5 12.5 6 10l2.5-2.5a3 3 0 0 1 4.2 0l.3.3.3-.3a3 3 0 0 1 4.2 0L20 10l-2.5 2.5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                        <path
+                                            d="M9 13.5l2 2m2-2-2 2m-2.5-1.5 1.5 1.5M14 14l1.5 1.5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+
+                                {/* Newsletter */}
+                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Newsletter">
+                                    <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+                                        <path
+                                            d="M5 6h14v12H5V6Zm0 2 7 5 7-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+
+                                {/* Home */}
+                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Home">
+                                    <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+                                        <path
+                                            d="M4 10.5 12 4l8 6.5V20H4v-9.5Z"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div className="mt-auto flex flex-col items-center gap-6 pb-4 text-white">
+                                {/* Settings */}
+                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Settings">
+                                    <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+                                        <path
+                                            d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                        />
+                                        <path
+                                            d="M19.4 13a7.7 7.7 0 0 0 0-2l2-1.2-2-3.5-2.2.9a7.8 7.8 0 0 0-1.7-1l-.3-2.4H8.8l-.3 2.4c-.6.2-1.2.6-1.7 1L4.6 6.3l-2 3.5L4.6 11a7.7 7.7 0 0 0 0 2l-2 1.2 2 3.5 2.2-.9c.5.4 1.1.7 1.7 1l.3 2.4h6.4l.3-2.4c.6-.2 1.2-.6 1.7-1l2.2.9 2-3.5L19.4 13Z"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.2"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+
+                                {/* Log out */}
+                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Log out">
+                                    <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
+                                        <path
+                                            d="M5 5h9v14H5V5Z"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                            strokeLinejoin="round"
+                                        />
+                                        <path
+                                            d="M14 12h7m0 0-3-3m3 3-3 3"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                </button>
                             </div>
                         </div>
 
-                        <nav className="mt-10 space-y-2 text-[15px]">
-                            <a
-                                href="#"
-                                className="flex items-center gap-3 rounded-xl bg-[#dbe8c9] px-4 py-3 font-semibold text-[#233116] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]"
-                            >
-                                <Icon>
-                                    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-                                        <path
-                                            fill="currentColor"
-                                            d="M3 13h8V3H3v10Zm0 8h8v-6H3v6Zm10 0h8V11h-8v10Zm0-18v6h8V3h-8Z"
-                                        />
-                                    </svg>
-                                </Icon>
-                                Dashboard
-                            </a>
+                        {/* Text panel */}
+                        <div className="flex w-[220px] flex-col bg-white px-7 py-6 text-[#2a381b]">
+                            <div className="flex items-start gap-3">
+                                <div className="mt-1 flex h-8 w-8 flex-col gap-1">
+                                    <span className="h-2 w-2 rounded-full bg-[#2f3c20]" />
+                                    <span className="ml-3 h-2 w-2 rounded-full bg-[#2f3c20]" />
+                                </div>
+                                <div className="leading-tight">
+                                    <div className="text-lg font-semibold">Black</div>
+                                    <div className="text-lg font-semibold text-[#a7c77f]">Brilliance</div>
+                                </div>
+                            </div>
 
-                            {[
-                                { label: "Calendar", icon: "calendar" },
-                                { label: "Matchmaking", icon: "match" },
-                                { label: "Newsletter", icon: "newsletter" },
-                                { label: "Home", icon: "home" },
-                            ].map((item) => (
+                            <nav className="mt-10 space-y-6 text-[18px]">
                                 <a
-                                    key={item.label}
                                     href="#"
-                                    className="flex items-center gap-3 rounded-xl px-4 py-3 text-white/80 hover:bg-white/10 hover:text-white"
+                                    className="inline-flex w-full items-center justify-center rounded-2xl bg-[#2f3c20] py-2.5 text-[15px] font-semibold text-white"
                                 >
-                                    <Icon className="text-white/70">
-                                        {item.icon === "calendar" && (
-                                            <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-                                                <path
-                                                    fill="currentColor"
-                                                    d="M7 2h2v2h6V2h2v2h3v18H4V4h3V2Zm13 8H6v10h14V10ZM6 8h14V6H6v2Z"
-                                                />
-                                            </svg>
-                                        )}
-                                        {item.icon === "match" && (
-                                            <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-                                                <path
-                                                    fill="currentColor"
-                                                    d="M7 5h10v2H7V5Zm-2 4h14v2H5V9Zm2 4h10v2H7v-2Zm-2 4h14v2H5v-2Z"
-                                                />
-                                            </svg>
-                                        )}
-                                        {item.icon === "newsletter" && (
-                                            <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-                                                <path
-                                                    fill="currentColor"
-                                                    d="M20 4H4v16h16V4Zm-2 4-6 4-6-4V6l6 4 6-4v2Z"
-                                                />
-                                            </svg>
-                                        )}
-                                        {item.icon === "home" && (
-                                            <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-                                                <path
-                                                    fill="currentColor"
-                                                    d="M12 3 3 10v11h6v-7h6v7h6V10l-9-7Z"
-                                                />
-                                            </svg>
-                                        )}
-                                    </Icon>
-                                    {item.label}
+                                    Dashboard
                                 </a>
-                            ))}
-                        </nav>
+                                {["Calendar", "Matchmaking", "Newsletter", "Home"].map((label) => (
+                                    <a key={label} href="#" className="block font-medium text-[#2f3c20]">
+                                        {label}
+                                    </a>
+                                ))}
+                            </nav>
 
-                        <div className="mt-auto pb-1 pt-10">
-                            <div className="space-y-2 text-[15px]">
-                                <a
-                                    href="#"
-                                    className="flex items-center gap-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white"
-                                >
-                                    <Icon className="text-white/60">
-                                        <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-                                            <path
-                                                fill="currentColor"
-                                                d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.1 7.1 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.71 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.5a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.3.6.22l2.39-.96c.51.4 1.05.71 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.56ZM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5Z"
-                                            />
-                                        </svg>
-                                    </Icon>
+                            <div className="mt-auto space-y-6 pb-2 pt-14 text-[18px]">
+                                <a href="#" className="block font-medium text-[#2f3c20]">
                                     Settings
                                 </a>
-                                <a
-                                    href="#"
-                                    className="mt-3 flex items-center gap-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white"
-                                >
-                                    <Icon className="text-white/60">
-                                        <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-                                            <path
-                                                fill="currentColor"
-                                                d="M5 5h8v2H7v10h6v2H5V5Zm10 4V7l4 4-4 4v-2h-6v-2h6V9Z"
-                                            />
-                                        </svg>
-                                    </Icon>
+                                <a href="#" className="block font-medium text-[#2f3c20]">
                                     Log out
                                 </a>
                             </div>
