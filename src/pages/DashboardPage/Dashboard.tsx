@@ -48,10 +48,10 @@ function CircleIcon({ label }: { label: string }) {
 export default function DashboardPage() {
     const tasks = useMemo(
         () => [
-            { title: "Plan out communication workshop", owner: "Colin Burton", date: "June 4, 2025", status: "Done" },
-            { title: "Lorem ipsum dolor sit amet consect", owner: "Colin Burton", date: "June 8, 2025", status: "In progress" },
-            { title: "Lorem ipsum dolor sit amet consect", owner: "Colin Burton", date: "June 9, 2025", status: "To do" },
-            { title: "Lorem ipsum dolor sit amet consect", owner: "Colin Burton", date: "June 1, 2025", status: "To do" },
+            { title: "Plan out communication workshop", owner: "Colin Bobbins", date: "June 4, 2025", status: "Done" },
+            { title: "Lorem ipsum dolor sit amet consect", owner: "Colin Bobbins", date: "June 8, 2025", status: "In progress" },
+            { title: "Lorem ipsum dolor sit amet consect", owner: "Colin Bobbins", date: "June 9, 2025", status: "To do" },
+            { title: "Lorem ipsum dolor sit amet consect", owner: "Colin Bobbins", date: "June 1, 2025", status: "To do" },
         ],
         [],
     );
