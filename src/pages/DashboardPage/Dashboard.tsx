@@ -68,7 +68,7 @@ export default function DashboardPage() {
 
     return (
         <div className="min-h-dvh w-full bg-[#eef0ee] text-[#223018]">
-            <div className="mx-auto flex min-h-dvh w-full max-w-[1400px]">
+            <div className="flex min-h-dvh w-full">
                 {/* Sidebar */}
                 <aside className="hidden w-[260px] shrink-0 px-7 py-8 md:block">
                     <div className="h-full rounded-3xl bg-gradient-to-b from-[#2f3c20] to-[#283318] px-6 py-7 text-white shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
@@ -174,7 +174,7 @@ export default function DashboardPage() {
                 </aside>
 
                 {/* Main */}
-                <main className="flex-1 px-5 py-7 md:px-6 md:py-8">
+                <main className="flex-1 px-8 py-7 md:px-8 md:py-8 lg:px-10">
                     {/* Top bar */}
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div className="flex flex-1 items-center gap-4">
