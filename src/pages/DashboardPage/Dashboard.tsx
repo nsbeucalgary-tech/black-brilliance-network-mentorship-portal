@@ -12,21 +12,20 @@ function Star({ filled }: { filled: boolean }) {
     );
 }
 
-function CircleIcon({ label }: { label: string }) {
+function TopIconButton({
+    label,
+    children,
+}: {
+    label: string;
+    children: React.ReactNode;
+}) {
     return (
         <button
             type="button"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-[0_1px_0_rgba(0,0,0,0.06),0_10px_30px_rgba(0,0,0,0.06)]"
+            className="inline-flex h-8 w-8 items-center justify-center text-[#2f3c20]"
             aria-label={label}
         >
-            <span className="text-[#2e3b20] opacity-80">
-                <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-                    <path
-                        fill="currentColor"
-                        d="M12 22a2 2 0 0 1-2-2h4a2 2 0 0 1-2 2Zm6-6H6v-5a6 6 0 0 1 12 0v5Zm-2 0v-5a4 4 0 1 0-8 0v5h8Z"
-                    />
-                </svg>
-            </span>
+            {children}
         </button>
     );
 }
@@ -266,18 +265,48 @@ export default function DashboardPage() {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3">
-                            <CircleIcon label="Notifications" />
+                        <div className="flex items-center gap-4">
+                            <TopIconButton label="Notifications">
+                                <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                                    <path
+                                        d="M12 22a2 2 0 0 1-2-2h4a2 2 0 0 1-2 2Z"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="1.6"
+                                        strokeLinecap="round"
+                                    />
+                                    <path
+                                        d="M18 16H6v-5a6 6 0 0 1 12 0v5Z"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="1.6"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            </TopIconButton>
+                            <TopIconButton label="Messages">
+                                <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                                    <path
+                                        d="M4 6h16v12H7l-3 3V6Z"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="1.6"
+                                        strokeLinejoin="round"
+                                    />
+                                    <path
+                                        d="M4 7.5 12 13l8-5.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="1.6"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            </TopIconButton>
                             <button
                                 type="button"
-                                className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-[0_1px_0_rgba(0,0,0,0.06),0_10px_30px_rgba(0,0,0,0.06)]"
-                                aria-label="Messages"
+                                className="h-9 w-9 overflow-hidden rounded-full bg-white shadow-[0_1px_0_rgba(0,0,0,0.06),0_10px_30px_rgba(0,0,0,0.06)]"
+                                aria-label="Profile"
                             >
-                                <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#2e3b20] opacity-80" aria-hidden="true">
-                                    <path fill="currentColor" d="M4 4h16v12H7l-3 3V4Zm3 5h10v2H7V9Zm0-3h10v2H7V6Zm0 6h6v2H7v-2Z" />
-                                </svg>
-                            </button>
-                            <button type="button" className="h-10 w-10 overflow-hidden rounded-full bg-white shadow-[0_1px_0_rgba(0,0,0,0.06),0_10px_30px_rgba(0,0,0,0.06)]" aria-label="Profile">
                                 <img
                                     src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=96&q=80"
                                     alt=""
