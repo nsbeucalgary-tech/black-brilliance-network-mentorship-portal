@@ -73,7 +73,9 @@ export default function DashboardPage() {
                                     type="button"
                                     onClick={() => setActiveNav("dashboard")}
                                     className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
-                                        activeNav === "dashboard" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                        activeNav === "dashboard"
+                                            ? "bg-[#1f2a12]"
+                                            : "bg-transparent hover:bg-[#1f2a12]"
                                     }`}
                                     aria-label="Dashboard"
                                     aria-current={activeNav === "dashboard" ? "page" : undefined}
@@ -94,7 +96,7 @@ export default function DashboardPage() {
                                     type="button"
                                     onClick={() => setActiveNav("calendar")}
                                     className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
-                                        activeNav === "calendar" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                        activeNav === "calendar" ? "bg-[#1f2a12]" : "bg-transparent hover:bg-[#1f2a12]"
                                     }`}
                                     aria-label="Calendar"
                                     aria-current={activeNav === "calendar" ? "page" : undefined}
@@ -115,7 +117,9 @@ export default function DashboardPage() {
                                     type="button"
                                     onClick={() => setActiveNav("matchmaking")}
                                     className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
-                                        activeNav === "matchmaking" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                        activeNav === "matchmaking"
+                                            ? "bg-[#1f2a12]"
+                                            : "bg-transparent hover:bg-[#1f2a12]"
                                     }`}
                                     aria-label="Matchmaking"
                                     aria-current={activeNav === "matchmaking" ? "page" : undefined}
@@ -144,7 +148,9 @@ export default function DashboardPage() {
                                     type="button"
                                     onClick={() => setActiveNav("newsletter")}
                                     className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
-                                        activeNav === "newsletter" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                        activeNav === "newsletter"
+                                            ? "bg-[#1f2a12]"
+                                            : "bg-transparent hover:bg-[#1f2a12]"
                                     }`}
                                     aria-label="Newsletter"
                                     aria-current={activeNav === "newsletter" ? "page" : undefined}
@@ -165,7 +171,7 @@ export default function DashboardPage() {
                                     type="button"
                                     onClick={() => setActiveNav("home")}
                                     className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
-                                        activeNav === "home" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                        activeNav === "home" ? "bg-[#1f2a12]" : "bg-transparent hover:bg-[#1f2a12]"
                                     }`}
                                     aria-label="Home"
                                     aria-current={activeNav === "home" ? "page" : undefined}
@@ -188,7 +194,9 @@ export default function DashboardPage() {
                                     type="button"
                                     onClick={() => setActiveNav("settings")}
                                     className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
-                                        activeNav === "settings" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                        activeNav === "settings"
+                                            ? "bg-[#1f2a12]"
+                                            : "bg-transparent hover:bg-[#1f2a12]"
                                     }`}
                                     aria-label="Settings"
                                     aria-current={activeNav === "settings" ? "page" : undefined}
@@ -215,7 +223,7 @@ export default function DashboardPage() {
                                     type="button"
                                     onClick={() => setActiveNav("logout")}
                                     className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
-                                        activeNav === "logout" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                        activeNav === "logout" ? "bg-[#1f2a12]" : "bg-transparent hover:bg-[#1f2a12]"
                                     }`}
                                     aria-label="Log out"
                                     aria-current={activeNav === "logout" ? "page" : undefined}
@@ -263,7 +271,7 @@ export default function DashboardPage() {
                                         className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
                                             activeNav === "dashboard"
                                                 ? "bg-[#2f3c20] pl-4 text-white"
-                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#2f3c20] hover:pl-2 hover:text-white"
                                         }`}
                                         aria-current={activeNav === "dashboard" ? "page" : undefined}
                                     >
@@ -275,8 +283,8 @@ export default function DashboardPage() {
                                         onClick={() => setActiveNav("calendar")}
                                         className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
                                             activeNav === "calendar"
-                                                ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
-                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                                ? "bg-[#2f3c20] pl-4 text-white"
+                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#2f3c20] hover:pl-2 hover:text-white"
                                         }`}
                                         aria-current={activeNav === "calendar" ? "page" : undefined}
                                     >
@@ -288,8 +296,8 @@ export default function DashboardPage() {
                                         onClick={() => setActiveNav("matchmaking")}
                                         className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
                                             activeNav === "matchmaking"
-                                                ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
-                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                                ? "bg-[#2f3c20] pl-4 text-white"
+                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#2f3c20] hover:pl-2 hover:text-white"
                                         }`}
                                         aria-current={activeNav === "matchmaking" ? "page" : undefined}
                                     >
@@ -301,8 +309,8 @@ export default function DashboardPage() {
                                         onClick={() => setActiveNav("newsletter")}
                                         className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
                                             activeNav === "newsletter"
-                                                ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
-                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                                ? "bg-[#2f3c20] pl-4 text-white"
+                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#2f3c20] hover:pl-2 hover:text-white"
                                         }`}
                                         aria-current={activeNav === "newsletter" ? "page" : undefined}
                                     >
@@ -314,8 +322,8 @@ export default function DashboardPage() {
                                         onClick={() => setActiveNav("home")}
                                         className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
                                             activeNav === "home"
-                                                ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
-                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                                ? "bg-[#2f3c20] pl-4 text-white"
+                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#2f3c20] hover:pl-2 hover:text-white"
                                         }`}
                                         aria-current={activeNav === "home" ? "page" : undefined}
                                     >
@@ -330,8 +338,8 @@ export default function DashboardPage() {
                                     onClick={() => setActiveNav("settings")}
                                     className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
                                         activeNav === "settings"
-                                            ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
-                                            : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                            ? "bg-[#2f3c20] pl-4 text-white"
+                                            : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#2f3c20] hover:pl-2 hover:text-white"
                                     }`}
                                     aria-current={activeNav === "settings" ? "page" : undefined}
                                 >
@@ -342,8 +350,8 @@ export default function DashboardPage() {
                                     onClick={() => setActiveNav("logout")}
                                     className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
                                         activeNav === "logout"
-                                            ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
-                                            : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                            ? "bg-[#2f3c20] pl-4 text-white"
+                                            : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#2f3c20] hover:pl-2 hover:text-white"
                                     }`}
                                     aria-current={activeNav === "logout" ? "page" : undefined}
                                 >
