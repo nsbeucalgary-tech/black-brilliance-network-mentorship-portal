@@ -368,7 +368,7 @@ export default function DashboardPage() {
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div className="flex flex-1 items-center gap-4">
                             <div className="w-full max-w-[640px]">
-                                <div className="flex items-center gap-2 rounded-[999px] border border-[#e4e6e3] bg-[#f3f4f3] px-4 py-2">
+                                <div className="flex items-center gap-2 rounded-md border border-[#e4e6e3] bg-white px-4 py-2">
                                     <svg
                                         viewBox="0 0 24 24"
                                         className="h-4 w-4 text-[#c2c7bf]"
@@ -391,7 +391,7 @@ export default function DashboardPage() {
                                         />
                                     </svg>
                                     <input
-                                        className="w-full bg-transparent text-[14px] text-[#a0a5a0] placeholder:text-[#c5c7c4] focus:outline-none"
+                                        className="w-full bg-transparent text-[14px] text-[#7b827b] placeholder:text-[#b7bcb6] focus:outline-none"
                                         placeholder="Search Students"
                                     />
                                 </div>
