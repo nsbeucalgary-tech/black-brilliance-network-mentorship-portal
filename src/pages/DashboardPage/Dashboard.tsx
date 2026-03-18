@@ -72,7 +72,7 @@ export default function DashboardPage() {
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav("dashboard")}
-                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                    className={`relative grid h-11 w-11 place-items-center rounded-xl transition-colors ${
                                         activeNav === "dashboard"
                                             ? "bg-[#1f2a12]"
                                             : "bg-transparent hover:bg-[#1f2a12]"
@@ -80,6 +80,9 @@ export default function DashboardPage() {
                                     aria-label="Dashboard"
                                     aria-current={activeNav === "dashboard" ? "page" : undefined}
                                 >
+                                    {activeNav === "dashboard" && (
+                                        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 translate-x-[14px] rounded-full bg-white" />
+                                    )}
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M4 5h16v10H4V5Zm6 14h4"
@@ -95,12 +98,15 @@ export default function DashboardPage() {
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav("calendar")}
-                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                    className={`relative grid h-11 w-11 place-items-center rounded-xl transition-colors ${
                                         activeNav === "calendar" ? "bg-[#1f2a12]" : "bg-transparent hover:bg-[#1f2a12]"
                                     }`}
                                     aria-label="Calendar"
                                     aria-current={activeNav === "calendar" ? "page" : undefined}
                                 >
+                                    {activeNav === "calendar" && (
+                                        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 translate-x-[14px] rounded-full bg-white" />
+                                    )}
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M7 4v2m10-2v2M5 8h14M6 6h12a2 2 0 0 1 2 2v12H4V8a2 2 0 0 1 2-2Z"
@@ -116,7 +122,7 @@ export default function DashboardPage() {
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav("matchmaking")}
-                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                    className={`relative grid h-11 w-11 place-items-center rounded-xl transition-colors ${
                                         activeNav === "matchmaking"
                                             ? "bg-[#1f2a12]"
                                             : "bg-transparent hover:bg-[#1f2a12]"
@@ -124,6 +130,9 @@ export default function DashboardPage() {
                                     aria-label="Matchmaking"
                                     aria-current={activeNav === "matchmaking" ? "page" : undefined}
                                 >
+                                    {activeNav === "matchmaking" && (
+                                        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 translate-x-[14px] rounded-full bg-white" />
+                                    )}
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M8.5 12.5 6 10l2.5-2.5a3 3 0 0 1 4.2 0l.3.3.3-.3a3 3 0 0 1 4.2 0L20 10l-2.5 2.5"
@@ -147,7 +156,7 @@ export default function DashboardPage() {
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav("newsletter")}
-                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                    className={`relative grid h-11 w-11 place-items-center rounded-xl transition-colors ${
                                         activeNav === "newsletter"
                                             ? "bg-[#1f2a12]"
                                             : "bg-transparent hover:bg-[#1f2a12]"
@@ -155,14 +164,24 @@ export default function DashboardPage() {
                                     aria-label="Newsletter"
                                     aria-current={activeNav === "newsletter" ? "page" : undefined}
                                 >
+                                    {activeNav === "newsletter" && (
+                                        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 translate-x-[14px] rounded-full bg-white" />
+                                    )}
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
-                                            d="M5 6h14v12H5V6Zm0 2 7 5 7-5"
+                                            d="M7 6h12v13H7a2 2 0 0 1-2-2V6h2Z"
                                             fill="none"
                                             stroke="currentColor"
                                             strokeWidth="1.7"
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
+                                        />
+                                        <path
+                                            d="M9 9h8M9 12h8M9 15h6"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.7"
+                                            strokeLinecap="round"
                                         />
                                     </svg>
                                 </button>
@@ -170,12 +189,15 @@ export default function DashboardPage() {
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav("home")}
-                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                    className={`relative grid h-11 w-11 place-items-center rounded-xl transition-colors ${
                                         activeNav === "home" ? "bg-[#1f2a12]" : "bg-transparent hover:bg-[#1f2a12]"
                                     }`}
                                     aria-label="Home"
                                     aria-current={activeNav === "home" ? "page" : undefined}
                                 >
+                                    {activeNav === "home" && (
+                                        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 translate-x-[14px] rounded-full bg-white" />
+                                    )}
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M4 10.5 12 4l8 6.5V20H4v-9.5Z"
@@ -193,7 +215,7 @@ export default function DashboardPage() {
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav("settings")}
-                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                    className={`relative grid h-11 w-11 place-items-center rounded-xl transition-colors ${
                                         activeNav === "settings"
                                             ? "bg-[#1f2a12]"
                                             : "bg-transparent hover:bg-[#1f2a12]"
@@ -201,6 +223,9 @@ export default function DashboardPage() {
                                     aria-label="Settings"
                                     aria-current={activeNav === "settings" ? "page" : undefined}
                                 >
+                                    {activeNav === "settings" && (
+                                        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 translate-x-[14px] rounded-full bg-white" />
+                                    )}
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
@@ -222,12 +247,15 @@ export default function DashboardPage() {
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav("logout")}
-                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                    className={`relative grid h-11 w-11 place-items-center rounded-xl transition-colors ${
                                         activeNav === "logout" ? "bg-[#1f2a12]" : "bg-transparent hover:bg-[#1f2a12]"
                                     }`}
                                     aria-label="Log out"
                                     aria-current={activeNav === "logout" ? "page" : undefined}
                                 >
+                                    {activeNav === "logout" && (
+                                        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 translate-x-[14px] rounded-full bg-white" />
+                                    )}
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M5 5h9v14H5V5Z"
@@ -237,7 +265,7 @@ export default function DashboardPage() {
                                             strokeLinejoin="round"
                                         />
                                         <path
-                                            d="M14 12h7m0 0-3-3m3 3-3 3"
+                                            d="M14 12h7m-7 0 3-3m-3 3 3 3"
                                             fill="none"
                                             stroke="currentColor"
                                             strokeWidth="1.7"
