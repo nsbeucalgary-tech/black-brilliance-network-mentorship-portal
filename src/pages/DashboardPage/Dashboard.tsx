@@ -70,8 +70,8 @@ export default function DashboardPage() {
         <div className="min-h-dvh w-full bg-[#eef0ee] text-[#223018]">
             <div className="flex min-h-dvh w-full">
                 {/* Sidebar */}
-                <aside className="hidden w-[260px] shrink-0 px-7 py-8 md:block">
-                    <div className="h-full rounded-3xl bg-gradient-to-b from-[#2f3c20] to-[#283318] px-6 py-7 text-white shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
+                <aside className="hidden w-[260px] shrink-0 px-7 py-6 md:block">
+                    <div className="flex h-full flex-col rounded-3xl bg-gradient-to-b from-[#2f3c20] to-[#283318] px-6 py-7 text-white shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
                         <div className="flex items-start gap-3">
                             <div className="mt-1 flex h-8 w-8 flex-col gap-1">
                                 <span className="h-2 w-2 rounded-full bg-white" />
@@ -149,25 +149,36 @@ export default function DashboardPage() {
                             ))}
                         </nav>
 
-                        <div className="mt-auto pt-8">
-                            <div className="mt-10 space-y-2 text-[15px]">
-                                {["Settings", "Log out"].map((label) => (
-                                    <a
-                                        key={label}
-                                        href="#"
-                                        className="flex items-center gap-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white"
-                                    >
-                                        <Icon className="text-white/60">
-                                            <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-                                                <path
-                                                    fill="currentColor"
-                                                    d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.1 7.1 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.71 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.5a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.3.6.22l2.39-.96c.51.4 1.05.71 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.56ZM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5Z"
-                                                />
-                                            </svg>
-                                        </Icon>
-                                        {label}
-                                    </a>
-                                ))}
+                        <div className="mt-auto pb-1 pt-10">
+                            <div className="space-y-2 text-[15px]">
+                                <a
+                                    href="#"
+                                    className="flex items-center gap-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white"
+                                >
+                                    <Icon className="text-white/60">
+                                        <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                                            <path
+                                                fill="currentColor"
+                                                d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.1 7.1 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.71 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.83 14.5a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.3.6.22l2.39-.96c.51.4 1.05.71 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.56ZM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5Z"
+                                            />
+                                        </svg>
+                                    </Icon>
+                                    Settings
+                                </a>
+                                <a
+                                    href="#"
+                                    className="mt-3 flex items-center gap-3 rounded-xl px-4 py-3 text-white/70 hover:bg-white/10 hover:text-white"
+                                >
+                                    <Icon className="text-white/60">
+                                        <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                                            <path
+                                                fill="currentColor"
+                                                d="M5 5h8v2H7v10h6v2H5V5Zm10 4V7l4 4-4 4v-2h-6v-2h6V9Z"
+                                            />
+                                        </svg>
+                                    </Icon>
+                                    Log out
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -178,16 +189,31 @@ export default function DashboardPage() {
                     {/* Top bar */}
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div className="flex flex-1 items-center gap-4">
-                            <div className="w-full max-w-[620px]">
-                                <div className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.06),0_10px_30px_rgba(0,0,0,0.06)]">
-                                    <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#90a27b]" aria-hidden="true">
+                            <div className="w-full max-w-[640px]">
+                                <div className="flex items-center gap-2 rounded-[999px] border border-[#e4e6e3] bg-[#f3f4f3] px-4 py-2">
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        className="h-4 w-4 text-[#c2c7bf]"
+                                        aria-hidden="true"
+                                    >
+                                        <circle
+                                            cx="11"
+                                            cy="11"
+                                            r="4.5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.6"
+                                        />
                                         <path
-                                            fill="currentColor"
-                                            d="M10 2a8 8 0 1 1 5.29 14.02l4.35 4.35-1.42 1.42-4.35-4.35A8 8 0 0 1 10 2Zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z"
+                                            d="m14.5 14.5 3 3"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.6"
+                                            strokeLinecap="round"
                                         />
                                     </svg>
                                     <input
-                                        className="w-full bg-transparent text-[15px] text-[#29361b] placeholder:text-[#c2c9bd] focus:outline-none"
+                                        className="w-full bg-transparent text-[14px] text-[#a0a5a0] placeholder:text-[#c5c7c4] focus:outline-none"
                                         placeholder="Search Students"
                                     />
                                 </div>
