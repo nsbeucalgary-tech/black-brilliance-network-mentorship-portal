@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 function Star({ filled }: { filled: boolean }) {
     return (
@@ -31,6 +31,10 @@ function TopIconButton({
 }
 
 export default function DashboardPage() {
+    const [activeNav, setActiveNav] = useState<
+        "dashboard" | "calendar" | "matchmaking" | "newsletter" | "home" | "settings" | "logout"
+    >("dashboard");
+
     const tasks = useMemo(
         () => [
             { title: "Plan out communication workshop", owner: "Colin Bobbins", date: "June 4, 2025", status: "Done" },
@@ -65,11 +69,14 @@ export default function DashboardPage() {
                             </div>
 
                             <div className="mt-10 flex flex-1 flex-col items-center gap-6 text-white">
-                                {/* Dashboard (monitor) */}
                                 <button
                                     type="button"
-                                    className="grid h-11 w-11 place-items-center rounded-xl bg-white/10"
+                                    onClick={() => setActiveNav("dashboard")}
+                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                        activeNav === "dashboard" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                    }`}
                                     aria-label="Dashboard"
+                                    aria-current={activeNav === "dashboard" ? "page" : undefined}
                                 >
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
@@ -83,8 +90,15 @@ export default function DashboardPage() {
                                     </svg>
                                 </button>
 
-                                {/* Calendar */}
-                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Calendar">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveNav("calendar")}
+                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                        activeNav === "calendar" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                    }`}
+                                    aria-label="Calendar"
+                                    aria-current={activeNav === "calendar" ? "page" : undefined}
+                                >
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M7 4v2m10-2v2M5 8h14M6 6h12a2 2 0 0 1 2 2v12H4V8a2 2 0 0 1 2-2Z"
@@ -97,8 +111,15 @@ export default function DashboardPage() {
                                     </svg>
                                 </button>
 
-                                {/* Matchmaking (handshake-ish) */}
-                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Matchmaking">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveNav("matchmaking")}
+                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                        activeNav === "matchmaking" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                    }`}
+                                    aria-label="Matchmaking"
+                                    aria-current={activeNav === "matchmaking" ? "page" : undefined}
+                                >
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M8.5 12.5 6 10l2.5-2.5a3 3 0 0 1 4.2 0l.3.3.3-.3a3 3 0 0 1 4.2 0L20 10l-2.5 2.5"
@@ -119,8 +140,15 @@ export default function DashboardPage() {
                                     </svg>
                                 </button>
 
-                                {/* Newsletter */}
-                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Newsletter">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveNav("newsletter")}
+                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                        activeNav === "newsletter" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                    }`}
+                                    aria-label="Newsletter"
+                                    aria-current={activeNav === "newsletter" ? "page" : undefined}
+                                >
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M5 6h14v12H5V6Zm0 2 7 5 7-5"
@@ -133,8 +161,15 @@ export default function DashboardPage() {
                                     </svg>
                                 </button>
 
-                                {/* Home */}
-                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Home">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveNav("home")}
+                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                        activeNav === "home" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                    }`}
+                                    aria-label="Home"
+                                    aria-current={activeNav === "home" ? "page" : undefined}
+                                >
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M4 10.5 12 4l8 6.5V20H4v-9.5Z"
@@ -149,7 +184,15 @@ export default function DashboardPage() {
 
                             <div className="mt-auto flex flex-col items-center gap-6 pb-4 text-white">
                                 {/* Settings */}
-                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Settings">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveNav("settings")}
+                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                        activeNav === "settings" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                    }`}
+                                    aria-label="Settings"
+                                    aria-current={activeNav === "settings" ? "page" : undefined}
+                                >
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
@@ -168,7 +211,15 @@ export default function DashboardPage() {
                                 </button>
 
                                 {/* Log out */}
-                                <button type="button" className="grid h-11 w-11 place-items-center" aria-label="Log out">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveNav("logout")}
+                                    className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${
+                                        activeNav === "logout" ? "bg-[#a7c77f]/25" : "bg-transparent hover:bg-white/10"
+                                    }`}
+                                    aria-label="Log out"
+                                    aria-current={activeNav === "logout" ? "page" : undefined}
+                                >
                                     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                                         <path
                                             d="M5 5h9v14H5V5Z"
@@ -203,27 +254,101 @@ export default function DashboardPage() {
                                 </div>
                             </div>
 
-                            <nav className="mt-10 space-y-6 text-[18px]">
-                                <a
-                                    href="#"
-                                    className="inline-flex w-full items-center justify-center rounded-2xl bg-[#2f3c20] py-2.5 text-[15px] font-semibold text-white"
-                                >
-                                    Dashboard
-                                </a>
-                                {["Calendar", "Matchmaking", "Newsletter", "Home"].map((label) => (
-                                    <a key={label} href="#" className="block font-medium text-[#2f3c20]">
-                                        {label}
-                                    </a>
-                                ))}
+                            <nav className="mt-10">
+                                {/* Text items aligned to icon rail rows */}
+                                <div className="flex flex-col gap-6 text-[18px]">
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveNav("dashboard")}
+                                        className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
+                                            activeNav === "dashboard"
+                                                ? "bg-[#2f3c20] pl-4 text-white"
+                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                        }`}
+                                        aria-current={activeNav === "dashboard" ? "page" : undefined}
+                                    >
+                                        <span className="inline-flex h-11 items-center">Dashboard</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveNav("calendar")}
+                                        className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
+                                            activeNav === "calendar"
+                                                ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
+                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                        }`}
+                                        aria-current={activeNav === "calendar" ? "page" : undefined}
+                                    >
+                                        <span className="inline-flex h-11 items-center">Calendar</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveNav("matchmaking")}
+                                        className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
+                                            activeNav === "matchmaking"
+                                                ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
+                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                        }`}
+                                        aria-current={activeNav === "matchmaking" ? "page" : undefined}
+                                    >
+                                        <span className="inline-flex h-11 items-center">Matchmaking</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveNav("newsletter")}
+                                        className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
+                                            activeNav === "newsletter"
+                                                ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
+                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                        }`}
+                                        aria-current={activeNav === "newsletter" ? "page" : undefined}
+                                    >
+                                        <span className="inline-flex h-11 items-center">Newsletter</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveNav("home")}
+                                        className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
+                                            activeNav === "home"
+                                                ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
+                                                : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                        }`}
+                                        aria-current={activeNav === "home" ? "page" : undefined}
+                                    >
+                                        <span className="inline-flex h-11 items-center">Home</span>
+                                    </button>
+                                </div>
                             </nav>
 
-                            <div className="mt-auto space-y-6 pb-2 pt-14 text-[18px]">
-                                <a href="#" className="block font-medium text-[#2f3c20]">
-                                    Settings
-                                </a>
-                                <a href="#" className="block font-medium text-[#2f3c20]">
-                                    Log out
-                                </a>
+                            <div className="mt-auto flex flex-col gap-6 pb-2 pt-14 text-[18px]">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveNav("settings")}
+                                    className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
+                                        activeNav === "settings"
+                                            ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
+                                            : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                    }`}
+                                    aria-current={activeNav === "settings" ? "page" : undefined}
+                                >
+                                    <span className="inline-flex h-11 items-center">Settings</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveNav("logout")}
+                                    className={`h-11 w-full rounded-2xl text-left font-medium transition-all ${
+                                        activeNav === "logout"
+                                            ? "bg-[#edf2e8] pl-4 text-[#2f3c20]"
+                                            : "bg-transparent pl-0 text-[#2f3c20] hover:bg-[#edf2e8] hover:pl-2"
+                                    }`}
+                                    aria-current={activeNav === "logout" ? "page" : undefined}
+                                >
+                                    <span className="inline-flex h-11 items-center">Log out</span>
+                                </button>
                             </div>
                         </div>
                     </div>
