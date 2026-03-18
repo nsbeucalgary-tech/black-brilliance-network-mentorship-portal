@@ -22,7 +22,7 @@ function TopIconButton({
     return (
         <button
             type="button"
-            className="inline-flex h-8 w-8 items-center justify-center text-[#2f3c20]"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[#2f3c20] transition-colors hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2f3c20]/30"
             aria-label={label}
         >
             {children}
