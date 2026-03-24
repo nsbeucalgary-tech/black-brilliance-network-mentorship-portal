@@ -4,7 +4,7 @@ import { FirebaseError } from "firebase/app"
 import { auth } from "../_db_controller/init"
 
 export async function signUpWithEmailAndPassword(
-  name: string,
+  _name: string,
   email: string,
   password: string,
   remember: boolean,
@@ -15,7 +15,7 @@ export async function signUpWithEmailAndPassword(
       remember ? browserLocalPersistence : browserSessionPersistence
     ); 
 
-    const createdUser = await createUserWithEmailAndPassword(auth, email, password);
+    await createUserWithEmailAndPassword(auth, email, password);
     // <        -----> Create a User with the name
     return null;
   } catch (e) {
@@ -84,7 +84,7 @@ export async function signInWithProvider(provider: AuthProvider, providerName: s
       remember ? browserLocalPersistence : browserSessionPersistence
     );
 
-    const user = await signInWithPopup(auth, provider);
+    await signInWithPopup(auth, provider);
     return null;
   } catch (e) {
     if (e instanceof FirebaseError) {

@@ -97,7 +97,7 @@ export async function exampleUpdateUser(userId: string) {
   try {
     const updatedUser = await userController.updateUser(userId, {
       full_name: "Jane Doe",
-      role: UserRole.MENTEE, // User can now be promoted to MENTEE from their default USER role
+      role: UserRole.MENTEE,
     });
     console.log("User updated:", updatedUser);
     return updatedUser;

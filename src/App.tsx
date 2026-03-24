@@ -9,6 +9,7 @@ import DashboardPage from "./pages/DashboardPage/Dashboard";
 import ExamplePage from "./_db_controller/example/page";
 import LoginPage from "./pages/LoginPage/Login";
 import SignupPage from "./pages/SignupPage/Signup";
+import MentorMatchingTest from "./pages/TestPage/MentorMatchingTest";
 
 import UserProfilePage from "./pages/UserProfilePage/UserProfile";
 import MentorProfilePage from "./pages/MentorProfilePage/MentorProfile";
@@ -42,6 +43,7 @@ function App() {
             }
           />
           <Route path="/example" element={<ExamplePage />} />
+          <Route path="/test-matching" element={<MentorMatchingTest />} />
 
           {/* Protected routes */}
           <Route

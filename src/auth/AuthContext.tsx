@@ -1,9 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import type { User } from "firebase/auth";
 import { auth } from "../_db_controller/init";
-
 
 interface AuthContextType {
   user: User | null;
@@ -36,4 +35,3 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     </AuthContext.Provider>
   );
 };
-
