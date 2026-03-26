@@ -118,6 +118,12 @@ async function getExtractor(): Promise<EmbeddingExtractor> {
 }
 
 async function getEmbedding(extractor: EmbeddingExtractor, text: string): Promise<number[]> {
+  const cacheKey = text.trim();
+  const cached = embeddingCache.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
   const output = await extractor(text, {
     pooling: "mean",
     normalize: true,
@@ -129,10 +135,14 @@ async function getEmbedding(extractor: EmbeddingExtractor, text: string): Promis
   }
 
   if (Array.isArray(arr) && Array.isArray(arr[0])) {
-    return arr[0] as number[];
+    const vector = arr[0] as number[];
+    addToEmbeddingCache(cacheKey, vector);
+    return vector;
   }
 
-  return arr as number[];
+  const vector = arr as number[];
+  addToEmbeddingCache(cacheKey, vector);
+  return vector;
 }
 
 function lexicalProfessionalScore(mentee: PersonProfile, mentor: PersonProfile): number {
@@ -150,7 +160,67 @@ function lexicalPersonalScore(mentee: PersonProfile, mentor: PersonProfile): num
 
 type RankOptions = {
   useEmbeddings?: boolean;
+  rateLimitKey?: string;
 };
+
+type RateLimitConfig = {
+  maxRequests: number;
+  windowMs: number;
+};
+
+type EmbeddingCacheConfig = {
+  maxEntries: number;
+};
+
+function parsePositiveInt(value: string | undefined, fallback: number): number {
+  if (!value) return fallback;
+
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
+
+  return parsed;
+}
+
+const matcherRateLimit: RateLimitConfig = {
+  maxRequests: parsePositiveInt(import.meta.env.VITE_MATCHING_RATE_LIMIT_MAX_REQUESTS, 20),
+  windowMs: parsePositiveInt(import.meta.env.VITE_MATCHING_RATE_LIMIT_WINDOW_MS, 60_000),
+};
+
+const embeddingCacheConfig: EmbeddingCacheConfig = {
+  maxEntries: parsePositiveInt(import.meta.env.VITE_MATCHING_EMBEDDING_CACHE_MAX_ENTRIES, 500),
+};
+
+const rateLimitState = new Map<string, number[]>();
+const embeddingCache = new Map<string, number[]>();
+
+function addToEmbeddingCache(key: string, value: number[]): void {
+  if (embeddingCache.has(key)) {
+    embeddingCache.delete(key);
+  }
+
+  embeddingCache.set(key, value);
+
+  if (embeddingCache.size > embeddingCacheConfig.maxEntries) {
+    const oldestKey = embeddingCache.keys().next().value;
+    if (oldestKey) {
+      embeddingCache.delete(oldestKey);
+    }
+  }
+}
+
+function enforceRateLimit(rateLimitKey: string): void {
+  const now = Date.now();
+  const windowStart = now - matcherRateLimit.windowMs;
+  const timestamps = rateLimitState.get(rateLimitKey) ?? [];
+  const inWindow = timestamps.filter((ts) => ts >= windowStart);
+
+  if (inWindow.length >= matcherRateLimit.maxRequests) {
+    throw new Error("Rate limit exceeded. Please wait and try again.");
+  }
+
+  inWindow.push(now);
+  rateLimitState.set(rateLimitKey, inWindow);
+}
 
 export async function rankMentors(
   mentee: PersonProfile,
@@ -158,6 +228,9 @@ export async function rankMentors(
   options: RankOptions = {},
 ): Promise<MatchBreakdown[]> {
   const useEmbeddings = options.useEmbeddings ?? true;
+  const rateLimitKey = options.rateLimitKey ?? "global";
+
+  enforceRateLimit(rateLimitKey);
 
   let extractor: EmbeddingExtractor | null = null;
   if (useEmbeddings) {
@@ -216,7 +289,10 @@ export async function rankMentors(
   return results.sort((a, b) => b.finalScore - a.finalScore);
 }
 
-export const sampleMentee: PersonProfile = {
+/*
+Example payload shape for manual testing:
+
+const mentee: PersonProfile = {
   id: "m1",
   name: "Amina",
   role: "mentee",
@@ -229,7 +305,7 @@ export const sampleMentee: PersonProfile = {
   meetingStyle: "online",
 };
 
-export const sampleMentors: PersonProfile[] = [
+const mentors: PersonProfile[] = [
   {
     id: "t1",
     name: "Jordan",
@@ -242,32 +318,7 @@ export const sampleMentors: PersonProfile[] = [
     availability: ["mon_evening", "thu_evening"],
     meetingStyle: "online",
   },
-  {
-    id: "t2",
-    name: "Priya",
-    role: "mentor",
-    discipline: "Mechanical Engineering",
-    skills: ["CAD", "MATLAB", "controls"],
-    careerGoals: ["robotics", "automation", "product design"],
-    academicLevel: "graduate",
-    hobbies: ["fitness", "travel", "reading"],
-    availability: ["wed_evening", "sat_afternoon"],
-    meetingStyle: "hybrid",
-  },
-  {
-    id: "t3",
-    name: "Samuel",
-    role: "mentor",
-    discipline: "Data Engineering",
-    skills: ["Python", "SQL", "Spark", "ETL"],
-    careerGoals: ["data engineering", "analytics engineering", "platforms"],
-    academicLevel: "industry professional",
-    hobbies: ["music", "chess", "gaming"],
-    availability: ["mon_evening", "wed_evening", "sat_afternoon"],
-    meetingStyle: "online",
-  },
 ];
 
-export async function runSampleMentorMatching(useEmbeddings = true): Promise<MatchBreakdown[]> {
-  return rankMentors(sampleMentee, sampleMentors, { useEmbeddings });
-}
+const ranked = await rankMentors(mentee, mentors, { useEmbeddings: true, rateLimitKey: "user-123" });
+*/
