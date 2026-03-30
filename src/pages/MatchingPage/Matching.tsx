@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Route, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import FilterChip from "../../components/matching/FilterChip";
 import FiltersDrawer from "../../components/matching/FiltersDrawer";
