@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Route, useNavigate } from "react-router-dom";
 
 import FilterChip from "../../components/matching/FilterChip";
 import FiltersDrawer from "../../components/matching/FiltersDrawer";
@@ -7,6 +7,8 @@ import MatchesGrid from "../../components/matching/MatchesGrid";
 import type { Match } from "../../components/matching/MatchCard";
 
 import BBNLogo from "../../assets/BBNLogo.svg";
+
+import Navbar from "../../components/Navbar";
 
 type Tab = "TOP_MATCHES" | "FAVOURITES";
 type SortMode = "BEST_MATCH" | "NAME";
@@ -71,7 +73,9 @@ export default function Matching() {
   }, [matches, tab, search, sortMode]);
 
   return (
-    <div className="!mt-2 fixed inset-0 z-50 bg-white overflow-y-auto">
+    <div className="flex min-h-screen">
+      <Navbar />
+      <div className="flex-1 bg-white overflow-y-auto">
       <FiltersDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
 
       {/* Top navbar */}
@@ -250,5 +254,6 @@ export default function Matching() {
         </div>
       </main>
     </div>
+  </div>
   );
 }
