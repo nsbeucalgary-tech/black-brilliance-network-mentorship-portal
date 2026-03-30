@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import FilterChip from "../../components/matching/FilterChip";
 import FiltersDrawer from "../../components/matching/FiltersDrawer";
@@ -70,12 +70,7 @@ export default function Matching() {
     return rows;
   }, [matches, tab, search, sortMode]);
 
-  const linkBase =
-    "flex items-center gap-2 px-3 py-2 text-sm text-neutral-600 hover:text-neutral-900";
-  const linkActive = "text-neutral-900 border-b-2 border-neutral-900";
-
   return (
-    // Fullscreen overlay so Matching ignores the sidebar layout without editing LoggedInLayout
     <div className="!mt-2 fixed inset-0 z-50 bg-white overflow-y-auto">
       <FiltersDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
 
@@ -92,40 +87,6 @@ export default function Matching() {
             <img src={BBNLogo} alt="BBN" className="h-8 w-8" />
           </button>
 
-          {/* Nav links */}
-          <nav className="!ml-3 flex items-center gap-6">
-            <NavLink
-              to="/home"
-              className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}
-            >
-              <span className="text-neutral-400"></span>
-              Home
-            </NavLink>
-
-            <NavLink
-              to="/matching"
-              className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}
-            >
-              <span className="text-neutral-400"></span>
-              Matching
-            </NavLink>
-
-            <NavLink
-              to="/calendar"
-              className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}
-            >
-              <span className="text-neutral-400"></span>
-              Events
-            </NavLink>
-
-            <NavLink
-              to="/profile"
-              className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}
-            >
-              <span className="text-neutral-400"></span>
-              Profile
-            </NavLink>
-          </nav>
 
           {/* Avatar dropdown */}
           <div className="relative" ref={profileRef}>
