@@ -1,20 +1,19 @@
 import { useState } from "react";
 
 export type Match = {
-  id: string;
-  name: string;
-  title: string;
-  company: string;
-  matchPercent: number;
-  avatarUrl: string;
-  isFavourite?: boolean;
+    id: string;
+    name: string;
+    title: string;
+    company: string;
+    matchPercent: number;
+    avatarUrl: string;
+    isFavourite?: boolean;
 };
 
 type Props = {
-  match: Match;
+    match: Match;
 };
 
-/** Profile card button; navigates to /profile/:id. */
 export default function MatchCard({ match }: Props) {
   const [fav, setFav] = useState(Boolean(match.isFavourite));
   const [showTestPopup, setShowTestPopup] = useState(false);
