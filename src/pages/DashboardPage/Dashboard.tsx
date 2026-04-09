@@ -5,15 +5,13 @@ export default function DashboardPage() {
     const { dbUser } = useAuth();
     const navigate = useNavigate();
 
-    // Profile is considered incomplete if any of these key fields are missing
     const isProfileIncomplete =
         dbUser && (!dbUser.bio || !dbUser.title || !dbUser.location);
 
     return (
         <div className="min-h-screen bg-white">
-            {/* Incomplete profile reminder banner */}
             {isProfileIncomplete && (
-                <div className="flex items-center justify-between gap-4 bg-[#e8f3dd] border-b border-[#c5dbb0] px-6 py-3">
+                <div className="flex items-center justify-between gap-4 border-b border-[#c5dbb0] bg-[#e8f3dd] px-6 py-3">
                     <div className="flex items-center gap-3">
                         <span className="text-lg">✏️</span>
                         <p className="text-sm font-medium text-[#2d3a1f]">
@@ -40,7 +38,6 @@ export default function DashboardPage() {
                 </div>
             )}
 
-            {/* Dashboard content */}
             <div className="px-8 py-10">
                 <h1 className="text-2xl font-bold text-[#2d3a1f]">
                     Welcome back

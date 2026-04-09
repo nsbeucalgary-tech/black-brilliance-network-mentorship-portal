@@ -16,6 +16,7 @@ const userController = new UserController(db);
  */
 export async function exampleCreateUser() {
   const newUserPayload: CreateUserPayload = {
+    uid: "example-user-uid",
     full_name: "John Doe",
     email: "john.doe@example.com",
     role: UserRole.USER,
@@ -150,6 +151,7 @@ export async function exampleEmailExists(email: string) {
 export function exampleTypeCasting() {
   // Create a user object with proper typing
   const user: User = {
+    uid: "example-mentor-uid",
     full_name: "Alice Smith",
     email: "alice.smith@example.com",
     role: UserRole.MENTOR,

@@ -1,5 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/useAuthContext";
+import type { User } from "../../types/User";
 
 import AboutSection from "../../components/UserProfile/AboutSection";
 import ExperienceSection from "../../components/UserProfile/ExperienceSection";
@@ -26,7 +27,7 @@ const COMPANY_COLOURS = [
     "#14b8a6",
     "#9ca3af",
 ];
-function companyColour(company: string, index: number): string {
+function companyColour(_company: string, index: number): string {
     return COMPANY_COLOURS[index % COMPANY_COLOURS.length];
 }
 
@@ -67,10 +68,14 @@ const matchingQuestions = [
 
 export default function UserProfilePage() {
     const { dbUser } = useAuth();
+    const location = useLocation();
     const navigate = useNavigate();
+    const viewedProfile = (location.state as { profile?: User } | null)?.profile;
+    const profile = viewedProfile ?? dbUser;
+    const isOwnProfile = !viewedProfile || viewedProfile.uid === dbUser?.uid;
 
     // ── Loading state ──────────────────────────────────────────────────────
-    if (!dbUser) {
+    if (!profile) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-white">
                 <div className="flex flex-col items-center gap-4 text-[#7a9b5c]">
@@ -83,31 +88,32 @@ export default function UserProfilePage() {
         );
     }
 
-    // ── Derive display data from dbUser ────────────────────────────────────
-    const initials = getInitials(dbUser.full_name);
+    // ── Derive display data from selected profile ──────────────────────────
+    const initials = getInitials(profile.full_name);
 
     const links = [
-        dbUser.website_url
+        profile.website_url
             ? {
-                  label: dbUser.website_url.replace(/^https?:\/\//, ""),
-                  href: dbUser.website_url,
+                  label: profile.website_url.replace(/^https?:\/\//, ""),
+                  href: profile.website_url,
               }
             : null,
-        dbUser.linkedin_url
+        profile.linkedin_url
             ? {
-                  label: dbUser.linkedin_url.replace(/^https?:\/\//, ""),
-                  href: dbUser.linkedin_url,
+                  label: profile.linkedin_url.replace(/^https?:\/\//, ""),
+                  href: profile.linkedin_url,
               }
             : null,
     ].filter(Boolean) as { label: string; href: string }[];
 
-    const experiences = (dbUser.experiences ?? []).map((exp, i) => ({
+    const experiences = (profile.experiences ?? []).map((exp, i) => ({
         ...exp,
         color: companyColour(exp.company, i),
     }));
 
-    const interests = dbUser.interests ?? [];
-    const isIncomplete = !dbUser.bio || !dbUser.title || !dbUser.location;
+    const interests = profile.interests ?? [];
+    const isIncomplete =
+        isOwnProfile && (!profile.bio || !profile.title || !profile.location);
 
     return (
         <div
@@ -145,10 +151,10 @@ export default function UserProfilePage() {
                 <div className="col-start-2 row-start-1 max-[1100px]:col-start-1 max-[1100px]:row-start-1">
                     <ProfileHeader
                         initials={initials}
-                        name={dbUser.full_name}
-                        pronouns={dbUser.pronouns ?? ""}
-                        title={dbUser.title ?? ""}
-                        location={dbUser.location ?? ""}
+                        name={profile.full_name}
+                        pronouns={profile.pronouns ?? ""}
+                        title={profile.title ?? ""}
+                        location={profile.location ?? ""}
                         experiences={experiences}
                     />
                 </div>
@@ -172,7 +178,7 @@ export default function UserProfilePage() {
                 >
                     <AboutSection
                         content={
-                            dbUser.bio ??
+                            profile.bio ??
                             "No bio yet. Click 'Complete profile' to add one."
                         }
                     />
@@ -180,10 +186,8 @@ export default function UserProfilePage() {
                         className="hidden max-[720px]:block"
                         experiences={experiences}
                     />
-                    {interests.length > 0 && (
-                        <InterestsSection interests={interests} />
-                    )}
-                    <MatchingQuestions questions={matchingQuestions} />
+                    {interests.length > 0 && <InterestsSection interests={interests} />}
+                    {isOwnProfile && <MatchingQuestions questions={matchingQuestions} />}
                 </main>
             </div>
         </div>

@@ -63,6 +63,15 @@ export class MentorshipRelationshipController {
     return Timestamp.fromDate(value);
   }
 
+  private isPermissionDeniedError(error: unknown): boolean {
+    return (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as { code?: string }).code === "permission-denied"
+    );
+  }
+
   private firestoreDataToRelationship(
     data: MentorshipRelationshipFirestoreData
   ): MentorshipRelationship {
@@ -150,10 +159,23 @@ export class MentorshipRelationshipController {
       this.relationshipCollectionName,
       this.getRelationshipDocId(mentorId, menteeId)
     );
-    const relationshipSnapshot = await getDoc(relationshipRef);
     const now = new Date();
+    let relationshipSnapshot;
 
-    if (!relationshipSnapshot.exists()) {
+    try {
+      relationshipSnapshot = await getDoc(relationshipRef);
+    } catch (error) {
+      // Some Firestore rules allow create for the mentee but still deny a read
+      // against a not-yet-existing relationship doc. In that case, treat it as
+      // the first request for this pair and proceed with create.
+      if (!this.isPermissionDeniedError(error)) {
+        throw error;
+      }
+
+      relationshipSnapshot = null;
+    }
+
+    if (!relationshipSnapshot || !relationshipSnapshot.exists()) {
       const relationship: MentorshipRelationship = {
         mentor_id: mentorId,
         mentee_id: menteeId,
