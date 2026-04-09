@@ -1,4 +1,12 @@
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
+import {
+    collection,
+    doc,
+    setDoc,
+    getDocs,
+    deleteDoc,
+    type Firestore,
+} from 'firebase/firestore';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -30,54 +38,6 @@ export const EVENT_COLORS = [
     'bg-[#f3d7e8] text-[#a15f96] border-[#e6b8d7]',
     'bg-[#f8d4dc] text-[#b55468] border-[#efb0bf]',
     'bg-[#d9f1d1] text-[#4e7b46] border-[#acd89f]'
-];
-
-const INITIAL_EVENTS: CalendarEvent[] = [
-    {
-        id: '1',
-        title: 'Code Review',
-        date: '2026-02-12',
-        startTime: '13:00',
-        endTime: '14:00',
-        notes: 'Online',
-        colorClass: EVENT_COLORS[0]
-    },
-    {
-        id: '2',
-        title: 'Front-End meeting',
-        date: '2026-02-14',
-        startTime: '09:00',
-        endTime: '10:00',
-        notes: 'Science A Room 119',
-        colorClass: EVENT_COLORS[1]
-    },
-    {
-        id: '3',
-        title: 'Back-End meeting',
-        date: '2026-02-15',
-        startTime: '09:00',
-        endTime: '12:00',
-        notes: 'Science A Room 119',
-        colorClass: EVENT_COLORS[1]
-    },
-    {
-        id: '4',
-        title: 'Team Dinner',
-        date: '2026-02-15',
-        startTime: '14:00',
-        endTime: '17:00',
-        notes: 'Dining Center',
-        colorClass: EVENT_COLORS[2]
-    },
-    {
-        id: '5',
-        title: 'NSBE Brunch',
-        date: '2026-02-17',
-        startTime: '11:00',
-        endTime: '14:00',
-        notes: 'ENGG Lounge',
-        colorClass: EVENT_COLORS[3]
-    }
 ];
 
 // ─── Pure helpers ────────────────────────────────────────────────────────────
@@ -146,13 +106,49 @@ export function isToday(date: Date): boolean {
     return isSameDay(date, getCurDate());
 }
 
+// ─── Firestore Controller ────────────────────────────────────────────────────
+
+/**
+ * Handles Firestore CRUD for calendar events.
+ * Events are stored under: users/{userId}/events/{eventId}
+ */
+export class CalendarController {
+    private db: Firestore;
+    private userId: string;
+
+    constructor(db: Firestore, userId: string) {
+        this.db = db;
+        this.userId = userId;
+    }
+
+    private eventsRef() {
+        return collection(this.db, 'users', this.userId, 'events');
+    }
+
+    async getEvents(): Promise<CalendarEvent[]> {
+        const snap = await getDocs(this.eventsRef());
+        return snap.docs.map((d) => d.data() as CalendarEvent);
+    }
+
+    async createEvent(event: CalendarEvent): Promise<void> {
+        await setDoc(doc(this.eventsRef(), event.id), event);
+    }
+
+    async deleteEvent(eventId: string): Promise<void> {
+        await deleteDoc(doc(this.eventsRef(), eventId));
+    }
+}
+
 // ─── Hook ────────────────────────────────────────────────────────────────────
 
-export function useCalendarController() {
+export function useCalendarController(db: Firestore, userId: string) {
+    const controller = useMemo(() => new CalendarController(db, userId), [db, userId]);
+
     const curDate = useMemo(() => getCurDate(), []);
 
     const [selectedDate, setSelectedDate] = useState(curDate);
-    const [events, setEvents] = useState<CalendarEvent[]>(INITIAL_EVENTS);
+    const [events, setEvents] = useState<CalendarEvent[]>([]);
+    const [loading, setLoading] = useState(true);
     const [showNewEventModal, setShowNewEventModal] = useState(false);
     const [showMonthDropdown, setShowMonthDropdown] = useState(false);
     const [showYearDropdown, setShowYearDropdown] = useState(false);
@@ -163,11 +159,20 @@ export function useCalendarController() {
 
     const [form, setForm] = useState<EventFormState>({
         title: '',
-        date: getDateKey(selectedDate),
+        date: getDateKey(curDate),
         startTime: '09:00',
         endTime: '10:00',
         notes: ''
     });
+
+    // ── Load events from Firestore on mount ──────────────────────────────────
+
+    useEffect(() => {
+        setLoading(true);
+        controller.getEvents()
+            .then(setEvents)
+            .finally(() => setLoading(false));
+    }, [controller]);
 
     // ── Derived ──────────────────────────────────────────────────────────────
 
@@ -216,7 +221,7 @@ export function useCalendarController() {
         setShowNewEventModal(true);
     }, [selectedDate]);
 
-    const saveEvent = useCallback(() => {
+    const saveEvent = useCallback(async () => {
         if (!form.title.trim() || !form.date || !form.startTime || !form.endTime) {
             setFormError('Please fill in all required fields.');
             return;
@@ -236,13 +241,20 @@ export function useCalendarController() {
             colorClass: EVENT_COLORS[events.length % EVENT_COLORS.length]
         };
 
+        await controller.createEvent(newEvent);
         setEvents((prev) => [...prev, newEvent]);
         setSelectedDate(parseDateKey(form.date));
         setHighlightedEventId(newEvent.id);
         setShowNewEventModal(false);
         setFormError('');
         setForm({ title: '', date: form.date, startTime: '09:00', endTime: '10:00', notes: '' });
-    }, [form, events.length]);
+    }, [form, events.length, controller]);
+
+    const deleteEvent = useCallback(async (eventId: string) => {
+        await controller.deleteEvent(eventId);
+        setEvents((prev) => prev.filter((e) => e.id !== eventId));
+        if (highlightedEventId === eventId) setHighlightedEventId(null);
+    }, [controller, highlightedEventId]);
 
     const handlePreviousWeek = useCallback(() => {
         setSelectedDate((prev) => addWeeks(prev, -1));
@@ -282,6 +294,7 @@ export function useCalendarController() {
         selectedDate,
         setSelectedDate,
         events,
+        loading,
         showNewEventModal,
         setShowNewEventModal,
         showMonthDropdown,
@@ -308,6 +321,7 @@ export function useCalendarController() {
         partialMatches,
         openNewEventModal,
         saveEvent,
+        deleteEvent,
         handlePreviousWeek,
         handleNextWeek,
         selectMonth,

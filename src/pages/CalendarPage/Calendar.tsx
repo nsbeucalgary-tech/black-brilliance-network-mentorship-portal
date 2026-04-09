@@ -21,8 +21,33 @@ import {
     getMinutesFromTime
 } from '../../services/Calendarcontroller.ts';
 
+import { db } from '../../_db_controller/init.ts';
+import { useAuth } from '../../auth/useAuthContext.tsx';
+
+// ─── Outer guard component ────────────────────────────────────────────────────
+// Waits for a confirmed authenticated user before rendering the calendar.
+// This prevents useCalendarController from ever running with an empty userId,
+// which would cause Firestore permission errors.
+
 export default function CalenderPage() {
-    const c = useCalendarController();
+    const { user } = useAuth();
+
+    if (!user) {
+        return (
+            <section className="flex h-screen flex-1 items-center justify-center bg-[#fbfbf7]">
+                <p className="text-slate-400 text-sm">Loading calendar…</p>
+            </section>
+        );
+    }
+
+    return <CalendarPageInner uid={user.uid} />;
+}
+
+// ─── Inner component ──────────────────────────────────────────────────────────
+// Only renders when uid is a real, non-empty string.
+
+function CalendarPageInner({ uid }: { uid: string }) {
+    const c = useCalendarController(db, uid);
 
     /**
      * Position an event card inside a day column.
