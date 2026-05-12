@@ -6,7 +6,7 @@ import { GiCalendar } from 'react-icons/gi';
 import { FaPeopleArrows } from 'react-icons/fa';
 import { IoNewspaperOutline, IoHome } from 'react-icons/io5';
 import { MdSettings, MdLogout } from 'react-icons/md';
-import { HiMenuAlt3, HiX } from 'react-icons/hi';
+import { HiMenuAlt2, HiX } from 'react-icons/hi';
 import { useAuth } from '../auth/useAuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -67,14 +67,14 @@ function NavItem({ to, label, icon: Icon, navType, desktopOpen, mobileOnClick }:
                 key={to}
                 to={to}
                 onClick={generalOnClick}
-                className="flex items-center gap-4 text-white
+                className="flex items-center justify-end gap-4 text-white
                 transform transition-all duration-300 ease-in-out
                 active:-translate-y-1 active:text-[#aad576]
                 active:underline underline-offset-8 decoration-[#aad576]
                 active:rounded-md"
             >
-                <Icon size={22} />
                 <span className="text-lg">{label}</span>
+                <Icon size={22} />
             </NavLink>
         );
     }
@@ -122,10 +122,10 @@ function MobileMenu() {
                 <button
                     onClick={() => setOpen(true)}
                     aria-label="Open Menu"
-                    className="fixed top-4 right-4 z-50
+                    className="fixed top-4 left-4 z-50
                 p-2 rounded-lg bg-BBNDarkGreen text-white"
                 >
-                    <HiMenuAlt3 size={26} />
+                    <HiMenuAlt2 size={26} />
                 </button>
             </div>
 
@@ -139,10 +139,10 @@ function MobileMenu() {
 
             {/* Slide-in Menu */}
             <aside
-                className={`fixed top-0 right-0 h-full w-64
+                className={`fixed top-0 left-0 h-full w-64
                 bg-BBNDarkGreen z-50 flex flex-col
                 transform transition-transform duration-300
-                ${open ? 'translate-x-0' : 'translate-x-full'}`}
+                ${open ? 'translate-x-0' : '-translate-x-full'}`}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-4 py-2 border-b border-white">
@@ -202,7 +202,7 @@ function DesktopMenu() {
                             <img
                                 src={BBNLogoWhite}
                                 alt="BBN Logo"
-                                className={`w-12 h-12 object-contain transition-opacity
+                                className={`w-12 h-12 object-contain
                                 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                             />
                         </div>

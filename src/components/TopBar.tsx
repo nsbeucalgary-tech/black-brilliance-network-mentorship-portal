@@ -20,7 +20,7 @@ function nameForInitials(
 }
 
 const circleBtn =
-    "inline-flex h-15 w-15 shrink-0 items-center justify-center rounded-full border border-BBNDarkGreen/25 bg-white/40 text-2xl font-semibold text-BBNDarkGreen hover:outline hover:outline-2 hover:outline-black transition-all ease-in-out duration-300";
+    "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-BBNDarkGreen/25 bg-white/40 text-xl font-semibold text-BBNDarkGreen hover:outline hover:outline-2 hover:outline-black transition-all ease-in-out duration-300";
 
 export default function TopBar() {
     const { user, dbUser } = useAuth();
@@ -29,23 +29,23 @@ export default function TopBar() {
 
     return (
         <header
-            className="flex w-full shrink-0 items-center bg-transparent px-4 py-3"
+            className="flex w-full shrink-0 items-center bg-transparent border-b border-gray-300 px-4 py-3"
             role="banner"
         >
-            <div className="ml-auto flex items-center gap-3">
+            <div className="mt-auto ml-auto flex items-center gap-3">
                 <Link
                     to="/dashboard" /* TODO: Chnage to proper link when implemented */
                     aria-label="Notifications"
                     title="Your Notifications"
                 >
-                    <PiBellLight size={45} aria-hidden />
+                    <PiBellLight size={35} aria-hidden />
                 </Link>
                 <Link
                     to="/dashboard" /* TODO: Chnage to proper link when implemented */
                     aria-label="Messages"
                     title="Your Messages"
                 >
-                    <AiOutlineMail size={45} aria-hidden />
+                    <AiOutlineMail size={35} aria-hidden />
                 </Link>
                 <Link
                     to="/user-profile"
