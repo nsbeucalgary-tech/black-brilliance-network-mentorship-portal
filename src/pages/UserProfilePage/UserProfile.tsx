@@ -7,13 +7,7 @@ import InterestsSection from "../../components/UserProfile/InterestsSection";
 import MatchingQuestions from "../../components/UserProfile/MatchingQuestions";
 import ProfileHeader from "../../components/UserProfile/ProfileHeader";
 import ProfileSidebar from "../../components/UserProfile/ProfileSidebar";
-
-/** Derive two-letter initials from a full name, e.g. "Jane Doe" → "JD" */
-function getInitials(name: string): string {
-    const parts = name.trim().split(/\s+/);
-    if (parts.length === 1) return parts[0][0]?.toUpperCase() ?? "?";
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-}
+import { getInitials } from "../../utils";
 
 /** Assign a deterministic colour to each company based on its first char */
 const COMPANY_COLOURS = [
