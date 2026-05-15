@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
+import TopBar from "./TopBar";
 
 export default function LoggedInLayout() {
   const location = useLocation();
@@ -9,14 +10,17 @@ export default function LoggedInLayout() {
   const isMatchingPage = location.pathname.startsWith("/matching");
 
   return (
-    <div className="flex w-full">
-      {/* Hide the Navbar on Matching so the page can be fullscreen */}
-      {!isMatchingPage && <Navbar />}
+      <div className="flex h-screen w-full overflow-hidden">
+          {/* Hide the Navbar on Matching so the page can be fullscreen */}
+          {!isMatchingPage && <Navbar />}
 
-      {/* If Navbar is hidden, let Outlet take full width. Otherwise, it sits beside Navbar. */}
-      <div className="flex-1 min-w-0">
-        <Outlet />
+          {/* If Navbar is hidden, let Outlet take full width. Otherwise, it sits beside Navbar. */}
+          <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+              <TopBar />
+              <div className="min-h-0 flex-1 overflow-y-auto">
+                  <Outlet />
+              </div>
+          </div>
       </div>
-    </div>
   );
 }

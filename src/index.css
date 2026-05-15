@@ -13,3 +13,13 @@
     @apply min-h-screen;
   }
 }
+
+@layer components {
+  .label {
+    @apply block text-xs font-semibold text-[#4a5c35] mb-1.5;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-[#d4e5c3] bg-white px-4 py-2.5 text-sm text-[#2d3a1f] placeholder:text-[#a8bda0] focus:outline-none focus:ring-2 focus:ring-[#7a9b5c] focus:border-transparent transition;
+  }
+}
