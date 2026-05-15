@@ -14,10 +14,8 @@ import SettingsPage from "./pages/SettingsPage/Settings";
 
 import UserProfilePage from "./pages/UserProfilePage/UserProfile";
 import MentorProfilePage from "./pages/MentorProfilePage/MentorProfile";
-
 import LoggedInLayout from "./components/LoggedInLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { PublicOnlyRoute } from "./components/PublicRoute";
 import { AuthProvider } from "./auth/AuthContext";
 import OnboardingPage from "./components/Onboarding";
 
