@@ -148,7 +148,7 @@ export default function LandingPage() {
                         Random text.
                     </p>
 
-                    <div className="flex gap-4">
+                    <div className="flex flex-col gap-3 sm:flex-row">
                         <button
                             type="button"
                             className="cursor-pointer rounded-lg border-none bg-[#d4e5c3] px-7 py-3 text-[15px] font-medium text-[#2d3a1f] transition-colors hover:bg-[#c5dbb0]"
@@ -175,7 +175,7 @@ export default function LandingPage() {
 
             {/* ABOUT SECTION */}
             <section id="about" className="mx-auto my-20 grid w-[calc(100%-80px)] max-w-[1200px] scroll-mt-[100px] grid-cols-1 gap-[60px] rounded-3xl bg-[#e8f3dd] p-[60px] shadow-md md:my-20 md:w-full md:gap-10 md:px-6 sm:my-20 sm:gap-[30px] sm:p-5 lg:grid-cols-[400px_1fr] lg:gap-[60px] lg:p-[60px]">
-                <div id="gallery" className="about-left scroll-mt-[100px]">
+                <div id="gallery" className="scroll-mt-[100px] flex flex-col">
                     <button
                         type="button"
                         className="flex h-[280px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-2xl bg-[#d4e5c3] transition-opacity hover:opacity-95 sm:h-[200px]"
@@ -229,9 +229,9 @@ export default function LandingPage() {
                     </div>
                 </div>
 
-                <div className="about-content">
-                    <h2 className="mb-5 text-4xl font-semibold text-gray-800">About Us</h2>
-                    <h1 className="mb-5 text-5xl font-extrabold tracking-tight text-gray-100 sm:text-4xl">
+                <div className="flex flex-col justify-center">
+                    <h2 className="mb-4 text-3xl font-semibold text-gray-800 md:text-4xl">About Us</h2>
+                    <h1 className="mb-5 text-3xl font-extrabold tracking-tight text-white md:text-5xl">
                         <strong>NSBE UCalgary</strong>
                     </h1>
                     <p className="mb-4 text-[15px] leading-relaxed text-gray-600 sm:text-sm">
