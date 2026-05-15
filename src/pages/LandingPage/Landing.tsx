@@ -1,4 +1,3 @@
-import "./Landing.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import Login from "../LoginPage/Login";
@@ -95,17 +94,16 @@ export default function LandingPage() {
     return (
         <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-white pt-[84px] font-sans text-gray-800">
             {/* NAVBAR */}
-            <header className="fixed inset-x-0 top-0 z-1000 flex flex-col items-start gap-1 border-b border-gray-200 bg-white/95 px-4 py-2 backdrop-blur sm:h-[84px] sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-0 md:px-6">
-                <div className="flex items-center gap-3 sm:gap-2 shrink-0">
-                    <div className="flex h-8 w-8 gap-1 sm:h-7 sm:w-7 sm:gap-[3px]">
-                        <div className="h-2 w-2 rounded-full bg-[#2d3a1f]" />
-                        <div className="mt-2 h-2 w-2 rounded-full bg-[#2d3a1f]" />
-                    </div>
-                    <div className="text-base font-medium leading-tight sm:text-xs">
-                        <span className="block text-[#2d3a1f]">Black </span>
-                        <span className="block text-[#7a9b5c]">Brilliance</span>
-                    </div>
+            <header className="fixed inset-x-0 top-0 z-50 flex flex-col gap-2 border-b border-gray-200 bg-white/95 px-4 py-3 backdrop-blur md:h-[84px] md:flex-row md:items-center md:justify-between md:px-10 md:py-0">                <div className="flex items-center gap-3 sm:gap-2 shrink-0">
+                <div className="flex h-8 w-8 gap-1 sm:h-7 sm:w-7 sm:gap-[3px]">
+                    <div className="h-2 w-2 rounded-full bg-[#2d3a1f]" />
+                    <div className="mt-2 h-2 w-2 rounded-full bg-[#2d3a1f]" />
                 </div>
+                <div className="text-base font-medium leading-tight sm:text-xs">
+                    <span className="block text-[#2d3a1f]">Black </span>
+                    <span className="block text-[#7a9b5c]">Brilliance</span>
+                </div>
+            </div>
 
                 <nav className="mt-1 flex w-full flex-wrap items-center justify-start gap-3 text-xs sm:mt-0 sm:flex-1 sm:justify-end sm:gap-6 sm:text-[11px] md:gap-6">
                     <a
@@ -144,8 +142,8 @@ export default function LandingPage() {
             </header>
 
             {/* HERO SECTION */}
-            <section className="hero">
-                {!hideButtons && (<div className="hero-text">
+            <section className="grid min-h-[calc(100dvh-84px)] w-full grid-cols-1 items-center gap-8 px-5 py-8 md:px-10 lg:grid-cols-2 lg:gap-20 lg:px-[60px] lg:py-[60px]">
+                {!hideButtons && (<div className="order-2 flex flex-col lg:order-1">
                     {/* Main title with L-brackets */}
                     <div className="relative inline-block pl-3 pt-3 pr-3 pb-3">
                         {/* Top-left L bracket: horizontal + vertical */}
@@ -184,7 +182,7 @@ export default function LandingPage() {
                         Random text.
                     </p>
 
-                    <div className="flex gap-4">
+                    <div className="flex flex-col gap-3 sm:flex-row">
                         <button
                             onClick={openSignup}
                             type="button"
@@ -217,11 +215,10 @@ export default function LandingPage() {
                         onBack={closePopup} embedded />
                 )}
 
-                <div className="flex items-center justify-center">
-                    <div className="flex h-[400px] w-full items-center justify-center overflow-hidden rounded-3xl bg-linear-to-br from-[#e8f3dd] to-[#d9e8c9] sm:h-[300px]">
-                        <div className="flex h-[90%] w-[90%] items-center justify-center rounded-2xl bg-white/70 text-lg font-medium text-gray-400">
-                            [Image Placeholder...]
-                        </div>
+                <div className="order-1 flex items-center justify-center lg:order-2">
+                    <div className="flex h-[250px] w-full max-w-[700px] items-center justify-center overflow-hidden rounded-3xl bg-linear-to-br from-[#e8f3dd] to-[#d9e8c9] sm:h-[320px] md:h-[400px]">                        <div className="flex h-[90%] w-[90%] items-center justify-center rounded-2xl bg-white/70 text-lg font-medium text-gray-400">
+                        [Image Placeholder...]
+                    </div>
                     </div>
                 </div>
             </section>
@@ -229,7 +226,7 @@ export default function LandingPage() {
 
             {/* ABOUT SECTION */}
             <section id="about" className="mx-auto my-20 grid w-[calc(100%-80px)] max-w-[1200px] scroll-mt-[100px] grid-cols-1 gap-[60px] rounded-3xl bg-[#e8f3dd] p-[60px] shadow-md md:my-20 md:w-full md:gap-10 md:px-6 sm:my-20 sm:gap-[30px] sm:p-5 lg:grid-cols-[400px_1fr] lg:gap-[60px] lg:p-[60px]">
-                <div id="gallery" className="about-left scroll-mt-[100px]">
+                <div id="gallery" className="scroll-mt-[100px] flex flex-col">
                     <button
                         type="button"
                         className="flex h-[280px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-2xl bg-[#d4e5c3] transition-opacity hover:opacity-95 sm:h-[200px]"
@@ -283,9 +280,9 @@ export default function LandingPage() {
                     </div>
                 </div>
 
-                <div className="about-content">
-                    <h2 className="mb-5 text-4xl font-semibold text-gray-800">About Us</h2>
-                    <h1 className="mb-5 text-5xl font-extrabold tracking-tight text-gray-100 sm:text-4xl">
+                <div className="flex flex-col justify-center">
+                    <h2 className="mb-4 text-3xl font-semibold text-gray-800 md:text-4xl">About Us</h2>
+                    <h1 className="mb-5 text-3xl font-extrabold tracking-tight text-white md:text-5xl">
                         <strong>NSBE UCalgary</strong>
                     </h1>
                     <p className="mb-4 text-[15px] leading-relaxed text-gray-600 sm:text-sm">

@@ -105,7 +105,17 @@ function LoginComponent({ onBack, embedded = false }: AuthProps = {}) {
         <section className={`auth-section ${embedded ? "auth-embedded" : ""}`}>
             <div className="auth-container">
                 {onBack && (
-                    <button className="back-arrow-login" onClick={onBack} aria-label="Go back">
+                    <button className="
+                    flex items-center justify-center
+                    h-10 w-10 sm:h-11 sm:w-11
+                    rounded-full
+                    bg-white shadow-sm
+                    text-gray-700 text-xl
+                    transition-all duration-200
+                    hover:bg-[#7a9b5c] hover:-translate-x-1
+                    active:scale-95
+                    focus:outline-none focus:ring-2 focus:ring-[#7a9b5c]" 
+                    onClick={onBack} aria-label="Go back">
                         ←
                     </button>
                 )}
@@ -205,9 +215,6 @@ function LoginComponent({ onBack, embedded = false }: AuthProps = {}) {
                     </div>
                 </form>
             </div>
-            <footer className="mt-8 text-[#889a87] text-sm">
-                © Copyright Black Brilliance Network 2025
-            </footer>
         </section>
     );
 

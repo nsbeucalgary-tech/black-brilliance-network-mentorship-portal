@@ -83,7 +83,17 @@ function SignupComponent({ onBack, embedded = false }: SignupProps = {}) {
   const content = (
     <section className={`auth-section ${embedded ? "auth-embedded" : ""}`}>
       <div className="auth-container">
-        <button className="back-arrow" onClick={() => (onBack ? onBack() : navigate(-1))} aria-label="Go back">
+        <button className="
+        flex items-center justify-center
+        h-10 w-10 sm:h-11 sm:w-11
+        rounded-full
+        bg-white shadow-sm
+        text-gray-700 text-xl
+        transition-all duration-200
+        hover:bg-[#7a9b5c] hover:-translate-x-1
+        active:scale-95
+        focus:outline-none focus:ring-2 focus:ring-[#7a9b5c]"
+          onClick={() => (onBack ? onBack() : navigate(-1))} aria-label="Go back">
           ←
         </button>
         <h1 className="auth-title text-[28px] font-semibold mb-2">Sign Up</h1>
@@ -189,9 +199,6 @@ function SignupComponent({ onBack, embedded = false }: SignupProps = {}) {
           </div>
         </form>
       </div>
-      <footer className="mt-8 text-[#889a87] text-sm">
-        © Copyright Black Brilliance Network 2025
-      </footer>
     </section>
   );
 
