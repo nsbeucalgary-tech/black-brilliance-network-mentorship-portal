@@ -33,8 +33,8 @@ async function getPostLoginRoute(uid: string): Promise<string> {
 }
 
 type AuthProps = {
-  onBack?: () => void;
-  embedded?: boolean;
+    onBack?: () => void;
+    embedded?: boolean;
 };
 
 function LoginComponent({ onBack, embedded = false }: AuthProps = {}) {
@@ -105,9 +105,9 @@ function LoginComponent({ onBack, embedded = false }: AuthProps = {}) {
         <section className={`auth-section ${embedded ? "auth-embedded" : ""}`}>
             <div className="auth-container">
                 {onBack && (
-                  <button className="back-arrow-login" onClick={onBack} aria-label="Go back">
-                    ←
-                  </button>
+                    <button className="back-arrow-login" onClick={onBack} aria-label="Go back">
+                        ←
+                    </button>
                 )}
                 <h1 className="auth-title text-[28px] font-semibold mb-2">Login</h1>
                 <div className="flex items-center gap-3 mb-3">
@@ -247,10 +247,10 @@ function LoginComponent({ onBack, embedded = false }: AuthProps = {}) {
     );
 }
 
-export default function Login({ onSubmit, onBack, embedded = false }: AuthProps = {}) {
+export default function Login({ onBack, embedded = false }: AuthProps = {}) {
     return (
         <PublicOnlyRoute>
-            <LoginComponent onSubmit={onSubmit} onBack={onBack} embedded={embedded} />
+            <LoginComponent onBack={onBack} embedded={embedded} />
         </PublicOnlyRoute>
     );
 }
