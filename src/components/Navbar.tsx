@@ -6,7 +6,9 @@ import { GiCalendar } from 'react-icons/gi';
 import { FaPeopleArrows } from 'react-icons/fa';
 import { IoNewspaperOutline, IoHome } from 'react-icons/io5';
 import { MdSettings, MdLogout } from 'react-icons/md';
-import { HiMenuAlt3, HiX } from 'react-icons/hi';
+import { HiMenuAlt2, HiX } from 'react-icons/hi';
+import { useAuth } from '../auth/useAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 import BBNLogo from '../assets/BBNLogo.svg';
 import BBNLogoWhite from '../assets/BBNLogoWhite.svg';
@@ -24,22 +26,66 @@ const NavFooterLinks = [
     { to: '/', label: 'Log Out', icon: MdLogout }
 ];
 
+type NavbarVariants = 'desktop' | 'mobile';
 
 interface NavItemProps {
     to: string;
     label: string;
     icon: React.ElementType;
-    isOpen: boolean;
+    navType: NavbarVariants;
+    desktopOpen?: boolean; //Boolean state for desktop navbar open/close
+    mobileOnClick?: () => void; //Function to close mobile navbar on link click
+
 };
 
-function NavItem({ to, label, icon: Icon, isOpen }: NavItemProps) {
-    {/*  Function for the md and above Side Navbar */ }
+function NavItem({ to, label, icon: Icon, navType, desktopOpen, mobileOnClick }: NavItemProps) {
+    const { logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate('/');
+        } catch (err) {
+            console.error("Logout failed", err);
+        }
+    };
+
+    const generalOnClick = () => {
+        if (label === 'Log Out') {
+            handleLogout();
+        }
+
+        if (navType === 'mobile' && mobileOnClick) {
+            mobileOnClick();
+        }
+    };
+
+    if (navType === 'mobile') {
+        return (
+            <NavLink
+                key={to}
+                to={to}
+                onClick={generalOnClick}
+                className="flex items-center justify-end gap-4 text-white
+                transform transition-all duration-300 ease-in-out
+                active:-translate-y-1 active:text-[#aad576]
+                active:underline underline-offset-8 decoration-[#aad576]
+                active:rounded-md"
+            >
+                <span className="text-lg">{label}</span>
+                <Icon size={22} />
+            </NavLink>
+        );
+    }
+
     return (
         <NavLink
             to={to}
-            title={isOpen ? undefined : label}
+            title={desktopOpen ? undefined : label}
             aria-label={label}
             className="flex items-center h-12 rounded-lg transition-all"
+            onClick={generalOnClick}
         >
             {({ isActive }) => (
                 <>
@@ -54,7 +100,7 @@ function NavItem({ to, label, icon: Icon, isOpen }: NavItemProps) {
                     </svg>)}
 
                     <div className={`flex items-center gap-4 px-4 py-3 rounded-xs whitespace-nowrap font-medium transition-colors duration-300
-                    ${isOpen ? 'opacity-100 ' : 'opacity-0 pointer-events-none'}
+                    ${desktopOpen ? 'opacity-100 ' : 'opacity-0 pointer-events-none'}
                     ${isActive ? 'bg-BBNDarkGreen text-white font-extrabold' : 'text-BBNDarkGreen hover:bg-[#3b4823] hover:text-white ml-5'} w-full`}
                     >
                         <span>{label}</span>
@@ -76,10 +122,10 @@ function MobileMenu() {
                 <button
                     onClick={() => setOpen(true)}
                     aria-label="Open Menu"
-                    className="fixed top-4 right-4 z-50
+                    className="fixed top-4 left-4 z-50
                 p-2 rounded-lg bg-BBNDarkGreen text-white"
                 >
-                    <HiMenuAlt3 size={26} />
+                    <HiMenuAlt2 size={26} />
                 </button>
             </div>
 
@@ -93,10 +139,10 @@ function MobileMenu() {
 
             {/* Slide-in Menu */}
             <aside
-                className={`fixed top-0 right-0 h-full w-64
+                className={`fixed top-0 left-0 h-full w-64
                 bg-BBNDarkGreen z-50 flex flex-col
                 transform transition-transform duration-300
-                ${open ? 'translate-x-0' : 'translate-x-full'}`}
+                ${open ? 'translate-x-0' : '-translate-x-full'}`}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-4 py-2 border-b border-white">
@@ -118,44 +164,15 @@ function MobileMenu() {
 
                 {/* Navigation Links */}
                 <nav className="px-4 py-6 space-y-4 ">
-                    {NavLinks.map(({ to, label, icon: Icon }) => (
-                        <NavLink
-                            key={to}
-                            to={to}
-                            onClick={() => setOpen(false)}
-                            className="flex items-center gap-4 text-white
-                            transform
-                            transition-all duration-300 ease-in-out
-                            active:-translate-y-1
-                            active:text-[#aad576]
-                            active:underline underline-offset-8 decoration-[#aad576]
-                            active:rounded-md"
-                        >
-
-                            <Icon size={22} />
-                            <span className="text-lg">{label}</span>
-                        </NavLink>
+                    {NavLinks.map(item => (
+                        <NavItem key={item.to} {...item} mobileOnClick={() => setOpen(false)} navType='mobile' />
                     ))}
                 </nav>
 
                 {/* Footer Links */}
                 <div className="mt-auto px-4 pb-6 space-y-4">
-                    {NavFooterLinks.map(({ to, label, icon: Icon }) => (
-                        <NavLink
-                            key={to}
-                            to={to}
-                            onClick={() => setOpen(false)}
-                            className="flex items-center gap-4 text-white
-                            transform
-                            transition-all duration-300 ease-in-out
-                            active:-translate-y-1
-                            active:text-[#aad576]
-                            active:underline underline-offset-8 decoration-[#aad576]
-                            active:rounded-md"
-                        >
-                            <Icon size={20} />
-                            <span>{label}</span>
-                        </NavLink>
+                    {NavFooterLinks.map(item => (
+                        <NavItem key={item.to} {...item} mobileOnClick={() => setOpen(false)} navType='mobile' />
                     ))}
                 </div>
             </aside>
@@ -185,7 +202,7 @@ function DesktopMenu() {
                             <img
                                 src={BBNLogoWhite}
                                 alt="BBN Logo"
-                                className={`w-12 h-12 object-contain transition-opacity
+                                className={`w-12 h-12 object-contain
                                 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                             />
                         </div>
@@ -203,13 +220,13 @@ function DesktopMenu() {
 
                     <nav className="flex-1 px-2 space-y-2" aria-label="Main Navigation">
                         {NavLinks.map(item => (
-                            <NavItem key={item.to} {...item} isOpen={isOpen} />
+                            <NavItem key={item.to} {...item} desktopOpen={isOpen} navType='desktop' />
                         ))}
                     </nav>
 
                     <div className="px-2 pb-2 space-y-2 shrink-0">
                         {NavFooterLinks.map(item => (
-                            <NavItem key={item.to} {...item} isOpen={isOpen} />
+                            <NavItem key={item.to} {...item} desktopOpen={isOpen} navType='desktop' />
                         ))}
 
                         {/* Toggle Button */}

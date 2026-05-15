@@ -1,13 +1,26 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
+import TopBar from "./TopBar";
 
 export default function LoggedInLayout() {
-    return (
-        <>
-            <div className="flex flex-row w-full">
-                <Navbar />
-                <Outlet />
-            </div>
-        </>
-    )
+  const location = useLocation();
+
+  // Any route that starts with /matching will be treated as the "fullscreen" page
+  // This hides the Navbar and lets the Outlet take full width, so the matching page matches the figma design
+  const isMatchingPage = location.pathname.startsWith("/matching");
+
+  return (
+      <div className="flex h-screen w-full overflow-hidden">
+          {/* Hide the Navbar on Matching so the page can be fullscreen */}
+          {!isMatchingPage && <Navbar />}
+
+          {/* If Navbar is hidden, let Outlet take full width. Otherwise, it sits beside Navbar. */}
+          <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+              <TopBar />
+              <div className="min-h-0 flex-1 overflow-y-auto">
+                  <Outlet />
+              </div>
+          </div>
+      </div>
+  );
 }
