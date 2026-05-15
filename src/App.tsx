@@ -9,6 +9,7 @@ import DashboardPage from "./pages/DashboardPage/Dashboard";
 import ExamplePage from "./_db_controller/example/page";
 import LoginPage from "./pages/LoginPage/Login";
 import SignupPage from "./pages/SignupPage/Signup";
+import MentorMatchingTest from "./pages/TestPage/MentorMatchingTest";
 import SettingsPage from "./pages/SettingsPage/Settings";
 
 import UserProfilePage from "./pages/UserProfilePage/UserProfile";
@@ -43,7 +44,8 @@ function App() {
                             </PublicOnlyRoute>
                         }
                     />
-                    <Route path="/example" element={<ExamplePage />} />
+            <Route path="/example" element={<ExamplePage />} />
+            <Route path="/test-matching" element={<MentorMatchingTest />} />
 
                     {/* Onboarding — protected but outside the sidebar layout */}
                     <Route
