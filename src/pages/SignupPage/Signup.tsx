@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInWithProvider, signUpWithEmailAndPassword, validateUserPassword } from "../../auth/AuthFunctions";
+import {
+  signInWithProvider,
+  signUpWithEmailAndPassword,
+  validateUserPassword,
+} from "../../auth/AuthFunctions";
 import type { AuthProvider } from "firebase/auth";
 import { googleProvider } from "../../_db_controller/init";
 import { PublicOnlyRoute } from "../../components/PublicRoute";
@@ -13,7 +17,8 @@ type SignupProps = {
 
 function SignupComponent({ onBack }: SignupProps) {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -25,7 +30,8 @@ function SignupComponent({ onBack }: SignupProps) {
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
 
-    if (!name) return alert("Please enter your name.");
+    if (!firstName) return alert("Please enter your first name.");
+    if (!lastName) return alert("Please enter your last name.");
     if (!email) return alert("Please enter an email.");
     if (!password) return alert("Please enter a password.");
     if (password !== confirm) return alert("Passwords do not match.");
@@ -42,7 +48,8 @@ function SignupComponent({ onBack }: SignupProps) {
       setPasswordValidationError([]);
 
       const error = await signUpWithEmailAndPassword(
-        name,
+        firstName,
+        lastName,
         email,
         password,
         remember
@@ -130,28 +137,44 @@ function SignupComponent({ onBack }: SignupProps) {
       </div>}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 font-semibold">
-        <label htmlFor="name" className="text-sm ">Full name</label>
-        <input
-        autoComplete="name"
-          id="name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Tyrone Davis"
-          className="w-full h-11 rounded-xl border-0 px-4 bg-BBNLightGreen placeholder:text-gray-400"
-        />
-
-        <label htmlFor="email" className="text-sm ">Email</label>
-        <input
-          autoComplete="email"
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder=" tyrondavis@gmail.com"
-          className="w-full h-11 rounded-xl border-0 px-4 bg-BBNLightGreen placeholder:text-gray-400"
-        />
-
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="firstName" className="text-sm ">First Name</label>
+            <input
+              autoComplete="firstName"
+              id="firstName"
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="Tyrone"
+              className="w-full h-11 rounded-xl border-0 px-4 bg-BBNLightGreen placeholder:text-gray-400"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="lastName" className="text-sm ">Last Name</label>
+            <input
+              autoComplete="lastName"
+              id="lastName"
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Davis"
+              className="w-full h-11 rounded-xl border-0 px-4 bg-BBNLightGreen placeholder:text-gray-400"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="email" className="text-sm ">Email</label>
+          <input
+            autoComplete="email"
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder=" tyrondavis@gmail.com"
+            className="w-full h-11 rounded-xl border-0 px-4 bg-BBNLightGreen placeholder:text-gray-400"
+          />
+        </div>
         <PasswordInput labelText="Password" placeholder="Create a password" id="password" value={password} setValue={setPassword} />
         <PasswordInput labelText="Confirm Password" placeholder="Confirm password" id="confirmPassword" value={confirm} setValue={setConfirm} />
 

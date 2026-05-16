@@ -3,7 +3,6 @@ import { useAuth } from "../auth/useAuthContext";
 import { getInitials } from "../utils";
 import { Mail, BellRing } from "lucide-react";
 
-
 function nameForInitials(
     dbFullName: string | undefined,
     displayName: string | null | undefined,
@@ -23,7 +22,11 @@ const circleBtn =
 
 export default function TopBar() {
     const { user, dbUser } = useAuth();
-    const name = nameForInitials(dbUser?.full_name, user?.displayName, user?.email);
+    const fullName = [dbUser?.first_name, dbUser?.last_name]
+        .filter(Boolean)
+        .join(" ");
+
+    const name = nameForInitials(fullName, user?.displayName, user?.email);
     const initials = getInitials(name);
 
     return (
@@ -54,7 +57,6 @@ export default function TopBar() {
                 >
                     {initials}
                 </Link>
-
             </div>
         </header>
     );
