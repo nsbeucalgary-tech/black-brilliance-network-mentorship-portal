@@ -143,57 +143,47 @@ export default function LandingPage() {
 
             {/* HERO SECTION */}
             <section className="grid min-h-[calc(100dvh-84px)] w-full grid-cols-1 items-center gap-8 px-5 py-8 md:px-10 lg:grid-cols-2 lg:gap-20 lg:px-[60px] lg:py-[60px]">
-                {!hideButtons && (<div className="order-2 flex flex-col lg:order-1">
+                {!hideButtons && (<div className="order-2 flex flex-col md:order-1">
                     {/* Main title with L-brackets */}
-                    <div className="relative inline-block pl-3 pt-3 pr-3 pb-3">
-                        {/* Top-left L bracket: horizontal + vertical */}
-                        <span
-                            className="absolute left-0 top-0 h-1 w-16 bg-[#7a9b5c] sm:w-12"
-                            aria-hidden
-                        />
-                        <span
-                            className="absolute left-0 top-0 h-16 w-1 bg-[#7a9b5c] sm:h-12"
-                            aria-hidden
-                        />
-                        {/* Bottom-right L bracket */}
-                        <span
-                            className="absolute bottom-0 right-0 h-1 w-48 bg-[#7a9b5c] sm:w-36"
-                            aria-hidden
-                        />
-                        <span
-                            className="absolute bottom-0 right-0 h-16 w-1 bg-[#7a9b5c] sm:h-12"
-                            aria-hidden
-                        />
-                        <h1 className="text-5xl font-bold leading-tight text-[#2d3a1f] sm:text-3xl">
-                            The Black
-                        </h1>
-                        <h1 className="text-5xl font-bold leading-tight text-[#2d3a1f] sm:text-3xl">
-                            Brilliance Network.
+                    <div className={"relative w-fit inline-block p-4"}>
+                        {/* Top-Left Corner Line */}
+                        <div className="absolute top-0 left-0 w-18 h-12 border-t-[5px] border-l-[5px] border-BBNBrightGreen" />
+
+                        {/* Bottom-Right Corner Line */}
+                        <div className="absolute bottom-0 right-0 w-16 h-16 border-b-[5px] border-r-[5px] border-BBNBrightGreen" />
+
+                        {/* Text Content */}
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-BBNDarkGreen">
+                            The Black<br />Brilliance Network.
                         </h1>
                     </div>
-                    <p className="mb-8 mt-8 text-base leading-relaxed text-gray-600 sm:text-sm">
+                    <p className="mb-8 mt-8 text-base leading-relaxed text-BBNDarkGreen sm:text-sm md:text-lg">
                         Bridging black undergraduate and graduate students in STEM with
                         industry professionals, alumni, and advanced-degree mentors, a
                         mentorship initiative by{" "}
                         <strong>the National Society of Black Engineers.</strong>
                     </p>
 
-                    <p className="mb-8 text-base leading-relaxed text-gray-600 sm:text-sm">
-                        Random text.
+                    <p className="mb-8 text-base leading-relaxed text-BBNDarkGreen sm:text-sm md:text-lg">
+                    Lorem ipsum dolor sit amet consectetur adipiscing elit. 
+                    Quisque faucibus ex sapien vitae pellentesque sem placerat. 
+                    In id cursus mi pretium tellus duis convallis. 
+                    Lorem ipsum dolor sit amet consectetur adipiscing elit. 
+                    Quisque faucibus ex sapien vitae pellentesque sem placerat.
                     </p>
 
                     <div className="flex flex-col gap-3 sm:flex-row">
                         <button
                             onClick={openSignup}
                             type="button"
-                            className="cursor-pointer rounded-lg border-none bg-[#d4e5c3] px-7 py-3 text-[15px] font-medium text-[#2d3a1f] transition-colors hover:bg-[#c5dbb0]"
+                            className="cursor-pointer rounded-full bg-BBNLightGreen px-7 py-3 font-bold text-[#2d3a1f] transition-colors hover:bg-[#c5dbb0]"
                         >
                             Sign Up
                         </button>
                         <button
                             onClick={openLogin}
                             type="button"
-                            className="cursor-pointer rounded-lg border-none bg-[#e5ead9] px-7 py-3 text-[15px] font-medium text-[#2d3a1f] transition-colors hover:bg-[#d4e5c3]"
+                            className="cursor-pointer rounded-full bg-BBNLightGreen px-7 py-3 font-bold text-[#2d3a1f] transition-colors hover:bg-[#d4e5c3]"
                         >
                             Log In
                         </button>
@@ -204,16 +194,8 @@ export default function LandingPage() {
                 )}
 
                 {/* Show login/signup when hero is hidden */}
-                {showLogin && (
-                    <Login
-                        onBack={closePopup} embedded
-                    />
-                )}
-
-                {showSignUp && (
-                    <Signup
-                        onBack={closePopup} embedded />
-                )}
+                {showLogin && (<Login onBack={closePopup}/>)}
+                {showSignUp && (<Signup onBack={closePopup} />)}
 
                 <div className="order-1 flex items-center justify-center lg:order-2">
                     <div className="flex h-[250px] w-full max-w-[700px] items-center justify-center overflow-hidden rounded-3xl bg-linear-to-br from-[#e8f3dd] to-[#d9e8c9] sm:h-[320px] md:h-[400px]">                        <div className="flex h-[90%] w-[90%] items-center justify-center rounded-2xl bg-white/70 text-lg font-medium text-gray-400">
