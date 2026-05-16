@@ -185,7 +185,7 @@ function DesktopMenu() {
                 aria-expanded={isOpen}
                 className={`hidden md:flex flex-col bg-gray-200
                 transition-all duration-300 will-change-[width] rounded-3xl
-                ${isOpen ? 'w-72' : 'w-20'}`}
+                ${isOpen ? 'w-82' : 'w-20'}`}
             >
                 {/* Green Background Stripe */}
                 <div className="absolute top-0 left-0 bottom-0 w-20 bg-BBNDarkGreen rounded-r-3xl z-0" />

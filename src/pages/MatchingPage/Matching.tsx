@@ -6,10 +6,6 @@ import FiltersDrawer from "../../components/matching/FiltersDrawer";
 import MatchesGrid from "../../components/matching/MatchesGrid";
 import type { Match } from "../../components/matching/MatchCard";
 
-import BBNLogo from "../../assets/BBNLogo.svg";
-
-import Navbar from "../../components/Navbar";
-
 type Tab = "TOP_MATCHES" | "FAVOURITES";
 type SortMode = "BEST_MATCH" | "NAME";
 
@@ -74,178 +70,136 @@ export default function Matching() {
 
   return (
     <div className="flex min-h-screen">
-      <Navbar />
       <div className="flex-1 bg-white overflow-y-auto">
-      <FiltersDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+        <FiltersDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+        {/* Page content */}
+        <main className="max-w-none px-10 py-8">
+          <div className="space-y-6">
+            {/* Tabs */}
+            <div className="flex items-center gap-10 border-b border-[#e8f3dd]">
+              {(["TOP_MATCHES", "FAVOURITES"] as Tab[]).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`pb-3 text-xs tracking-widest font-semibold transition-colors ${tab === t
+                      ? "text-[#2d3a1f] border-b-2 border-[#2d3a1f] -mb-px"
+                      : "text-[#8fa878] hover:text-[#4a5c35]"
+                    }`}
+                  onClick={() => setTab(t)}
+                >
+                  {t.replace("_", " ")}
+                </button>
+              ))}
+            </div>
 
-      {/* Top navbar */}
-      <header className="flex w-full border-b bg-white">
-        <div className="flex w-full items-center justify-between px-10 py-3">
-          {/* Logo */}
-          <button
-            type="button"
-            className="!ml-3 flex items-center gap-3"
-            onClick={() => navigate("/home")}
-            aria-label="Go Home"
-          >
-            <img src={BBNLogo} alt="BBN" className="h-8 w-8" />
-          </button>
-
-
-          {/* Avatar dropdown */}
-          <div className="relative" ref={profileRef}>
-            <button
-              type="button"
-              className="flex align-left items-center gap-2 rounded-full px-2 py-1 hover:bg-neutral-100 !mb-2"
-              onClick={() => setProfileOpen((v) => !v)}
-              aria-haspopup="menu"
-              aria-expanded={profileOpen}
-            >
-              <div className="grid h-9 w-9 place-items-center rounded-full bg-neutral-900 text-xs font-semibold text-white">
-                JD
+            {/* Controls row */}
+            <div className="flex w-full items-center gap-4 overflow-auto pb-1">
+              {/* Filter chips */}
+              <div className="flex items-center gap-3 shrink-0">
+                <FilterChip
+                  label="Google"
+                  onClick={() => alert("Google")}
+                />
+                <FilterChip
+                  label="Calgary, Alberta"
+                  onClick={() => alert("Calgary")}
+                />
+                <FilterChip
+                  label="University of Calgary"
+                  onClick={() => alert("UCalgary")}
+                />
+                <FilterChip
+                  label="Keywords"
+                  onClick={() => alert("Keywords")}
+                />
               </div>
-              <span className="text-sm text-neutral-700">▾</span>
-            </button>
 
-            {profileOpen && (
-              <div className="!z-70 text-center absolute right-0 mt-2 w-60 overflow-hidden rounded-xl border bg-white shadow-[0_6px_18px_rgba(0,0,0,0.08)]">
-                <div className="border-b px-4 py-3">
-                  <p className="text-sm font-semibold text-neutral-900">Jane Doe</p>
-                  <p className="text-xs text-neutral-500">jane.doe@email.com</p>
+              {/* Search */}
+              <div className="flex-1 flex justify-center min-w-0">
+                <div className="flex w-full min-w-[180px] items-center gap-2 rounded-full bg-[#e8f3dd] border border-[#c5dbb0] px-4 py-2">
+                  <svg
+                    className="w-4 h-4 text-[#7a9b5c] shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <input
+                    className="w-full bg-transparent text-sm text-[#2d3a1f] outline-none placeholder:text-[#8fa878]"
+                    placeholder="Search by name, title, company..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
                 </div>
-            </header>
+              </div>
 
-            {/* Page content */}
-            <main className="max-w-none px-10 py-8">
-                <div className="space-y-6">
-                    {/* Tabs */}
-                    <div className="flex items-center gap-10 border-b border-[#e8f3dd]">
-                        {(["TOP_MATCHES", "FAVOURITES"] as Tab[]).map((t) => (
-                            <button
-                                key={t}
-                                type="button"
-                                className={`pb-3 text-xs tracking-widest font-semibold transition-colors ${
-                                    tab === t
-                                        ? "text-[#2d3a1f] border-b-2 border-[#2d3a1f] -mb-px"
-                                        : "text-[#8fa878] hover:text-[#4a5c35]"
-                                }`}
-                                onClick={() => setTab(t)}
-                            >
-                                {t.replace("_", " ")}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Controls row */}
-                    <div className="flex w-full items-center gap-4 overflow-auto pb-1">
-                        {/* Filter chips */}
-                        <div className="flex items-center gap-3 shrink-0">
-                            <FilterChip
-                                label="Google"
-                                onClick={() => alert("Google")}
-                            />
-                            <FilterChip
-                                label="Calgary, Alberta"
-                                onClick={() => alert("Calgary")}
-                            />
-                            <FilterChip
-                                label="University of Calgary"
-                                onClick={() => alert("UCalgary")}
-                            />
-                            <FilterChip
-                                label="Keywords"
-                                onClick={() => alert("Keywords")}
-                            />
-                        </div>
-
-                        {/* Search */}
-                        <div className="flex-1 flex justify-center min-w-0">
-                            <div className="flex w-full min-w-[180px] items-center gap-2 rounded-full bg-[#e8f3dd] border border-[#c5dbb0] px-4 py-2">
-                                <svg
-                                    className="w-4 h-4 text-[#7a9b5c] shrink-0"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                    />
-                                </svg>
-                                <input
-                                    className="w-full bg-transparent text-sm text-[#2d3a1f] outline-none placeholder:text-[#8fa878]"
-                                    placeholder="Search by name, title, company..."
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        {/* Sort + Filters */}
-                        <div className="flex items-center gap-3 shrink-0">
-                            <div className="flex items-center gap-2 text-sm text-[#4a5c35]">
-                                <span className="font-medium">Sort:</span>
-                                <select
-                                    className="rounded-lg border border-[#c5dbb0] bg-white px-3 py-2 text-sm text-[#2d3a1f] focus:outline-none focus:ring-2 focus:ring-[#7a9b5c]"
-                                    value={sortMode}
-                                    onChange={(e) =>
-                                        setSortMode(e.target.value as SortMode)
-                                    }
-                                >
-                                    <option value="BEST_MATCH">
-                                        Best Match
-                                    </option>
-                                    <option value="NAME">Name</option>
-                                </select>
-                            </div>
-
-                            <button
-                                type="button"
-                                className="inline-flex items-center gap-2 rounded-lg border border-[#c5dbb0] bg-white px-4 py-2 text-sm font-medium text-[#3d4a2b] hover:bg-[#e8f3dd] transition-colors"
-                                onClick={() => setDrawerOpen(true)}
-                            >
-                                <svg
-                                    className="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
-                                    />
-                                </svg>
-                                Filters
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Results row */}
-                    <div className="flex items-center gap-3 text-sm text-[#7a9b5c]">
-                        <span>
-                            Showing {visibleMatches.length} of {matches.length}{" "}
-                            results
-                        </span>
-                        <button
-                            type="button"
-                            className="font-semibold text-[#2d3a1f] hover:underline"
-                            onClick={() => setTab("TOP_MATCHES")}
-                        >
-                            show all
-                        </button>
-                    </div>
-
-                    {/* Grid */}
-                    <MatchesGrid matches={visibleMatches} />
+              {/* Sort + Filters */}
+              <div className="flex items-center gap-3 shrink-0">
+                <div className="flex items-center gap-2 text-sm text-[#4a5c35]">
+                  <span className="font-medium">Sort:</span>
+                  <select
+                    className="rounded-lg border border-[#c5dbb0] bg-white px-3 py-2 text-sm text-[#2d3a1f] focus:outline-none focus:ring-2 focus:ring-[#7a9b5c]"
+                    value={sortMode}
+                    onChange={(e) =>
+                      setSortMode(e.target.value as SortMode)
+                    }
+                  >
+                    <option value="BEST_MATCH">
+                      Best Match
+                    </option>
+                    <option value="NAME">Name</option>
+                  </select>
                 </div>
-            </main>
-        </div>
-      </main>
+
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#c5dbb0] bg-white px-4 py-2 text-sm font-medium text-[#3d4a2b] hover:bg-[#e8f3dd] transition-colors"
+                  onClick={() => setDrawerOpen(true)}
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
+                    />
+                  </svg>
+                  Filters
+                </button>
+              </div>
+            </div>
+
+            {/* Results row */}
+            <div className="flex items-center gap-3 text-sm text-[#7a9b5c]">
+              <span>
+                Showing {visibleMatches.length} of {matches.length}{" "}
+                results
+              </span>
+              <button
+                type="button"
+                className="font-semibold text-[#2d3a1f] hover:underline"
+                onClick={() => setTab("TOP_MATCHES")}
+              >
+                show all
+              </button>
+            </div>
+
+            {/* Grid */}
+            <MatchesGrid matches={visibleMatches} />
+          </div>
+        </main>
+      </div>
     </div>
-  </div>
   );
 }
