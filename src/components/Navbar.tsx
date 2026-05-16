@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LuPanelRightClose, LuPanelLeftClose } from 'react-icons/lu';
-import { RiComputerLine } from 'react-icons/ri';
-import { GiCalendar } from 'react-icons/gi';
-import { FaPeopleArrows } from 'react-icons/fa';
-import { IoNewspaperOutline, IoHome } from 'react-icons/io5';
-import { MdSettings, MdLogout } from 'react-icons/md';
-import { HiMenuAlt2, HiX } from 'react-icons/hi';
+import { PanelRightClose , PanelLeftClose, Monitor, CalendarDays, UserPlus, Newspaper, House, Settings, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../auth/useAuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,16 +8,16 @@ import BBNLogo from '../assets/BBNLogo.svg';
 import BBNLogoWhite from '../assets/BBNLogoWhite.svg';
 
 const NavLinks = [
-    { to: '/dashboard', label: 'Dashboard', icon: RiComputerLine },
-    { to: '/calendar', label: 'Calendar', icon: GiCalendar },
-    { to: '/matching', label: 'Matchmaking', icon: FaPeopleArrows },
-    { to: '/newsletter', label: 'Newsletter', icon: IoNewspaperOutline },
-    { to: '/home', label: 'Home', icon: IoHome }
+    { to: '/dashboard', label: 'Dashboard', icon: Monitor },
+    { to: '/calendar', label: 'Calendar', icon: CalendarDays },
+    { to: '/matching', label: 'Matchmaking', icon: UserPlus },
+    { to: '/newsletter', label: 'Newsletter', icon: Newspaper },
+    { to: '/home', label: 'Home', icon: House }
 ];
 
 const NavFooterLinks = [
-    { to: '/settings', label: 'Settings', icon: MdSettings },
-    { to: '/', label: 'Log Out', icon: MdLogout }
+    { to: '/settings', label: 'Settings', icon: Settings },
+    { to: '/', label: 'Log Out', icon: LogOut }
 ];
 
 type NavbarVariants = 'desktop' | 'mobile';
@@ -125,7 +119,7 @@ function MobileMenu() {
                     className="fixed top-4 left-4 z-50
                 p-2 rounded-lg bg-BBNDarkGreen text-white"
                 >
-                    <HiMenuAlt2 size={26} />
+                    <Menu size={26} />
                 </button>
             </div>
 
@@ -158,7 +152,7 @@ function MobileMenu() {
                         aria-label="Close Menu"
                         className="text-white"
                     >
-                        <HiX size={26} />
+                        <X size={26} />
                     </button>
                 </div>
 
@@ -183,7 +177,7 @@ function MobileMenu() {
 function DesktopMenu() {
     {/* Function for Desktop Sidebar when window size is 'md' or greater. */ }
     const [isOpen, setIsOpen] = useState(true);
-    const ToggleIcon = isOpen ? LuPanelLeftClose : LuPanelRightClose;
+    const ToggleIcon = isOpen ? PanelLeftClose : PanelRightClose;
 
     return (
         <>
