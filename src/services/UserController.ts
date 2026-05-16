@@ -74,7 +74,8 @@ export class UserController {
 
         const user: User = {
             uid: payload.uid,
-            full_name: payload.full_name,
+            first_name: payload.first_name,
+            last_name: payload.last_name,
             email: payload.email,
             role: payload.role ?? UserRole.USER,
             created_at: now,

@@ -1,13 +1,15 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import Navbar from "./Navbar";
+import TopBar from "./TopBar";
 
 export default function LoggedInLayout() {
-  return (
-    <div className="flex w-full">
-
-          {/* If Navbar is hidden, let Outlet take full width. Otherwise, it sits beside Navbar. */}
-          <div className="flex-1 min-w-0 overflow-y-auto">
-              <Outlet />
-          </div>
-      </div>
-  );
+    return (
+        <div className="flex flex-row w-full">
+            <Navbar />
+            <div className="flex flex-col">
+                <TopBar />
+                <Outlet />
+            </div>
+        </div>
+    );
 }

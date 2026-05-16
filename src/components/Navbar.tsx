@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LuPanelRightClose, LuPanelLeftClose } from 'react-icons/lu';
-import { RiComputerLine } from 'react-icons/ri';
-import { GiCalendar } from 'react-icons/gi';
-import { FaPeopleArrows } from 'react-icons/fa';
-import { IoNewspaperOutline, IoHome } from 'react-icons/io5';
-import { MdSettings, MdLogout } from 'react-icons/md';
-import { HiMenuAlt3, HiX } from 'react-icons/hi';
+import { PanelRightClose , PanelLeftClose, Monitor, CalendarDays, UserPlus, Newspaper, House, Settings, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../auth/useAuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,16 +8,16 @@ import BBNLogo from '../assets/BBNLogo.svg';
 import BBNLogoWhite from '../assets/BBNLogoWhite.svg';
 
 const NavLinks = [
-    { to: '/dashboard', label: 'Dashboard', icon: RiComputerLine },
-    { to: '/calendar', label: 'Calendar', icon: GiCalendar },
-    { to: '/matching', label: 'Matchmaking', icon: FaPeopleArrows },
-    { to: '/newsletter', label: 'Newsletter', icon: IoNewspaperOutline },
-    { to: '/home', label: 'Home', icon: IoHome }
+    { to: '/dashboard', label: 'Dashboard', icon: Monitor },
+    { to: '/calendar', label: 'Calendar', icon: CalendarDays },
+    { to: '/matching', label: 'Matchmaking', icon: UserPlus },
+    { to: '/newsletter', label: 'Newsletter', icon: Newspaper },
+    { to: '/home', label: 'Home', icon: House }
 ];
 
 const NavFooterLinks = [
-    { to: '/settings', label: 'Settings', icon: MdSettings },
-    { to: '/', label: 'Log Out', icon: MdLogout }
+    { to: '/settings', label: 'Settings', icon: Settings },
+    { to: '/', label: 'Log Out', icon: LogOut }
 ];
 
 type NavbarVariants = 'desktop' | 'mobile';
@@ -67,14 +61,14 @@ function NavItem({ to, label, icon: Icon, navType, desktopOpen, mobileOnClick }:
                 key={to}
                 to={to}
                 onClick={generalOnClick}
-                className="flex items-center gap-4 text-white
+                className="flex items-center justify-end gap-4 text-white
                 transform transition-all duration-300 ease-in-out
                 active:-translate-y-1 active:text-[#aad576]
                 active:underline underline-offset-8 decoration-[#aad576]
                 active:rounded-md"
             >
-                <Icon size={22} />
                 <span className="text-lg">{label}</span>
+                <Icon size={22} />
             </NavLink>
         );
     }
@@ -122,10 +116,10 @@ function MobileMenu() {
                 <button
                     onClick={() => setOpen(true)}
                     aria-label="Open Menu"
-                    className="fixed top-4 right-4 z-50
+                    className="fixed top-4 left-4 z-50
                 p-2 rounded-lg bg-BBNDarkGreen text-white"
                 >
-                    <HiMenuAlt3 size={26} />
+                    <Menu size={26} />
                 </button>
             </div>
 
@@ -139,10 +133,10 @@ function MobileMenu() {
 
             {/* Slide-in Menu */}
             <aside
-                className={`fixed top-0 right-0 h-full w-64
+                className={`fixed top-0 left-0 h-full w-64
                 bg-BBNDarkGreen z-50 flex flex-col
                 transform transition-transform duration-300
-                ${open ? 'translate-x-0' : 'translate-x-full'}`}
+                ${open ? 'translate-x-0' : '-translate-x-full'}`}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-4 py-2 border-b border-white">
@@ -158,7 +152,7 @@ function MobileMenu() {
                         aria-label="Close Menu"
                         className="text-white"
                     >
-                        <HiX size={26} />
+                        <X size={26} />
                     </button>
                 </div>
 
@@ -183,7 +177,7 @@ function MobileMenu() {
 function DesktopMenu() {
     {/* Function for Desktop Sidebar when window size is 'md' or greater. */ }
     const [isOpen, setIsOpen] = useState(true);
-    const ToggleIcon = isOpen ? LuPanelLeftClose : LuPanelRightClose;
+    const ToggleIcon = isOpen ? PanelLeftClose : PanelRightClose;
 
     return (
         <>
@@ -202,7 +196,7 @@ function DesktopMenu() {
                             <img
                                 src={BBNLogoWhite}
                                 alt="BBN Logo"
-                                className={`w-12 h-12 object-contain transition-opacity
+                                className={`w-12 h-12 object-contain
                                 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                             />
                         </div>

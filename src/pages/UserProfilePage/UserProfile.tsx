@@ -7,13 +7,7 @@ import InterestsSection from "../../components/UserProfile/InterestsSection";
 import MatchingQuestions from "../../components/UserProfile/MatchingQuestions";
 import ProfileHeader from "../../components/UserProfile/ProfileHeader";
 import ProfileSidebar from "../../components/UserProfile/ProfileSidebar";
-
-/** Derive two-letter initials from a full name, e.g. "Jane Doe" → "JD" */
-function getInitials(name: string): string {
-    const parts = name.trim().split(/\s+/);
-    if (parts.length === 1) return parts[0][0]?.toUpperCase() ?? "?";
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-}
+import { getInitials } from "../../utils";
 
 /** Assign a deterministic colour to each company based on its first char */
 const COMPANY_COLOURS = [
@@ -84,7 +78,11 @@ export default function UserProfilePage() {
     }
 
     // ── Derive display data from dbUser ────────────────────────────────────
-    const initials = getInitials(dbUser.full_name);
+    const fullName = [dbUser.first_name, dbUser.last_name]
+        .filter(Boolean)
+        .join(" ");
+
+    const initials = getInitials(fullName);
 
     const links = [
         dbUser.website_url
@@ -145,7 +143,7 @@ export default function UserProfilePage() {
                 <div className="col-start-2 row-start-1 max-[1100px]:col-start-1 max-[1100px]:row-start-1">
                     <ProfileHeader
                         initials={initials}
-                        name={dbUser.full_name}
+                        name={fullName}
                         pronouns={dbUser.pronouns ?? ""}
                         title={dbUser.title ?? ""}
                         location={dbUser.location ?? ""}
