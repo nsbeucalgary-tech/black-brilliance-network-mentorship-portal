@@ -1,11 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import Login from "../LoginPage/Login";
+import Signup from "../SignupPage/Signup.tsx";
+import { InstagramLogoIcon, FacebookLogoIcon, XLogoIcon, LinkedInLogoIcon, RedditLogoIcon } from "../../components/Logos";
+import { Menu, X } from "lucide-react";
+import BBNLogo from "../../assets/BBNLogo.svg";
 
-const navLinkBase =
-    "relative inline-flex items-center px-1 text-sm font-medium tracking-tight transition-colors duration-150 sm:text-xs whitespace-nowrap shrink-0";
-const navLinkActive =
-    "text-[#2d3a1f] no-underline after:absolute after:-bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-[#2d3a1f] after:content-[''] after:transition-transform after:duration-200";
-const navLinkInactive =
-    "text-gray-500 no-underline hover:text-[#2d3a1f]";
+type SectionId = "about" | "gallery" | "blog";
+
+const NAV_LINKS: { id: SectionId; label: string; href: string }[] = [
+    { id: "about", label: "About", href: "#about" },
+    { id: "gallery", label: "Gallery", href: "#gallery" },
+    { id: "blog", label: "Blog", href: "#blog" },
+];
 
 const CAROUSEL_ITEMS = 6;
 const LIGHTBOX_ITEMS = 1 + CAROUSEL_ITEMS; // main photo + carousel thumbnails
@@ -23,8 +30,58 @@ const GALLERY_IMAGES = [
     "https://picsum.photos/seed/bbn-6/120/60",
 ];
 
+const footerLinks: { href: string, icon: React.ReactNode }[] = [
+    { href: "#facebook", icon: <FacebookLogoIcon /> },
+    { href: "#x", icon: <XLogoIcon /> },
+    { href: "#linkedin", icon: <LinkedInLogoIcon /> },
+    { href: "#reddit", icon: <RedditLogoIcon /> },
+    { href: "#instagram", icon: <InstagramLogoIcon /> },
+];
+
+const year = new Date().getFullYear();
+
 export default function LandingPage() {
-    const [activeSection, setActiveSection] = useState<"about" | "gallery" | "blog">("about");
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const [showLogin, setShowLogin] = useState<boolean>(false);
+    const [showSignUp, setShowSignUp] = useState<boolean>(false);
+    const [hideButtons, setHideButtons] = useState<boolean>(false);
+    const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (location.pathname === "/login") {
+            setShowLogin(true);
+            setShowSignUp(false);
+            setHideButtons(true);
+        } else if (location.pathname === "/signup") {
+            setShowSignUp(true);
+            setShowLogin(false);
+            setHideButtons(true);
+        } else {
+            setShowLogin(false);
+            setShowSignUp(false);
+            setHideButtons(false);
+        }
+        setMobileNavOpen(false);
+    }, [location.pathname]);
+
+
+    const openLogin = () => navigate("/login");
+    const openSignup = () => navigate("/signup");
+    const closePopup = () => navigate("/");
+
+    const [activeSection, setActiveSection] = useState<SectionId>("about");
+
+    const handleNavClick = (id: SectionId) => {
+        setActiveSection(id);
+        setMobileNavOpen(false);
+    };
+
+    const handleRegisterClick = () => {
+        navigate("/signup");
+        setMobileNavOpen(false);
+    };
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -56,46 +113,49 @@ export default function LandingPage() {
         return () => window.removeEventListener("keydown", onKeyDown);
     }, [lightboxIndex]);
 
+
+
+
     return (
         <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-white pt-16 font-sans text-BBNDarkGreen md:pt-[84px]">
             {/* NAVBAR */}
-            <header className="fixed inset-x-0 top-0 z-[1000] flex flex-col items-start gap-1 border-b border-gray-200 bg-white/95 px-4 py-2 backdrop-blur sm:h-[84px] sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-0 md:px-6">
-                <div className="flex items-center gap-3 sm:gap-2 shrink-0">
-                    <div className="flex h-8 w-8 gap-1 sm:h-7 sm:w-7 sm:gap-[3px]">
-                        <div className="h-2 w-2 rounded-full bg-[#2d3a1f]" />
-                        <div className="mt-2 h-2 w-2 rounded-full bg-[#2d3a1f]" />
-                    </div>
-                    <div className="text-base font-medium leading-tight sm:text-xs">
-                        <span className="block text-[#2d3a1f]">Black </span>
-                        <span className="block text-[#7a9b5c]">Brilliance</span>
-                    </div>
-                </div>
+            <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur">
+                <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 md:h-[84px] md:px-10">
+                    {/* Brand */}
+                    <a href="#top" className="flex items-center gap-3 no-underline">
+                    <img src={BBNLogo} alt="BBN Logo" className="w-16 h-16" />
 
-                <nav className="mt-1 flex w-full flex-wrap items-center justify-start gap-3 text-xs sm:mt-0 sm:flex-1 sm:justify-end sm:gap-6 sm:text-[11px] md:gap-6">
-                    <a
-                        href="#about"
-                        className={`${navLinkBase} ${activeSection === "about" ? navLinkActive : navLinkInactive}`}
-                        onClick={() => setActiveSection("about")}
-                    >
-                        About
+                        <div className="text-sm font-medium leading-tight md:text-base">
+                            <span className="block text-BBNDarkGreen">Black</span>
+                            <span className="block text-BBNBrightGreen">Brilliance</span>
+                        </div>
                     </a>
-                    <a
-                        href="#gallery"
-                        className={`${navLinkBase} ${activeSection === "gallery" ? navLinkActive : navLinkInactive}`}
-                        onClick={() => setActiveSection("gallery")}
-                    >
-                        Gallery
-                    </a>
-                    <a
-                        href="#blog"
-                        className={`${navLinkBase} ${activeSection === "blog" ? navLinkActive : navLinkInactive}`}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setActiveSection("blog");
-                        }}
-                    >
-                        Blog
-                    </a>
+
+                    {/* Desktop nav */}
+                    <nav className="hidden items-center gap-8 md:flex">
+                        {NAV_LINKS.map((link) => (
+                            <a
+                                key={link.id}
+                                href={link.href}
+                                onClick={() => handleNavClick(link.id)}
+                                className={`relative text-sm font-medium tracking-tight no-underline transition-colors duration-150 ${activeSection === link.id
+                                    ? "text-BBNDarkGreen after:absolute after:-bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-BBNDarkGreen after:content-['']"
+                                    : "text-gray-500 hover:text-BBNDarkGreen"
+                                    }`}
+                            >
+                                {link.label}
+                            </a>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={handleRegisterClick}
+                            className="cursor-pointer rounded-full bg-BBNDarkAvocadoGreen px-5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-BBNDarkGreen"
+                        >
+                            Register
+                        </button>
+                    </nav>
+
+                    {/* Mobile toggle */}
                     <button
                         type="button"
                         className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg text-BBNDarkGreen transition-colors hover:bg-BBNLightGreen md:hidden"
@@ -135,12 +195,11 @@ export default function LandingPage() {
             </header>
 
             {/* HERO SECTION */}
-            <section className="grid min-h-[calc(100dvh-84px)] grid-cols-1 items-center gap-20 bg-white p-[60px] md:min-h-0 md:gap-10 md:p-6 sm:gap-6 sm:p-5 sm:min-h-0 lg:grid-cols-2 lg:gap-20 lg:p-[60px]">
-                <div className="hero-text">
-                    {/* Main title with L-brackets */}
-                    <div className={"relative w-fit inline-block p-4"}>
-                        {/* Top-Left Corner Line */}
-                        <div className="absolute top-0 left-0 w-18 h-12 border-t-[5px] border-l-[5px] border-BBNBrightGreen" />
+            <section className="mx-auto grid min-h-[calc(100dvh-64px)] w-full max-w-7xl grid-cols-1 items-center gap-8 px-5 py-8 md:min-h-[calc(100dvh-84px)] md:px-10 lg:grid-cols-2 lg:gap-12 lg:px-16 lg:py-16">                {!hideButtons && (<div className="order-2 flex flex-col md:order-1">
+                {/* Main title with L-brackets */}
+                <div className={"relative w-fit inline-block p-4"}>
+                    {/* Top-Left Corner Line */}
+                    <div className="absolute top-0 left-0 w-18 h-12 border-t-[5px] border-l-[5px] border-BBNBrightGreen" />
 
                     {/* Bottom-Right Corner Line */}
                     <div className="absolute bottom-0 right-0 w-16 h-16 border-b-[5px] border-r-[5px] border-BBNBrightGreen" />
@@ -165,30 +224,36 @@ export default function LandingPage() {
                     Quisque faucibus ex sapien vitae pellentesque sem placerat.
                 </p>
 
-                    <div className="flex flex-col gap-3 sm:flex-row">
-                        <button
-                            type="button"
-                            className="cursor-pointer rounded-full bg-BBNLightGreen px-7 py-3 font-bold text-[#2d3a1f] transition-colors hover:bg-[#c5dbb0]"
-                        >
-                            Sign Up
-                        </button>
-                        <button
-                            type="button"
-                            className="cursor-pointer rounded-full bg-BBNLightGreen px-7 py-3 font-bold text-[#2d3a1f] transition-colors hover:bg-[#d4e5c3]"
-                        >
-                            Log In
-                        </button>
-                    </div>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                    <button
+                        onClick={openSignup}
+                        type="button"
+                        className="cursor-pointer rounded-full bg-BBNLightGreen px-7 py-3 font-bold text-[#2d3a1f] transition-colors hover:bg-[#c5dbb0]"
+                    >
+                        Sign Up
+                    </button>
+                    <button
+                        onClick={openLogin}
+                        type="button"
+                        className="cursor-pointer rounded-full bg-BBNLightGreen px-7 py-3 font-bold text-[#2d3a1f] transition-colors hover:bg-[#d4e5c3]"
+                    >
+                        Log In
+                    </button>
                 </div>
+            </div>
 
-                <div className="flex items-center justify-center">
-                    <div className="flex h-[400px] w-full items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-[#e8f3dd] to-[#d9e8c9] sm:h-[300px]">
-                        <div className="flex h-[90%] w-[90%] items-center justify-center rounded-2xl bg-white/70 text-lg font-medium text-gray-400">
-                            [Image Placeholder...]
-                        </div>
-                    </div>
+
+            )}
+
+                {/* Show login/signup when hero is hidden */}
+                {showLogin && (<Login onBack={closePopup} />)}
+                {showSignUp && (<Signup onBack={closePopup} />)}
+
+                <div className="order-1 mx-auto flex h-[250px] w-full max-w-[700px] items-center justify-center overflow-hidden rounded-3xl bg-BBNLightGreen sm:h-[320px] md:h-[400px] lg:order-2">
+                    Image Placeholder...
                 </div>
             </section>
+
 
             {/* ABOUT SECTION */}
             <section id="about" className="mx-auto my-20 grid w-[calc(100%-80px)] max-w-[1200px] scroll-mt-[100px] grid-cols-1 gap-[60px] rounded-3xl bg-[#e8f3dd] p-[60px] shadow-md md:my-20 md:w-full md:gap-10 md:px-6 sm:my-20 sm:gap-[30px] sm:p-5 lg:grid-cols-[400px_1fr] lg:gap-[60px] lg:p-[60px]">
@@ -222,7 +287,7 @@ export default function LandingPage() {
                                 <button
                                     type="button"
                                     key={i}
-                                    className="h-[60px] w-[120px] shrink-0 cursor-pointer overflow-hidden rounded-lg bg-[#c5dbb0] transition-opacity hover:opacity-90 [scroll-snap-align:start]"
+                                    className="h-[60px] w-[120px] shrink-0 cursor-pointer overflow-hidden rounded-lg bg-[#c5dbb0] transition-opacity hover:opacity-90 snap-start"
                                     style={{ minWidth: CAROUSEL_ITEM_WIDTH }}
                                     onClick={() => setLightboxIndex(i + 1)}
                                     aria-label={`View image ${i + 1}`}
@@ -268,7 +333,7 @@ export default function LandingPage() {
             {/* LIGHTBOX */}
             {lightboxIndex !== null && (
                 <div
-                    className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/70 p-4"
+                    className="fixed inset-0 z-1100 flex items-center justify-center bg-black/70 p-4"
                     onClick={() => setLightboxIndex(null)}
                     role="dialog"
                     aria-modal="true"
@@ -340,3 +405,4 @@ export default function LandingPage() {
         </div>
     );
 }
+
