@@ -60,7 +60,7 @@ export class ConversationController {
     /**
      * Creates a conversation from the given user IDs
      *
-     * Checks the given users to see if they exist within the database and if so return their conversation else create a new document within the database.
+     * Checks the given users to see if they exist within the database and if so return their conversation else create a new document within the database. This is done through setDoc and the field merge: true.
      *
      * @param userAId - The Firestore Authentication UID for the first user.
      * @param userBId - The Firestore Authentication UID for the second user.
@@ -70,6 +70,10 @@ export class ConversationController {
         userAId: string,
         userBId: string,
     ): Promise<Conversation> {
+        if (userAId === userBId) {
+            throw new Error("Cannot create conversation with yourself");
+        }
+
         const conversationId = this.generateConversationId(userAId, userBId);
         const conversationRef = doc(
             this.db,
@@ -77,29 +81,17 @@ export class ConversationController {
             conversationId,
         );
 
-        const existingConversation = await getDoc(conversationRef);
-
-        // Check for an existing conversation and Return the conversation if found
-        if (existingConversation.exists()) {
-            return this.firestoreDataToConversation(
-                existingConversation.id,
-                existingConversation.data() as ConversationForm,
-            );
-        }
-
-        const currentTime = serverTimestamp() as Timestamp;
-
         const conversationData = {
             participantIds: [userAId, userBId],
-            created_at: currentTime,
+            created_at: serverTimestamp(),
         };
 
-        await setDoc(conversationRef, conversationData);
+        await setDoc(conversationRef, conversationData, { merge: true });
 
         return {
             conversationId,
             participantIds: [userAId, userBId],
-            created_at: currentTime,
+            created_at: undefined as unknown as Timestamp,
         };
     }
 
@@ -134,9 +126,9 @@ export class ConversationController {
 
     /**
      * Retrieves all conversations associated with a user
-     * 
+     *
      * Queires Firestore for conversations where the given userId exists in the conversation field participantIds.
-     * 
+     *
      * @param userId - The Firestore Authentication UID for the user.
      * @returns A promise that resolves to a list of conversations for the user
      */

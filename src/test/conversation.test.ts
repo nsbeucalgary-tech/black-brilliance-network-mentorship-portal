@@ -16,9 +16,8 @@ import {
 import { ConversationController } from "../services/ConversationController";
 
 /**
- * To run this file use npm run test:watch 
+ * To run this file use npm run test:watch
  */
-
 
 // Mock firebase/firestore
 vi.mock("firebase/firestore", () => ({
@@ -48,65 +47,43 @@ describe("ConversationController", () => {
     });
 
     describe("createConversation", () => {
-        it("creates a new conversation when one does not exist", async () => {
-            vi.mocked(getDoc).mockResolvedValue({
-                exists: () => false,
-            } as any);
-
+        it("creates a conversation", async () => {
             const result = await controller.createConversation(
                 "userAId",
                 "userBId",
             );
 
-            expect(getDoc).toHaveBeenCalled();
-
-            expect(setDoc).toHaveBeenCalledWith(expect.anything(), {
-                participantIds: ["userAId", "userBId"],
-                created_at: "mock-timestamp",
-            });
-
-            expect(result).toEqual({
-                conversationId: "userAId_userBId",
-                participantIds: ["userAId", "userBId"],
-                created_at: "mock-timestamp",
-            });
-        });
-
-        it("returns an existing conversation if found", async () => {
-            vi.mocked(getDoc).mockResolvedValue({
-                exists: () => true,
-                id: "userAId_userBId",
-                data: () => ({
+            expect(setDoc).toHaveBeenCalledWith(
+                expect.anything(),
+                {
                     participantIds: ["userAId", "userBId"],
-                    created_at: "existing-time",
-                }),
-            } as any);
-
-            const result = await controller.createConversation(
-                "userAId",
-                "userBId",
+                    created_at: "mock-timestamp",
+                },
+                {
+                    merge: true,
+                },
             );
-
-            expect(setDoc).not.toHaveBeenCalled();
 
             expect(result).toEqual({
                 conversationId: "userAId_userBId",
                 participantIds: ["userAId", "userBId"],
-                created_at: "existing-time",
+                created_at: undefined,
             });
         });
 
         it("generates deterministic conversation IDs", async () => {
-            vi.mocked(getDoc).mockResolvedValue({
-                exists: () => false,
-            } as any);
-
             const result = await controller.createConversation(
                 "zebra",
                 "alpha",
             );
 
             expect(result.conversationId).toBe("alpha_zebra");
+        });
+
+        it("prevents self conversations", async () => {
+            await expect(
+                controller.createConversation("userAId", "userAId"),
+            ).rejects.toThrow("Cannot create conversation with yourself");
         });
     });
 
