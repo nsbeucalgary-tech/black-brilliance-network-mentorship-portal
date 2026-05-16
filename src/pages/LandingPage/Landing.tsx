@@ -57,7 +57,7 @@ export default function LandingPage() {
     }, [lightboxIndex]);
 
     return (
-        <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-white pt-[84px] font-sans text-gray-800">
+        <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-white pt-16 font-sans text-BBNDarkGreen md:pt-[84px]">
             {/* NAVBAR */}
             <header className="fixed inset-x-0 top-0 z-[1000] flex flex-col items-start gap-1 border-b border-gray-200 bg-white/95 px-4 py-2 backdrop-blur sm:h-[84px] sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-0 md:px-6">
                 <div className="flex items-center gap-3 sm:gap-2 shrink-0">
@@ -98,13 +98,40 @@ export default function LandingPage() {
                     </a>
                     <button
                         type="button"
-                        className="ml-4 cursor-pointer rounded-full border-none bg-[#3d4a2b] px-5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#2d3a1f] md:px-5 md:py-2 md:text-sm sm:px-3 sm:py-1.5 sm:text-xs whitespace-nowrap shrink-0"
-                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg text-BBNDarkGreen transition-colors hover:bg-BBNLightGreen md:hidden"
+                        onClick={() => setMobileNavOpen((prev) => !prev)}
+                        aria-label={mobileNavOpen ? "Close navigation menu" : "Open navigation menu"}
+                        aria-expanded={mobileNavOpen}
                     >
-                        <span className="hidden sm:inline md:hidden">Reg</span>
-                        <span className="sm:hidden md:inline">Register</span>
+                        {mobileNavOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                     </button>
-                </nav>
+                </div>
+
+                {/* Mobile menu panel */}
+                {mobileNavOpen && (
+                    <nav className="flex flex-col gap-1 border-t border-gray-200 bg-white px-4 py-3 md:hidden">
+                        {NAV_LINKS.map((link) => (
+                            <a
+                                key={link.id}
+                                href={link.href}
+                                onClick={() => handleNavClick(link.id)}
+                                className={`rounded-lg px-3 py-2.5 text-base font-medium no-underline transition-colors w-fit ${activeSection === link.id
+                                    ? "bg-BBNLightGreen text-BBNDarkGreen"
+                                    : "text-gray-600 hover:bg-BBNLightGreen hover:text-BBNDarkGreen"
+                                    }`}
+                            >
+                                {link.label}
+                            </a>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={handleRegisterClick}
+                            className="w-fit mt-2 cursor-pointer rounded-full bg-BBNDarkAvocadoGreen px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-BBNDarkGreen"
+                        >
+                            Register
+                        </button>
+                    </nav>
+                )}
             </header>
 
             {/* HERO SECTION */}
@@ -115,28 +142,28 @@ export default function LandingPage() {
                         {/* Top-Left Corner Line */}
                         <div className="absolute top-0 left-0 w-18 h-12 border-t-[5px] border-l-[5px] border-BBNBrightGreen" />
 
-                        {/* Bottom-Right Corner Line */}
-                        <div className="absolute bottom-0 right-0 w-16 h-16 border-b-[5px] border-r-[5px] border-BBNBrightGreen" />
+                    {/* Bottom-Right Corner Line */}
+                    <div className="absolute bottom-0 right-0 w-16 h-16 border-b-[5px] border-r-[5px] border-BBNBrightGreen" />
 
-                        {/* Text Content */}
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-BBNDarkGreen">
-                            The Black<br />Brilliance Network.
-                        </h1>
-                    </div>
-                    <p className="mb-8 mt-8 text-base leading-relaxed text-BBNDarkGreen sm:text-sm md:text-lg">
-                        Bridging black undergraduate and graduate students in STEM with
-                        industry professionals, alumni, and advanced-degree mentors, a
-                        mentorship initiative by{" "}
-                        <strong>the National Society of Black Engineers.</strong>
-                    </p>
+                    {/* Text Content */}
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-BBNDarkGreen">
+                        The Black<br />Brilliance Network.
+                    </h1>
+                </div>
+                <p className="mb-8 mt-8 text-base leading-relaxed text-BBNDarkGreen sm:text-sm md:text-lg">
+                    Bridging black undergraduate and graduate students in STEM with
+                    industry professionals, alumni, and advanced-degree mentors, a
+                    mentorship initiative by{" "}
+                    <strong>the National Society of Black Engineers.</strong>
+                </p>
 
-                    <p className="mb-8 text-base leading-relaxed text-BBNDarkGreen sm:text-sm md:text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit. 
-                    Quisque faucibus ex sapien vitae pellentesque sem placerat. 
-                    In id cursus mi pretium tellus duis convallis. 
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit. 
+                <p className="mb-8 text-base leading-relaxed text-BBNDarkGreen sm:text-sm md:text-lg">
+                    Lorem ipsum dolor sit amet consectetur adipiscing elit.
                     Quisque faucibus ex sapien vitae pellentesque sem placerat.
-                    </p>
+                    In id cursus mi pretium tellus duis convallis.
+                    Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                    Quisque faucibus ex sapien vitae pellentesque sem placerat.
+                </p>
 
                     <div className="flex flex-col gap-3 sm:flex-row">
                         <button
@@ -221,16 +248,16 @@ export default function LandingPage() {
 
                 <div className="flex flex-col justify-center">
                     <h2 className="mb-4 text-3xl font-semibold text-gray-800 md:text-4xl">About Us</h2>
-                    <h1 className="mb-5 text-3xl font-extrabold tracking-tight text-white md:text-5xl">
-                        <strong>NSBE UCalgary</strong>
+                    <h1 className="mb-5 text-3xl font-bold tracking-tight md:text-5xl">
+                        NSBE UCalgary
                     </h1>
-                    <p className="mb-4 text-[15px] leading-relaxed text-gray-600 sm:text-sm">
+                    <p className="mb-4 leading-relaxed text-sm md:text-base">
                         The University of Calgary chapter of the National Society of Black
                         Engineers is committed to increasing the number of culturally
                         responsible Black engineers who excel academically, succeed
                         professionally, and positively impact the community.
                     </p>
-                    <p className="mb-4 text-[15px] leading-relaxed text-gray-600 sm:text-sm">
+                    <p className="mb-4 leading-relaxed text-sm md:text-base">
                         Through mentorship, professional development, and community
                         building, we create pathways for Black students to thrive in STEM
                         fields and become the next generation of engineering leaders.
@@ -291,43 +318,23 @@ export default function LandingPage() {
             )}
 
             {/* FOOTER */}
-            <footer className="mt-auto w-full bg-[#3d4a2b] px-5 py-8 text-white/90">
-                <div className="flex flex-col items-center gap-5">
-                    <div className="flex gap-5">
-                        <a
-                            href="#facebook"
-                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
-                        >
-                            Facebook
-                        </a>
-                        <a
-                            href="#X"
-                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
-                        >
-                            X
-                        </a>
-                        <a
-                            href="#linkedin"
-                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
-                        >
-                            LinkedIn
-                        </a>
-                        <a
-                            href="#email"
-                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
-                        >
-                            Email
-                        </a>
-                        <a
-                            href="#discord"
-                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
-                        >
-                            Discord
-                        </a>
+            <footer className="mt-auto w-full bg-BBNDarkGreen px-5 py-8">
+                <div className="flex flex-col justify-center items-center gap-5 text-white">
+                    <div className="flex justify-center gap-8 md:gap-4">
+                        {footerLinks.map((link) => (
+                            <a
+                                key={link.href}
+                                href={link.href}
+                                className="flex h-6 w-6 md:h-8 md:w-8 items-center justify-center text-white no-underline transition-colors hover:text-BBNBrightGreen"
+                                aria-label={link.href.replace("#", "")}
+                            >
+                                {link.icon}
+                            </a>
+                        ))}
                     </div>
-                    <p className="text-[13px] text-white/70">
-                        ©Black Brilliance Network 2025. All rights reserved.
-                    </p>
+                    <span className="text-sm md:text-base text-center">
+                        © Black Brilliance Network {year}. All rights reserved.
+                    </span>
                 </div>
             </footer>
         </div>
