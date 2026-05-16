@@ -4,7 +4,7 @@ import { signInWithProvider, signUpWithEmailAndPassword, validateUserPassword } 
 import type { AuthProvider } from "firebase/auth";
 import { googleProvider } from "../../_db_controller/init";
 import { PublicOnlyRoute } from "../../components/PublicRoute";
-import GoogleLogo from "../../components/GoogleLogo";
+import { GoogleLogoIcon } from "../../components/Logos";
 import PasswordInput from "../../components/PasswordInput";
 
 type SignupProps = {
@@ -93,7 +93,7 @@ function SignupComponent({ onBack }: SignupProps) {
           text-gray-700 text-xl
           transition-all duration-200
           hover:bg-[#c5dbb0] hover:-translate-x-1
-          active:scale-95
+          active:scale-95 cursor-pointer
           focus:outline-none focus:ring-2 focus:ring-[#c5dbb0]"
             onClick={onBack} aria-label="Go back">
             ←
@@ -104,10 +104,10 @@ function SignupComponent({ onBack }: SignupProps) {
       <div className="flex items-center justify-center gap-3 mb-3">
         <button
           aria-label="Sign up with Google"
-          className="flex w-fit rounded-full bg-BBNLightGreen p-5"
+          className="flex w-fit rounded-full bg-BBNLightGreen hover:bg-[#c5dbb0] cursor-pointer p-5"
           onClick={() => handleProviderSignIn(googleProvider, "Google")}
         >
-          <GoogleLogo />
+          <GoogleLogoIcon />
         </button>
       </div>
 
@@ -130,8 +130,10 @@ function SignupComponent({ onBack }: SignupProps) {
       </div>}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 font-semibold">
-        <label className="text-sm ">Full name</label>
+        <label htmlFor="name" className="text-sm ">Full name</label>
         <input
+        autoComplete="name"
+          id="name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -139,8 +141,10 @@ function SignupComponent({ onBack }: SignupProps) {
           className="w-full h-11 rounded-xl border-0 px-4 bg-BBNLightGreen placeholder:text-gray-400"
         />
 
-        <label className="text-sm ">Email</label>
+        <label htmlFor="email" className="text-sm ">Email</label>
         <input
+          autoComplete="email"
+          id="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -148,12 +152,14 @@ function SignupComponent({ onBack }: SignupProps) {
           className="w-full h-11 rounded-xl border-0 px-4 bg-BBNLightGreen placeholder:text-gray-400"
         />
 
-        <PasswordInput labelText="Password" placeholder="Create a password" value={password} setValue={setPassword} />
-        <PasswordInput labelText="Confirm Password" placeholder="Confirm password" value={confirm} setValue={setConfirm} />
+        <PasswordInput labelText="Password" placeholder="Create a password" id="password" value={password} setValue={setPassword} />
+        <PasswordInput labelText="Confirm Password" placeholder="Confirm password" id="confirmPassword" value={confirm} setValue={setConfirm} />
 
         <div className="flex items-center justify-between mt-2 text-BBNDarkGreen">
-          <label className="flex items-center gap-2 text-base cursor-pointer">
+          <label htmlFor="remember" className="flex items-center gap-2 text-base cursor-pointer">
             <input
+              id="remember"
+              autoComplete="off"
               type="checkbox"
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}

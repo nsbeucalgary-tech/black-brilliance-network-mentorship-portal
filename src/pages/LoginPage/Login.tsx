@@ -9,7 +9,7 @@ import { UserController } from "../../services/UserController";
 import { UserRole } from "../../types/User";
 import type { AuthProvider } from "firebase/auth";
 import { PublicOnlyRoute } from "../../components/PublicRoute";
-import GoogleLogo from "../../components/GoogleLogo";
+import { GoogleLogoIcon } from "../../components/Logos";
 import PasswordInput from "../../components/PasswordInput";
 const userController = new UserController(db);
 
@@ -128,7 +128,7 @@ function LoginComponent({ onBack }: AuthProps) {
                     onClick={() => handleProviderSignIn(googleProvider, "Google")}
                     disabled={loading}
                 >
-                    <GoogleLogo />
+                    <GoogleLogoIcon />
                 </button>
             </div>
             <div className="flex items-center justify-center gap-4 text-center text-gray-400 my-2">
@@ -143,6 +143,7 @@ function LoginComponent({ onBack }: AuthProps) {
                 <label htmlFor="email" className="text-sm font-semibold">Email</label>
                 <input
                     id="email"
+                    autoComplete="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -150,12 +151,13 @@ function LoginComponent({ onBack }: AuthProps) {
                     className="w-full h-11 rounded-2xl border-0 px-4 bg-BBNLightGreen placeholder:text-gray-400"
                 />
 
-                <PasswordInput labelText="Password" placeholder="Enter your password" value={password} setValue={setPassword} />
+                <PasswordInput labelText="Password" placeholder="Enter your password" id="password" value={password} setValue={setPassword} />
 
                 <div className="flex items-center justify-between mt-2 text-BBNDarkGreen">
                     <label htmlFor="remember" className="flex items-center gap-2 text-base cursor-pointer">
                         <input
                             id="remember"
+                            autoComplete="off"
                             type="checkbox"
                             className="w-4 h-4"
                             checked={remember}

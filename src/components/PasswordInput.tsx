@@ -4,18 +4,19 @@ import { Eye, EyeOff } from 'lucide-react';
 type PasswordProps = {
     labelText: string;
     placeholder: string;
+    id: string;
     value: string;
     setValue: (value: string) => void;
 }
-export default function PasswordInput({ labelText, placeholder, value, setValue }: PasswordProps) {
+export default function PasswordInput({ labelText, placeholder, id, value, setValue }: PasswordProps) {
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     return (
         <>
-            <label htmlFor="password" className="text-sm font-semibold">{labelText}</label>
+            <label htmlFor={id} className="text-sm font-semibold">{labelText}</label>
             <div className="relative">
                 <input
-                id="password"
+                id={id}
                     type={showPassword ? "text" : "password"}
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
