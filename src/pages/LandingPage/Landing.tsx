@@ -1,11 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import Login from "../LoginPage/Login";
+import Signup from "../SignupPage/Signup.tsx";
+import { InstagramLogoIcon, FacebookLogoIcon, XLogoIcon, LinkedInLogoIcon, RedditLogoIcon } from "../../components/Logos";
+import { Menu, X } from "lucide-react";
+import BBNLogo from "../../assets/BBNLogo.svg";
 
-const navLinkBase =
-    "relative inline-flex items-center px-1 text-sm font-medium tracking-tight transition-colors duration-150 sm:text-xs whitespace-nowrap shrink-0";
-const navLinkActive =
-    "text-[#2d3a1f] no-underline after:absolute after:-bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-[#2d3a1f] after:content-[''] after:transition-transform after:duration-200";
-const navLinkInactive =
-    "text-gray-500 no-underline hover:text-[#2d3a1f]";
+type SectionId = "about" | "gallery" | "blog";
+
+const NAV_LINKS: { id: SectionId; label: string; href: string }[] = [
+    { id: "about", label: "About", href: "#about" },
+    { id: "gallery", label: "Gallery", href: "#gallery" },
+    { id: "blog", label: "Blog", href: "#blog" },
+];
 
 const CAROUSEL_ITEMS = 6;
 const LIGHTBOX_ITEMS = 1 + CAROUSEL_ITEMS; // main photo + carousel thumbnails
@@ -23,8 +30,58 @@ const GALLERY_IMAGES = [
     "https://picsum.photos/seed/bbn-6/120/60",
 ];
 
+const footerLinks: { href: string, icon: React.ReactNode }[] = [
+    { href: "#facebook", icon: <FacebookLogoIcon /> },
+    { href: "#x", icon: <XLogoIcon /> },
+    { href: "#linkedin", icon: <LinkedInLogoIcon /> },
+    { href: "#reddit", icon: <RedditLogoIcon /> },
+    { href: "#instagram", icon: <InstagramLogoIcon /> },
+];
+
+const year = new Date().getFullYear();
+
 export default function LandingPage() {
-    const [activeSection, setActiveSection] = useState<"about" | "gallery" | "blog">("about");
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const [showLogin, setShowLogin] = useState<boolean>(false);
+    const [showSignUp, setShowSignUp] = useState<boolean>(false);
+    const [hideButtons, setHideButtons] = useState<boolean>(false);
+    const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (location.pathname === "/login") {
+            setShowLogin(true);
+            setShowSignUp(false);
+            setHideButtons(true);
+        } else if (location.pathname === "/signup") {
+            setShowSignUp(true);
+            setShowLogin(false);
+            setHideButtons(true);
+        } else {
+            setShowLogin(false);
+            setShowSignUp(false);
+            setHideButtons(false);
+        }
+        setMobileNavOpen(false);
+    }, [location.pathname]);
+
+
+    const openLogin = () => navigate("/login");
+    const openSignup = () => navigate("/signup");
+    const closePopup = () => navigate("/");
+
+    const [activeSection, setActiveSection] = useState<SectionId>("about");
+
+    const handleNavClick = (id: SectionId) => {
+        setActiveSection(id);
+        setMobileNavOpen(false);
+    };
+
+    const handleRegisterClick = () => {
+        navigate("/signup");
+        setMobileNavOpen(false);
+    };
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -56,126 +113,151 @@ export default function LandingPage() {
         return () => window.removeEventListener("keydown", onKeyDown);
     }, [lightboxIndex]);
 
-    return (
-        <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-white pt-[84px] font-sans text-gray-800">
-            {/* NAVBAR */}
-            <header className="fixed inset-x-0 top-0 z-[1000] flex flex-col items-start gap-1 border-b border-gray-200 bg-white/95 px-4 py-2 backdrop-blur sm:h-[84px] sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-0 md:px-6">
-                <div className="flex items-center gap-3 sm:gap-2 shrink-0">
-                    <div className="flex h-8 w-8 gap-1 sm:h-7 sm:w-7 sm:gap-[3px]">
-                        <div className="h-2 w-2 rounded-full bg-[#2d3a1f]" />
-                        <div className="mt-2 h-2 w-2 rounded-full bg-[#2d3a1f]" />
-                    </div>
-                    <div className="text-base font-medium leading-tight sm:text-xs">
-                        <span className="block text-[#2d3a1f]">Black </span>
-                        <span className="block text-[#7a9b5c]">Brilliance</span>
-                    </div>
-                </div>
 
-                <nav className="mt-1 flex w-full flex-wrap items-center justify-start gap-3 text-xs sm:mt-0 sm:flex-1 sm:justify-end sm:gap-6 sm:text-[11px] md:gap-6">
-                    <a
-                        href="#about"
-                        className={`${navLinkBase} ${activeSection === "about" ? navLinkActive : navLinkInactive}`}
-                        onClick={() => setActiveSection("about")}
-                    >
-                        About
+
+
+    return (
+        <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-white pt-16 font-sans text-BBNDarkGreen md:pt-[84px]">
+            {/* NAVBAR */}
+            <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur">
+                <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 md:h-[84px] md:px-10">
+                    {/* Brand */}
+                    <a href="#top" className="flex items-center gap-3 no-underline">
+                    <img src={BBNLogo} alt="BBN Logo" className="w-16 h-16" />
+
+                        <div className="text-sm font-medium leading-tight md:text-base">
+                            <span className="block text-BBNDarkGreen">Black</span>
+                            <span className="block text-BBNBrightGreen">Brilliance</span>
+                        </div>
                     </a>
-                    <a
-                        href="#gallery"
-                        className={`${navLinkBase} ${activeSection === "gallery" ? navLinkActive : navLinkInactive}`}
-                        onClick={() => setActiveSection("gallery")}
-                    >
-                        Gallery
-                    </a>
-                    <a
-                        href="#blog"
-                        className={`${navLinkBase} ${activeSection === "blog" ? navLinkActive : navLinkInactive}`}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setActiveSection("blog");
-                        }}
-                    >
-                        Blog
-                    </a>
+
+                    {/* Desktop nav */}
+                    <nav className="hidden items-center gap-8 md:flex">
+                        {NAV_LINKS.map((link) => (
+                            <a
+                                key={link.id}
+                                href={link.href}
+                                onClick={() => handleNavClick(link.id)}
+                                className={`relative text-sm font-medium tracking-tight no-underline transition-colors duration-150 ${activeSection === link.id
+                                    ? "text-BBNDarkGreen after:absolute after:-bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-BBNDarkGreen after:content-['']"
+                                    : "text-gray-500 hover:text-BBNDarkGreen"
+                                    }`}
+                            >
+                                {link.label}
+                            </a>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={handleRegisterClick}
+                            className="cursor-pointer rounded-full bg-BBNDarkAvocadoGreen px-5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-BBNDarkGreen"
+                        >
+                            Register
+                        </button>
+                    </nav>
+
+                    {/* Mobile toggle */}
                     <button
                         type="button"
-                        className="ml-4 cursor-pointer rounded-full border-none bg-[#3d4a2b] px-5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#2d3a1f] md:px-5 md:py-2 md:text-sm sm:px-3 sm:py-1.5 sm:text-xs whitespace-nowrap shrink-0"
-                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg text-BBNDarkGreen transition-colors hover:bg-BBNLightGreen md:hidden"
+                        onClick={() => setMobileNavOpen((prev) => !prev)}
+                        aria-label={mobileNavOpen ? "Close navigation menu" : "Open navigation menu"}
+                        aria-expanded={mobileNavOpen}
                     >
-                        <span className="hidden sm:inline md:hidden">Reg</span>
-                        <span className="sm:hidden md:inline">Register</span>
+                        {mobileNavOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                     </button>
-                </nav>
+                </div>
+
+                {/* Mobile menu panel */}
+                {mobileNavOpen && (
+                    <nav className="flex flex-col gap-1 border-t border-gray-200 bg-white px-4 py-3 md:hidden">
+                        {NAV_LINKS.map((link) => (
+                            <a
+                                key={link.id}
+                                href={link.href}
+                                onClick={() => handleNavClick(link.id)}
+                                className={`rounded-lg px-3 py-2.5 text-base font-medium no-underline transition-colors w-fit ${activeSection === link.id
+                                    ? "bg-BBNLightGreen text-BBNDarkGreen"
+                                    : "text-gray-600 hover:bg-BBNLightGreen hover:text-BBNDarkGreen"
+                                    }`}
+                            >
+                                {link.label}
+                            </a>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={handleRegisterClick}
+                            className="w-fit mt-2 cursor-pointer rounded-full bg-BBNDarkAvocadoGreen px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-BBNDarkGreen"
+                        >
+                            Register
+                        </button>
+                    </nav>
+                )}
             </header>
 
             {/* HERO SECTION */}
-            <section className="grid min-h-[calc(100dvh-84px)] grid-cols-1 items-center gap-20 bg-white p-[60px] md:min-h-0 md:gap-10 md:p-6 sm:gap-6 sm:p-5 sm:min-h-0 lg:grid-cols-2 lg:gap-20 lg:p-[60px]">
-                <div className="hero-text">
-                    {/* Main title with L-brackets */}
-                    <div className="relative inline-block pl-3 pt-3 pr-3 pb-3">
-                        {/* Top-left L bracket: horizontal + vertical */}
-                        <span
-                            className="absolute left-0 top-0 h-1 w-16 bg-[#7a9b5c] sm:w-12"
-                            aria-hidden
-                        />
-                        <span
-                            className="absolute left-0 top-0 h-16 w-1 bg-[#7a9b5c] sm:h-12"
-                            aria-hidden
-                        />
-                        {/* Bottom-right L bracket */}
-                        <span
-                            className="absolute bottom-0 right-0 h-1 w-48 bg-[#7a9b5c] sm:w-36"
-                            aria-hidden
-                        />
-                        <span
-                            className="absolute bottom-0 right-0 h-16 w-1 bg-[#7a9b5c] sm:h-12"
-                            aria-hidden
-                        />
-                        <h1 className="text-5xl font-bold leading-tight text-[#2d3a1f] sm:text-3xl">
-                            The Black
-                        </h1>
-                        <h1 className="text-5xl font-bold leading-tight text-[#2d3a1f] sm:text-3xl">
-                            Brilliance Network.
-                        </h1>
-                    </div>
-                    <p className="mb-8 mt-8 text-base leading-relaxed text-gray-600 sm:text-sm">
-                        Bridging black undergraduate and graduate students in STEM with
-                        industry professionals, alumni, and advanced-degree mentors, a
-                        mentorship initiative by{" "}
-                        <strong>the National Society of Black Engineers.</strong>
-                    </p>
+            <section className="mx-auto grid min-h-[calc(100dvh-64px)] w-full max-w-7xl grid-cols-1 items-center gap-8 px-5 py-8 md:min-h-[calc(100dvh-84px)] md:px-10 lg:grid-cols-2 lg:gap-12 lg:px-16 lg:py-16">                {!hideButtons && (<div className="order-2 flex flex-col md:order-1">
+                {/* Main title with L-brackets */}
+                <div className={"relative w-fit inline-block p-4"}>
+                    {/* Top-Left Corner Line */}
+                    <div className="absolute top-0 left-0 w-18 h-12 border-t-[5px] border-l-[5px] border-BBNBrightGreen" />
 
-                    <p className="mb-8 text-base leading-relaxed text-gray-600 sm:text-sm">
-                        Random text.
-                    </p>
+                    {/* Bottom-Right Corner Line */}
+                    <div className="absolute bottom-0 right-0 w-16 h-16 border-b-[5px] border-r-[5px] border-BBNBrightGreen" />
 
-                    <div className="flex gap-4">
-                        <button
-                            type="button"
-                            className="cursor-pointer rounded-lg border-none bg-[#d4e5c3] px-7 py-3 text-[15px] font-medium text-[#2d3a1f] transition-colors hover:bg-[#c5dbb0]"
-                        >
-                            Sign Up
-                        </button>
-                        <button
-                            type="button"
-                            className="cursor-pointer rounded-lg border-none bg-[#e5ead9] px-7 py-3 text-[15px] font-medium text-[#2d3a1f] transition-colors hover:bg-[#d4e5c3]"
-                        >
-                            Log In
-                        </button>
-                    </div>
+                    {/* Text Content */}
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-BBNDarkGreen">
+                        The Black<br />Brilliance Network.
+                    </h1>
                 </div>
+                <p className="mb-8 mt-8 text-base leading-relaxed text-BBNDarkGreen sm:text-sm md:text-lg">
+                    Bridging black undergraduate and graduate students in STEM with
+                    industry professionals, alumni, and advanced-degree mentors, a
+                    mentorship initiative by{" "}
+                    <strong>the National Society of Black Engineers.</strong>
+                </p>
 
-                <div className="flex items-center justify-center">
-                    <div className="flex h-[400px] w-full items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-[#e8f3dd] to-[#d9e8c9] sm:h-[300px]">
-                        <div className="flex h-[90%] w-[90%] items-center justify-center rounded-2xl bg-white/70 text-lg font-medium text-gray-400">
-                            [Image Placeholder...]
-                        </div>
-                    </div>
+                <p className="mb-8 text-base leading-relaxed text-BBNDarkGreen sm:text-sm md:text-lg">
+                    Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                    Quisque faucibus ex sapien vitae pellentesque sem placerat.
+                    In id cursus mi pretium tellus duis convallis.
+                    Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                    Quisque faucibus ex sapien vitae pellentesque sem placerat.
+                </p>
+
+                <div className="flex flex-col gap-3 sm:flex-row">
+                    <button
+                        onClick={openSignup}
+                        type="button"
+                        className="cursor-pointer rounded-full bg-BBNLightGreen px-7 py-3 font-bold text-[#2d3a1f] transition-colors hover:bg-[#c5dbb0]"
+                    >
+                        Sign Up
+                    </button>
+                    <button
+                        onClick={openLogin}
+                        type="button"
+                        className="cursor-pointer rounded-full bg-BBNLightGreen px-7 py-3 font-bold text-[#2d3a1f] transition-colors hover:bg-[#d4e5c3]"
+                    >
+                        Log In
+                    </button>
+                </div>
+            </div>
+
+
+            )}
+
+                {/* Show login/signup when hero is hidden */}
+                {showLogin && (<Login onBack={closePopup} />)}
+                {showSignUp && (<Signup onBack={closePopup} />)}
+
+                <div className="order-1 mx-auto flex h-[250px] w-full max-w-[700px] items-center justify-center overflow-hidden rounded-3xl bg-BBNLightGreen sm:h-[320px] md:h-[400px] lg:order-2">
+                    Image Placeholder...
                 </div>
             </section>
 
+
             {/* ABOUT SECTION */}
             <section id="about" className="mx-auto my-20 grid w-[calc(100%-80px)] max-w-[1200px] scroll-mt-[100px] grid-cols-1 gap-[60px] rounded-3xl bg-[#e8f3dd] p-[60px] shadow-md md:my-20 md:w-full md:gap-10 md:px-6 sm:my-20 sm:gap-[30px] sm:p-5 lg:grid-cols-[400px_1fr] lg:gap-[60px] lg:p-[60px]">
-                <div id="gallery" className="about-left scroll-mt-[100px]">
+                <div id="gallery" className="scroll-mt-[100px] flex flex-col">
                     <button
                         type="button"
                         className="flex h-[280px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-2xl bg-[#d4e5c3] transition-opacity hover:opacity-95 sm:h-[200px]"
@@ -205,7 +287,7 @@ export default function LandingPage() {
                                 <button
                                     type="button"
                                     key={i}
-                                    className="h-[60px] w-[120px] shrink-0 cursor-pointer overflow-hidden rounded-lg bg-[#c5dbb0] transition-opacity hover:opacity-90 [scroll-snap-align:start]"
+                                    className="h-[60px] w-[120px] shrink-0 cursor-pointer overflow-hidden rounded-lg bg-[#c5dbb0] transition-opacity hover:opacity-90 snap-start"
                                     style={{ minWidth: CAROUSEL_ITEM_WIDTH }}
                                     onClick={() => setLightboxIndex(i + 1)}
                                     aria-label={`View image ${i + 1}`}
@@ -229,18 +311,18 @@ export default function LandingPage() {
                     </div>
                 </div>
 
-                <div className="about-content">
-                    <h2 className="mb-5 text-4xl font-semibold text-gray-800">About Us</h2>
-                    <h1 className="mb-5 text-5xl font-extrabold tracking-tight text-gray-100 sm:text-4xl">
-                        <strong>NSBE UCalgary</strong>
+                <div className="flex flex-col justify-center">
+                    <h2 className="mb-4 text-3xl font-semibold text-gray-800 md:text-4xl">About Us</h2>
+                    <h1 className="mb-5 text-3xl font-bold tracking-tight md:text-5xl">
+                        NSBE UCalgary
                     </h1>
-                    <p className="mb-4 text-[15px] leading-relaxed text-gray-600 sm:text-sm">
+                    <p className="mb-4 leading-relaxed text-sm md:text-base">
                         The University of Calgary chapter of the National Society of Black
                         Engineers is committed to increasing the number of culturally
                         responsible Black engineers who excel academically, succeed
                         professionally, and positively impact the community.
                     </p>
-                    <p className="mb-4 text-[15px] leading-relaxed text-gray-600 sm:text-sm">
+                    <p className="mb-4 leading-relaxed text-sm md:text-base">
                         Through mentorship, professional development, and community
                         building, we create pathways for Black students to thrive in STEM
                         fields and become the next generation of engineering leaders.
@@ -251,7 +333,7 @@ export default function LandingPage() {
             {/* LIGHTBOX */}
             {lightboxIndex !== null && (
                 <div
-                    className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/70 p-4"
+                    className="fixed inset-0 z-1100 flex items-center justify-center bg-black/70 p-4"
                     onClick={() => setLightboxIndex(null)}
                     role="dialog"
                     aria-modal="true"
@@ -301,45 +383,26 @@ export default function LandingPage() {
             )}
 
             {/* FOOTER */}
-            <footer className="mt-auto w-full bg-[#3d4a2b] px-5 py-8 text-white/90">
-                <div className="flex flex-col items-center gap-5">
-                    <div className="flex gap-5">
-                        <a
-                            href="#facebook"
-                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
-                        >
-                            Facebook
-                        </a>
-                        <a
-                            href="#X"
-                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
-                        >
-                            X
-                        </a>
-                        <a
-                            href="#linkedin"
-                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
-                        >
-                            LinkedIn
-                        </a>
-                        <a
-                            href="#email"
-                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
-                        >
-                            Email
-                        </a>
-                        <a
-                            href="#discord"
-                            className="text-xl text-white/80 no-underline transition-colors hover:text-white"
-                        >
-                            Discord
-                        </a>
+            <footer className="mt-auto w-full bg-BBNDarkGreen px-5 py-8">
+                <div className="flex flex-col justify-center items-center gap-5 text-white">
+                    <div className="flex justify-center gap-8 md:gap-4">
+                        {footerLinks.map((link) => (
+                            <a
+                                key={link.href}
+                                href={link.href}
+                                className="flex h-6 w-6 md:h-8 md:w-8 items-center justify-center text-white no-underline transition-colors hover:text-BBNBrightGreen"
+                                aria-label={link.href.replace("#", "")}
+                            >
+                                {link.icon}
+                            </a>
+                        ))}
                     </div>
-                    <p className="text-[13px] text-white/70">
-                        ©Black Brilliance Network 2025. All rights reserved.
-                    </p>
+                    <span className="text-sm md:text-base text-center">
+                        © Black Brilliance Network {year}. All rights reserved.
+                    </span>
                 </div>
             </footer>
         </div>
     );
 }
+

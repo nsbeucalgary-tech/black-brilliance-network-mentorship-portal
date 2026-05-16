@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/useAuthContext";
 import { getInitials } from "../utils";
-import { AiOutlineMail } from "react-icons/ai";
-import { PiBellLight } from "react-icons/pi";
+import { Mail, BellRing } from "lucide-react";
 
 function nameForInitials(
     dbFullName: string | undefined,
@@ -41,14 +40,14 @@ export default function TopBar() {
                     aria-label="Notifications"
                     title="Your Notifications"
                 >
-                    <PiBellLight size={35} aria-hidden />
+                    <BellRing size={35} aria-hidden />
                 </Link>
                 <Link
                     to="/dashboard" /* TODO: Chnage to proper link when implemented */
                     aria-label="Messages"
                     title="Your Messages"
                 >
-                    <AiOutlineMail size={35} aria-hidden />
+                    <Mail size={35} aria-hidden />
                 </Link>
                 <Link
                     to="/user-profile"
