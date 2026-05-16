@@ -17,7 +17,8 @@ export default function TestUserCreation() {
 
     try {
       const testPayload: CreateUserPayload = {
-        full_name: "Test User",
+        first_name: "Test",
+        last_name: "User",
         email: `test-${Date.now()}@example.com`,
         role: "user",
       };

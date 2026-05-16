@@ -175,43 +175,61 @@ export default function Login() {
 
                     <form
                         onSubmit={handleSubmit}
-                        className="flex flex-col gap-3"
+                        className="flex flex-col gap-5"
                     >
-                        <label className="text-xs text-[#6b6b6b]">Email</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder=" janedoe@gmail.com"
-                            className="w-full h-11 rounded-xl border-0 px-4 bg-[#eaf7e7]"
-                        />
+                        <div className="flex flex-col gap-1.5">
+                            <label
+                                htmlFor="email"
+                                className="text-sm font-medium text-[#4b4b4b]"
+                            >
+                                Email
+                            </label>
 
-                        <label className="text-xs text-[#6b6b6b]">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder=" ************"
-                            className="w-full h-11 rounded-xl border-0 px-4 bg-[#eaf7e7]"
-                        />
+                            <input
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="janedoe@gmail.com"
+                                className="h-11 rounded-xl border border-transparent bg-[#eaf7e7] px-4 text-sm text-[#1f211f] outline-none transition-all placeholder:text-[#8a8a8a] focus:border-[#7a9b5c] focus:bg-white focus:ring-2 focus:ring-[#cfe7c8]"
+                            />
+                        </div>
 
-                        <div className="flex items-center justify-between mt-2">
-                            <label className="flex items-center gap-2 text-sm cursor-pointer">
+                        <div className="flex flex-col gap-1.5">
+                            <label
+                                htmlFor="password"
+                                className="text-sm font-medium text-[#4b4b4b]"
+                            >
+                                Password
+                            </label>
+
+                            <input
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter your password"
+                                className="h-11 rounded-xl border border-transparent bg-[#eaf7e7] px-4 text-sm text-[#1f211f] outline-none transition-all placeholder:text-[#8a8a8a] focus:border-[#7a9b5c] focus:bg-white focus:ring-2 focus:ring-[#cfe7c8]"
+                            />
+                        </div>
+
+                        <div className="mt-2 flex items-center justify-between gap-4">
+                            <label className="flex items-center gap-2 text-sm text-[#4b4b4b] cursor-pointer select-none">
                                 <input
                                     type="checkbox"
                                     checked={remember}
                                     onChange={(e) =>
                                         setRemember(e.target.checked)
                                     }
+                                    className="h-4 w-4 rounded border-[#b7d3ae] text-[#2d3a1f] focus:ring-[#7a9b5c]"
                                 />
                                 Remember me
                             </label>
+
                             <button
                                 type="submit"
-                                className="submit-button disabled:opacity-50"
                                 disabled={loading}
+                                className="rounded-xl bg-[#2d3a1f] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#3d4a2b] disabled:cursor-not-allowed disabled:opacity-50"
                             >
                                 {loading ? "Signing in..." : "Sign In"}
                             </button>

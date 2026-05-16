@@ -16,7 +16,8 @@ const userController = new UserController(db);
  */
 export async function exampleCreateUser() {
   const newUserPayload: CreateUserPayload = {
-    full_name: "John Doe",
+    first_name: "John",
+    last_name: "Doe",
     email: "john.doe@example.com",
     role: UserRole.USER,
   };
@@ -96,7 +97,8 @@ export async function exampleGetUsersByRole(role: UserRole) {
 export async function exampleUpdateUser(userId: string) {
   try {
     const updatedUser = await userController.updateUser(userId, {
-      full_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
       role: UserRole.MENTEE,
     });
     console.log("User updated:", updatedUser);
@@ -150,14 +152,15 @@ export async function exampleEmailExists(email: string) {
 export function exampleTypeCasting() {
   // Create a user object with proper typing
   const user: User = {
-    full_name: "Alice Smith",
+    first_name: "Alice",
+    last_name: "Smith",
     email: "alice.smith@example.com",
     role: UserRole.MENTOR,
     created_at: new Date(),
   };
 
   // TypeScript will enforce correct property types
-  console.log(`User: ${user.full_name} (${user.email})`);
+  console.log(`User: ${user.first_name} ${user.last_name} (${user.email})`);
   console.log(`Role: ${user.role}`);
   console.log(`Created: ${user.created_at.toISOString()}`);
 

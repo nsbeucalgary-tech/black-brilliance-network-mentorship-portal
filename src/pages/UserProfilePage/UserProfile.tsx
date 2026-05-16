@@ -78,7 +78,11 @@ export default function UserProfilePage() {
     }
 
     // ── Derive display data from dbUser ────────────────────────────────────
-    const initials = getInitials(dbUser.full_name);
+    const fullName = [dbUser.first_name, dbUser.last_name]
+        .filter(Boolean)
+        .join(" ");
+
+    const initials = getInitials(fullName);
 
     const links = [
         dbUser.website_url
@@ -139,7 +143,7 @@ export default function UserProfilePage() {
                 <div className="col-start-2 row-start-1 max-[1100px]:col-start-1 max-[1100px]:row-start-1">
                     <ProfileHeader
                         initials={initials}
-                        name={dbUser.full_name}
+                        name={fullName}
                         pronouns={dbUser.pronouns ?? ""}
                         title={dbUser.title ?? ""}
                         location={dbUser.location ?? ""}

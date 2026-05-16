@@ -8,8 +8,11 @@ export interface User {
     /** Firebase Auth UID — also the Firestore document ID */
     uid: string;
 
-    /** User's full name */
-    full_name: string;
+    /** User's first name */
+    first_name: string;
+
+    /** User's last name */
+    last_name: string;
 
     /** User's email address */
     email: string;
@@ -86,7 +89,8 @@ export interface UserFirestoreData extends Omit<User, "uid" | "created_at"> {
  */
 export type CreateUserPayload = {
     uid: string;
-    full_name: string;
+    first_name: string;
+    last_name: string;
     email: string;
     role?: UserRole;
 };

@@ -16,7 +16,8 @@ import { UserController } from "../services/UserController";
 const userController = new UserController(db);
 
 export async function signUpWithEmailAndPassword(
-    name: string,
+    firstName: string,
+    lastName: string,
     email: string,
     password: string,
     remember: boolean,
@@ -37,14 +38,15 @@ export async function signUpWithEmailAndPassword(
         console.log("[Auth] Auth account created. UID:", credential.user.uid);
 
         // 2. Set the display name on the Auth profile
-        await updateProfile(credential.user, { displayName: name });
+        await updateProfile(credential.user, { displayName: firstName+" "+lastName });
         console.log("[Auth] Display name set.");
 
         // 3. Create the Firestore user document using the Auth UID as the doc ID
         console.log("[Auth] Writing Firestore user doc...");
         await userController.createUser({
             uid: credential.user.uid,
-            full_name: name,
+            first_name: firstName,
+            last_name: lastName,
             email: email,
         });
         console.log("[Auth] Firestore user doc written successfully.");
@@ -127,9 +129,13 @@ export async function signInWithProvider(
         const alreadyExists = await userController.userExists(user.uid);
         if (!alreadyExists) {
             console.log("[Auth] New OAuth user — creating Firestore doc...");
+            const displayName = user.displayName ?? "New User";
+            const [firstName, ...lastNameParts] = displayName.split(" ");
+            const lastName = lastNameParts.join(" ");
             await userController.createUser({
                 uid: user.uid,
-                full_name: user.displayName ?? "New User",
+                first_name: firstName,
+                last_name: lastName,
                 email: user.email ?? "",
             });
             console.log("[Auth] Firestore doc created for OAuth user.");
