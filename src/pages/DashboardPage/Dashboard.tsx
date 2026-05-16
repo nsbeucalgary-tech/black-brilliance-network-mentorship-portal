@@ -44,10 +44,7 @@ export default function DashboardPage() {
             <div className="px-8 py-10">
                 <h1 className="text-2xl font-bold text-[#2d3a1f]">
                     Welcome back
-                    {dbUser?.full_name
-                        ? `, ${dbUser.full_name.split(" ")[0]}`
-                        : ""}
-                    ! 👋
+                    {dbUser?.first_name ? `, ${dbUser.first_name}` : ""}! 👋
                 </h1>
                 <p className="mt-1 text-sm text-[#7a9b5c]">
                     {dbUser?.role
