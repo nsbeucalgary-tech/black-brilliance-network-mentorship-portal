@@ -1,5 +1,9 @@
+import { MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ConversationController } from "../../services/ConversationController";
+import { db } from "../../_db_controller/init";
+import { useAuth } from "../../auth/useAuthContext";
 
 export type Match = {
     id: string;
@@ -15,9 +19,41 @@ type Props = {
     match: Match;
 };
 
+const conversationController = new ConversationController(db);
+
 export default function MatchCard({ match }: Props) {
     const [fav, setFav] = useState(Boolean(match.isFavourite));
     const navigate = useNavigate();
+    const [starting, setStarting] = useState(false);
+
+    const { dbUser, setOpenConvoList, setSelectedConvoId } = useAuth();
+
+    const handleMessageClick = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (!dbUser?.uid || starting) return;
+
+        try {
+            setStarting(true);
+
+            const existingId = [dbUser.uid, match.id].sort().join("_");
+            const existing =
+                await conversationController.getConversationById(existingId);
+
+            const convo =
+                existing ??
+                (await conversationController.createConversation(
+                    dbUser.uid,
+                    match.id,
+                ));
+
+            setSelectedConvoId(convo.conversationId);
+            setOpenConvoList(true);
+        } catch (err) {
+            console.error("Failed to open conversation:", err);
+        } finally {
+            setStarting(false);
+        }
+    };
 
     return (
         <button
@@ -38,6 +74,20 @@ export default function MatchCard({ match }: Props) {
                 <span className={fav ? "text-[#7a9b5c]" : "text-[#c5dbb0]"}>
                     ♥
                 </span>
+            </button>
+
+            <button
+                type="button"
+                aria-label="Message this person"
+                onClick={handleMessageClick}
+                disabled={starting}
+                className="absolute right-4 top-12 transition-transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                <MessageCircle
+                    size={20}
+                    strokeWidth={1.8}
+                    className={`transition-colors ${starting ? "text-[#c5dbb0]" : "text-[#283618] hover:text-[#7a9b5c]"}`}
+                />
             </button>
 
             {/* Avatar */}
