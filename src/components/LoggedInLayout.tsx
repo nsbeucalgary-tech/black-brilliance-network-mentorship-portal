@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import TopBar from "./TopBar";
+import ConversationButton from "./Conversation/ConversationButton";
 
 export default function LoggedInLayout() {
   const location = useLocation();
@@ -19,6 +20,7 @@ export default function LoggedInLayout() {
               <TopBar />
               <div className="min-h-0 flex-1 overflow-y-auto">
                   <Outlet />
+                  <ConversationButton />
               </div>
           </div>
       </div>
