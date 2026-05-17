@@ -1,34 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Search } from "lucide-react";
 import FilterChip from "../../components/matching/FilterChip";
 import FiltersDrawer from "../../components/matching/FiltersDrawer";
 import MatchesGrid from "../../components/matching/MatchesGrid";
 import type { Match } from "../../components/matching/MatchCard";
+import { Funnel } from "lucide-react";
 
 type Tab = "TOP_MATCHES" | "FAVOURITES";
 type SortMode = "BEST_MATCH" | "NAME";
 
 export default function Matching() {
-  const navigate = useNavigate();
-
   const [tab, setTab] = useState<Tab>("TOP_MATCHES");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [sortMode, setSortMode] = useState<SortMode>("BEST_MATCH");
-
-  // Top-right dropdown
-  const [profileOpen, setProfileOpen] = useState(false);
-  const profileRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    function onDocClick(e: MouseEvent) {
-      if (!profileRef.current) return;
-      if (!profileRef.current.contains(e.target as Node)) setProfileOpen(false);
-    }
-    document.addEventListener("mousedown", onDocClick);
-    return () => document.removeEventListener("mousedown", onDocClick);
-  }, []);
 
   // Mock profiles (swap for DB later)
   const matches: Match[] = [
@@ -72,30 +58,46 @@ export default function Matching() {
     <div className="flex min-h-screen">
       <div className="flex-1 bg-white overflow-y-auto">
         <FiltersDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+        
         {/* Page content */}
-        <main className="max-w-none px-10 py-8">
+        <main className="max-w-none  px-4 lg:px-10 py-8">
           <div className="space-y-6">
             {/* Tabs */}
-            <div className="flex items-center gap-10 border-b border-[#e8f3dd]">
+            <div className="flex items-center gap-4 lg:gap-10 border-b border-[#e8f3dd]">
               {(["TOP_MATCHES", "FAVOURITES"] as Tab[]).map((t) => (
                 <button
                   key={t}
                   type="button"
                   className={`pb-3 text-xs tracking-widest font-semibold transition-colors ${tab === t
-                      ? "text-[#2d3a1f] border-b-2 border-[#2d3a1f] -mb-px"
-                      : "text-[#8fa878] hover:text-[#4a5c35]"
+                    ? "text-BBNDarkGreen border-b-2 border-[#2d3a1f] -mb-px"
+                    : "text-gray-400 hover:text-[#4a5c35]"
                     }`}
                   onClick={() => setTab(t)}
                 >
                   {t.replace("_", " ")}
                 </button>
               ))}
+
+              {/* Search bar */}
+              <div className="flex-1 flex justify-end pb-4">
+                <div className="flex w-full min-w-32 max-w-2xl items-center gap-2 rounded-full bg-gray-200 px-4 py-2">
+                  <Search
+                    className="w-4 h-4 text-black shrink-0"
+                  />
+                  <input
+                    className="w-full bg-transparent text-sm text-black outline-none placeholder:text-gray-400"
+                    placeholder="Search"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
 
-            {/* Controls row */}
-            <div className="flex w-full items-center gap-4 overflow-auto pb-1">
+            {/* Controls row — chips scroll on mobile; sort/filters on their own row */}
+            <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
               {/* Filter chips */}
-              <div className="flex items-center gap-3 shrink-0">
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 sm:mx-0 sm:px-0 sm:flex-1 sm:min-w-0">
                 <FilterChip
                   label="Google"
                   onClick={() => alert("Google")}
@@ -114,33 +116,8 @@ export default function Matching() {
                 />
               </div>
 
-              {/* Search */}
-              <div className="flex-1 flex justify-center min-w-0">
-                <div className="flex w-full min-w-[180px] items-center gap-2 rounded-full bg-[#e8f3dd] border border-[#c5dbb0] px-4 py-2">
-                  <svg
-                    className="w-4 h-4 text-[#7a9b5c] shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                  <input
-                    className="w-full bg-transparent text-sm text-[#2d3a1f] outline-none placeholder:text-[#8fa878]"
-                    placeholder="Search by name, title, company..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                </div>
-              </div>
-
               {/* Sort + Filters */}
-              <div className="flex items-center gap-3 shrink-0">
+              <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:shrink-0 sm:justify-end">
                 <div className="flex items-center gap-2 text-sm text-[#4a5c35]">
                   <span className="font-medium">Sort:</span>
                   <select
@@ -162,19 +139,7 @@ export default function Matching() {
                   className="inline-flex items-center gap-2 rounded-lg border border-[#c5dbb0] bg-white px-4 py-2 text-sm font-medium text-[#3d4a2b] hover:bg-[#e8f3dd] transition-colors"
                   onClick={() => setDrawerOpen(true)}
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
-                    />
-                  </svg>
+                  <Funnel className="w-4 h-4" />
                   Filters
                 </button>
               </div>

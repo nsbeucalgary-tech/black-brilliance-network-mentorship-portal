@@ -1,17 +1,27 @@
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
 type Props = {
     label: string;
     onClick?: () => void;
 };
 
 export default function FilterChip({ label, onClick }: Props) {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const handleClick = () => {
+        setIsOpen(!isOpen);
+        onClick?.();
+    };
     return (
         <button
             type="button"
-            onClick={onClick}
-            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#2d3a1f] px-4 py-2 text-xs font-semibold text-white hover:bg-[#3d4a2b] transition-colors whitespace-nowrap"
+            onClick={handleClick}
+            className="inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-BBNDarkGreen px-3 py-1 text-[11px] font-semibold text-white hover:bg-BBNDarkAvocadoGreen transition-colors whitespace-nowrap sm:gap-1.5 sm:text-xs"
         >
-            <span className="truncate max-w-[120px]">{label}</span>
-            <span className="text-[#aad576] text-[10px]">▾</span>
+            <span>{label}</span>
+            <span className="text-BBNBrightGreen text-[9px] sm:text-[10px]" aria-hidden>
+                {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </span>
         </button>
     );
 }

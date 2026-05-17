@@ -63,8 +63,8 @@ function NavItem({ to, label, icon: Icon, navType, desktopOpen, mobileOnClick }:
                 onClick={generalOnClick}
                 className="flex items-center justify-end gap-4 text-white
                 transform transition-all duration-300 ease-in-out
-                active:-translate-y-1 active:text-[#aad576]
-                active:underline underline-offset-8 decoration-[#aad576]
+                active:-translate-y-1 active:text-BBNBrightGreen
+                active:underline underline-offset-8 decoration-BBNBrightGreen
                 active:rounded-md"
             >
                 <span className="text-lg">{label}</span>
@@ -133,18 +133,18 @@ function MobileMenu() {
 
             {/* Slide-in Menu */}
             <aside
-                className={`fixed top-0 left-0 h-full w-64
+                className={`fixed top-0 left-0 h-full w-48 sm:w-64
                 bg-BBNDarkGreen z-50 flex flex-col
                 transform transition-transform duration-300
                 ${open ? 'translate-x-0' : '-translate-x-full'}`}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-4 py-2 border-b border-white">
-                    <div className="flex items-center gap-3">
-                        <img src={BBNLogoWhite} alt="BBN Logo" className="w-14 h-14" />
+                <div className="flex items-center justify-between px-2 sm:px-4 py-2 border-b border-white">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                        <img src={BBNLogoWhite} alt="BBN Logo" className="w-8 h-8 sm:w-14 sm:h-14" />
                         <div className="flex flex-col text-xl font-semibold leading-tight">
-                            <span className="text-white">Black</span>
-                            <span className="text-[#aad576]">Brilliance</span>
+                            <span className="text-white text-sm sm:text-base">Black</span>
+                            <span className="text-BBNBrightGreen text-sm sm:text-base">Brilliance</span>
                         </div>
                     </div>
                     <button
@@ -185,7 +185,7 @@ function DesktopMenu() {
                 aria-expanded={isOpen}
                 className={`hidden md:flex flex-col bg-gray-200
                 transition-all duration-300 will-change-[width] rounded-3xl
-                ${isOpen ? 'w-82' : 'w-20'}`}
+                ${isOpen ? 'w-64 lg:w-82' : 'w-20'}`}
             >
                 {/* Green Background Stripe */}
                 <div className="absolute top-0 left-0 bottom-0 w-20 bg-BBNDarkGreen rounded-r-3xl z-0" />
