@@ -13,10 +13,13 @@ import LoggedInLayout from "./components/LoggedInLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./auth/AuthContext";
 import OnboardingPage from "./components/Onboarding";
+import { Toaster } from "sonner";
 
 function App() {
   return (
+    
     <AuthProvider>
+      <Toaster position="top-center" richColors />
       <Router>
         <Routes>
           {/* Public routes */}
