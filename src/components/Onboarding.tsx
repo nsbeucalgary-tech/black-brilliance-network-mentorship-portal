@@ -58,7 +58,9 @@ export default function OnboardingPage() {
     const [experiences, setExperiences] = useState<UserExperience[]>([]);
     const [expCompany, setExpCompany] = useState("");
     const [expRole, setExpRole] = useState("");
-    const [expPeriod, setExpPeriod] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [isCurrent, setIsCurrent] = useState(false);
 
     const toggleInterest = (interest: string) => {
         setSelectedInterests((prev) =>
@@ -71,14 +73,24 @@ export default function OnboardingPage() {
     };
 
     const addExperience = () => {
-        if (!expCompany || !expRole || !expPeriod) return;
+        if (!expCompany || !expRole || !startDate) return;
+
+        const period = `${startDate} - ${isCurrent ? "Present" : endDate}`;
+
         setExperiences((prev) => [
             ...prev,
-            { company: expCompany, role: expRole, period: expPeriod },
+            {
+                company: expCompany,
+                role: expRole,
+                period,
+            },
         ]);
+
         setExpCompany("");
         setExpRole("");
-        setExpPeriod("");
+        setStartDate("");
+        setEndDate("");
+        setIsCurrent(false);
     };
 
     const removeExperience = (index: number) => {
@@ -166,8 +178,12 @@ export default function OnboardingPage() {
                         setExpCompany={setExpCompany}
                         expRole={expRole}
                         setExpRole={setExpRole}
-                        expPeriod={expPeriod}
-                        setExpPeriod={setExpPeriod}
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                        isCurrent={isCurrent}
+                        setIsCurrent={setIsCurrent}
                         addExperience={addExperience}
                         removeExperience={removeExperience}
                         onBack={() => setStep(1)}
@@ -269,8 +285,12 @@ interface StepTwoProps {
     setExpCompany: (v: string) => void;
     expRole: string;
     setExpRole: (v: string) => void;
-    expPeriod: string;
-    setExpPeriod: (v: string) => void;
+    startDate: string;
+    setStartDate: (v: string) => void;
+    endDate: string;
+    setEndDate: (v: string) => void;
+    isCurrent: boolean;
+    setIsCurrent: (v: boolean) => void;
     addExperience: () => void;
     removeExperience: (i: number) => void;
     onBack: () => void;
@@ -300,8 +320,12 @@ function StepTwo({
     setExpCompany,
     expRole,
     setExpRole,
-    expPeriod,
-    setExpPeriod,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    isCurrent,
+    setIsCurrent,
     addExperience,
     removeExperience,
     onBack,
@@ -474,30 +498,93 @@ function StepTwo({
                         </div>
                     )}
 
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                        <input
-                            className="input"
-                            placeholder="Company"
-                            value={expCompany}
-                            onChange={(e) => setExpCompany(e.target.value)}
-                        />
-                        <input
-                            className="input"
-                            placeholder="Role / Title"
-                            value={expRole}
-                            onChange={(e) => setExpRole(e.target.value)}
-                        />
-                        <input
-                            className="input"
-                            placeholder="e.g. Jan 2020 – Present"
-                            value={expPeriod}
-                            onChange={(e) => setExpPeriod(e.target.value)}
-                        />
+                    <div className="flex flex-col gap-4">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div className="flex flex-col gap-1">
+                                <label className="text-xs font-semibold text-[#3d4a2b] tracking-wide uppercase">
+                                    Company
+                                </label>
+                                <input
+                                    className="w-full rounded-xl border border-[#c9dfaa] bg-[#f4faec] px-4 py-2.5 text-sm text-[#1e2912] placeholder-[#6b7d50] outline-none focus:border-[#AAD576] focus:ring-2 focus:ring-[#AAD576]/20 transition-all"
+                                    placeholder="e.g. Acme Corp"
+                                    value={expCompany}
+                                    onChange={(e) =>
+                                        setExpCompany(e.target.value)
+                                    }
+                                />
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                                <label className="text-xs font-semibold text-[#3d4a2b] tracking-wide uppercase">
+                                    Role / Title
+                                </label>
+                                <input
+                                    className="w-full rounded-xl border border-[#c9dfaa] bg-[#f4faec] px-4 py-2.5 text-sm text-[#1e2912] placeholder-[#6b7d50] outline-none focus:border-[#AAD576] focus:ring-2 focus:ring-[#AAD576]/20 transition-all"
+                                    placeholder="e.g. Senior Engineer"
+                                    value={expRole}
+                                    onChange={(e) => setExpRole(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                            <div className="flex flex-col gap-1 flex-1">
+                                <label className="text-xs font-semibold text-[#3d4a2b] tracking-wide uppercase">
+                                    Start Date
+                                </label>
+                                <input
+                                    type="month"
+                                    className="w-full rounded-xl border border-[#c9dfaa] bg-[#f4faec] px-4 py-2.5 text-sm text-[#1e2912] outline-none focus:border-[#AAD576] focus:ring-2 focus:ring-[#AAD576]/20 transition-all"
+                                    value={startDate}
+                                    onChange={(e) =>
+                                        setStartDate(e.target.value)
+                                    }
+                                />
+                            </div>
+
+                            <div className="flex flex-col gap-1 flex-1">
+                                <label
+                                    className={`text-xs font-semibold tracking-wide uppercase transition-colors ${isCurrent ? "text-[#c9dfaa]" : "text-[#3d4a2b]"}`}
+                                >
+                                    End Date
+                                </label>
+                                <input
+                                    type="month"
+                                    className="w-full rounded-xl border border-[#c9dfaa] bg-[#f4faec] px-4 py-2.5 text-sm text-[#1e2912] outline-none focus:border-[#AAD576] focus:ring-2 focus:ring-[#AAD576]/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                    disabled={isCurrent}
+                                />
+                            </div>
+
+                            <label className="flex items-center gap-2.5 cursor-pointer pb-2.5 flex-shrink-0">
+                                <div className="relative">
+                                    <input
+                                        type="checkbox"
+                                        className="sr-only peer"
+                                        checked={isCurrent}
+                                        onChange={(e) =>
+                                            setIsCurrent(e.target.checked)
+                                        }
+                                    />
+                                    <div className="w-9 h-5 rounded-full bg-[#c9dfaa] peer-checked:bg-[#283618] transition-colors" />
+                                    <div className="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4" />
+                                </div>
+                                <span className="text-sm font-medium text-[#3d4a2b] select-none">
+                                    Present
+                                </span>
+                            </label>
+                        </div>
                     </div>
                     <button
                         type="button"
                         onClick={addExperience}
-                        disabled={!expCompany || !expRole || !expPeriod}
+                        disabled={
+                            !expCompany ||
+                            !expRole ||
+                            !startDate ||
+                            (!isCurrent && !endDate)
+                        }
                         className="mt-3 rounded-xl border border-[#d4e5c3] bg-white px-4 py-2 text-sm font-semibold text-[#2d3a1f] hover:bg-[#e8f3dd] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                     >
                         + Add Experience
