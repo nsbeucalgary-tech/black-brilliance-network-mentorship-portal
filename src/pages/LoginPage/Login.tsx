@@ -12,7 +12,7 @@ import { PublicOnlyRoute } from "../../components/PublicRoute";
 import { GoogleLogoIcon } from "../../components/Logos";
 import PasswordInput from "../../components/PasswordInput";
 const userController = new UserController(db);
-
+import { toast } from "sonner";
 /**
  * After a successful sign-in we fetch the Firestore profile and decide where
  * to send the user:
@@ -41,14 +41,12 @@ function LoginComponent({ onBack }: AuthProps) {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [signInError, setSignInError] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [remember, setRemember] = useState(false);
 
     const handleSubmit = async (e?: React.FormEvent) => {
         e?.preventDefault();
-        if (!email) return alert("Please enter an email.");
-        if (!password) return alert("Please enter a password.");
+        if (!email || !password) return (toast.warning("Please enter an email and password."));
 
         setLoading(true);
         try {
@@ -59,9 +57,8 @@ function LoginComponent({ onBack }: AuthProps) {
             );
 
             if (error) {
-                setSignInError(error);
+                toast.error(error);
             } else {
-                setSignInError("");
                 // Import auth to get the current user uid after login
                 const { auth } = await import("../../_db_controller/init");
                 const uid = auth.currentUser?.uid;
@@ -70,7 +67,7 @@ function LoginComponent({ onBack }: AuthProps) {
             }
         } catch (err) {
             console.error(err);
-            setSignInError("Error occurred. Please try again.");
+            toast.error("Error occurred. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -88,9 +85,8 @@ function LoginComponent({ onBack }: AuthProps) {
                 remember,
             );
             if (error) {
-                setSignInError(error);
+                toast.error(error);
             } else {
-                setSignInError("");
                 const { auth } = await import("../../_db_controller/init");
                 const uid = auth.currentUser?.uid;
                 const route = uid ? await getPostLoginRoute(uid) : "/dashboard";
@@ -136,9 +132,7 @@ function LoginComponent({ onBack }: AuthProps) {
                 <p className="whitespace-nowrap">or via email</p>
                 <div className="w-full h-[2px] bg-gray-400 mx-auto"></div>
             </div>
-            {signInError && (
-                <div className="text-red-500 mb-2">{signInError}</div>
-            )}
+            
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <label htmlFor="email" className="text-sm font-semibold">Email</label>
                 <input
