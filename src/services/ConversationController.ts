@@ -3,6 +3,7 @@ import {
     doc,
     getDoc,
     getDocs,
+    onSnapshot,
     orderBy,
     query,
     serverTimestamp,
@@ -11,6 +12,7 @@ import {
     updateDoc,
     where,
     type Firestore,
+    type Unsubscribe,
 } from "firebase/firestore";
 import type {
     Conversation,
@@ -84,6 +86,8 @@ export class ConversationController {
         const conversationData = {
             participantIds: [userAId, userBId],
             created_at: serverTimestamp(),
+            last_message: "",
+            last_message_at: serverTimestamp()
         };
 
         await setDoc(conversationRef, conversationData, { merge: true });
@@ -127,7 +131,7 @@ export class ConversationController {
     /**
      * Retrieves all conversations associated with a user
      *
-     * Queires Firestore for conversations where the given userId exists in the conversation field participantIds.
+     * Queries Firestore for conversations where the given userId exists in the conversation field participantIds.
      *
      * @param userId - The Firestore Authentication UID for the user.
      * @returns A promise that resolves to a list of conversations for the user
@@ -149,6 +153,44 @@ export class ConversationController {
                 doc.data() as ConversationForm,
             ),
         );
+    }
+
+    /**
+     * Realtime listener for user conversations.
+     *
+     * Automatically updates whenever:
+     * - a new conversation is created
+     * - a conversation changes
+     * - a new message updates last_message
+     *
+     * IMPORTANT:
+     * Call the returned unsubscribe function when the component unmounts.
+     *
+     * @param userIdd - The Friestore Authentication UID for the user.
+     * @param callback - Function triggered whenever conversations update.
+     * @returns Firestore unsubscribe function.
+     */
+    subscribeToConversations(
+        userId: string,
+        callback: (conversation: Conversation[]) => void,
+    ): Unsubscribe {
+        const conversationRef = collection(this.db, this.collectionName);
+
+        const querySearch = query(
+            conversationRef,
+            where("participantIds", "array-contains", userId),
+            orderBy("last_message_at", "desc"),
+        );
+
+        return onSnapshot(querySearch, (snapshot) => {
+            const conversations = snapshot.docs.map((doc) =>
+                this.firestoreDataToConversation(
+                    doc.id,
+                    doc.data() as ConversationForm,
+                ),
+            );
+            callback(conversations);
+        });
     }
 
     /**

@@ -5,13 +5,18 @@ import FilterChip from "../../components/matching/FilterChip";
 import FiltersDrawer from "../../components/matching/FiltersDrawer";
 import MatchesGrid from "../../components/matching/MatchesGrid";
 import type { Match } from "../../components/matching/MatchCard";
+import { useAuth } from "../../auth/useAuthContext";
+import { UserController } from "../../services/UserController";
+import { db } from "../../config/firebase";
 
 type Tab = "TOP_MATCHES" | "FAVOURITES";
 type SortMode = "BEST_MATCH" | "NAME";
 
 export default function Matching() {
     const navigate = useNavigate();
+    const { dbUser } = useAuth();
 
+    const [users, setUsers] = useState<Match[]>([]);
     const [tab, setTab] = useState<Tab>("TOP_MATCHES");
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [search, setSearch] = useState("");
@@ -19,6 +24,10 @@ export default function Matching() {
 
     const [profileOpen, setProfileOpen] = useState(false);
     const profileRef = useRef<HTMLDivElement | null>(null);
+    const currentUserId = dbUser?.uid;
+    const userController = useMemo(() => {
+        return new UserController(db);
+    }, []);
 
     useEffect(() => {
         function onDocClick(e: MouseEvent) {
@@ -48,12 +57,42 @@ export default function Matching() {
         ],
         [],
     );
+    // Load users
+    useEffect(() => {
+        if (!currentUserId) return;
+
+        userController
+            .getAllUsers()
+            .then((data) => {
+                const mappedUsers: Match[] = data
+                    .filter((u) => u.uid !== currentUserId)
+                    .map((u) => ({
+                        id: u.uid,
+                        name: `${u.first_name ?? ""} ${u.last_name ?? ""}`.trim(),
+                        title: u.title ?? "Professional",
+                        company:
+                            u.experiences?.[0]?.company ?? "Unknown Company",
+                        matchPercent: Math.floor(Math.random() * 20) + 80,
+                        avatarUrl:
+                            u.avatar_url || "https://via.placeholder.com/150",
+                        isFavourite: false,
+                    }));
+
+                setUsers(mappedUsers);
+            })
+            .catch(console.error);
+    }, [currentUserId, userController]);
 
     const visibleMatches = useMemo(() => {
-        let rows = [...matches];
-        if (tab === "FAVOURITES") rows = rows.filter((m) => m.isFavourite);
+        let rows = [...users];
+
+        if (tab === "FAVOURITES") {
+            rows = rows.filter((m) => m.isFavourite);
+        }
+
         if (search.trim()) {
             const q = search.toLowerCase();
+
             rows = rows.filter(
                 (m) =>
                     m.name.toLowerCase().includes(q) ||
@@ -61,12 +100,17 @@ export default function Matching() {
                     m.company.toLowerCase().includes(q),
             );
         }
-        if (sortMode === "BEST_MATCH")
+
+        if (sortMode === "BEST_MATCH") {
             rows.sort((a, b) => b.matchPercent - a.matchPercent);
-        if (sortMode === "NAME")
+        }
+
+        if (sortMode === "NAME") {
             rows.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
         return rows;
-    }, [matches, tab, search, sortMode]);
+    }, [users, tab, search, sortMode]);
 
     const linkBase =
         "flex items-center gap-2 px-3 py-2 text-sm font-medium text-[#4a5c35] hover:text-[#2d3a1f] transition-colors duration-150";
