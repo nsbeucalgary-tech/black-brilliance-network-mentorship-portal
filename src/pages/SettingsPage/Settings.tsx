@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '../../auth/useAuthContext';
 import { sendEmailVerification } from 'firebase/auth';
+import { FirebaseError } from 'firebase/app';
+import { toast } from 'sonner';
 
 export default function SettingsPage() {
     const { user } = useAuth();
@@ -12,8 +14,21 @@ export default function SettingsPage() {
         try {
             if (user) await sendEmailVerification(user);
             setSent(true);
-        } catch (err) {
-            console.error(err);
+        } catch (err: any) {
+            const firebaseError = err as FirebaseError;
+
+            switch (firebaseError.code) {
+                case 'auth/too-many-requests':
+                    toast.error('Too many requests. Please wait a few minutes.');
+                    break;
+                case 'auth/network-request-failed':
+                    toast.error('Network error. Check your internet connection.');
+                    break;
+                default:
+                    toast.error('An unknown error occurred. Please try again later.');
+                    console.error(err);
+                    break;
+            }
         } finally {
             setLoading(false);
         }
