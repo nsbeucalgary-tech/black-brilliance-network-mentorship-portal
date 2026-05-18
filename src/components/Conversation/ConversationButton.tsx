@@ -23,12 +23,17 @@ export default function ConversationButton() {
         [],
     );
 
+    // Subscribe to conversations 
     useEffect(() => {
         if (!dbUser?.uid) return;
-        conversationController
-            .getUserConversation(dbUser.uid)
-            .then(setConversations)
-            .catch(console.error);
+        const unsub = conversationController.subscribeToConversations(
+            dbUser.uid,
+            (updatedConversations) => {
+                setConversations(updatedConversations);
+            },
+        );
+
+        return () => unsub();
     }, [conversationController, dbUser]);
 
     const handleClose = () => {

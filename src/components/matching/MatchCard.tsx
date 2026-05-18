@@ -34,17 +34,10 @@ export default function MatchCard({ match }: Props) {
 
         try {
             setStarting(true);
-
-            const existingId = [dbUser.uid, match.id].sort().join("_");
-            const existing =
-                await conversationController.getConversationById(existingId);
-
-            const convo =
-                existing ??
-                (await conversationController.createConversation(
+            const convo = await conversationController.createConversation(
                     dbUser.uid,
                     match.id,
-                ));
+                );
 
             setSelectedConvoId(convo.conversationId);
             setOpenConvoList(true);
@@ -56,8 +49,7 @@ export default function MatchCard({ match }: Props) {
     };
 
     return (
-        <button
-            type="button"
+        <span
             onClick={() => navigate(`/mentor-profile`)}
             className="relative w-full rounded-2xl border border-[#d4e5c3] bg-white p-6 text-center hover:border-[#7a9b5c] hover:shadow-[0_6px_20px_rgba(45,58,31,0.1)] transition-all duration-200 group"
         >
@@ -115,6 +107,6 @@ export default function MatchCard({ match }: Props) {
                     {match.matchPercent}% Match
                 </span>
             </div>
-        </button>
+        </span>
     );
 }
