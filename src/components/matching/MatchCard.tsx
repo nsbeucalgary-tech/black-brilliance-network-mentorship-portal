@@ -26,7 +26,7 @@ export default function MatchCard({ match }: Props) {
     const navigate = useNavigate();
     const [starting, setStarting] = useState(false);
 
-    const { dbUser, setOpenConvoList, setSelectedConvoId } = useAuth();
+    const { dbUser, setOpenConvoList, setSelectedConvoId, setSelectedConvoUserId } = useAuth();
 
     const handleMessageClick = async (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -34,12 +34,21 @@ export default function MatchCard({ match }: Props) {
 
         try {
             setStarting(true);
-            const convo = await conversationController.createConversation(
+
+            const existingId = [dbUser.uid, match.id].sort().join("_");
+            console.log(existingId);
+            const existing =
+                await conversationController.getConversationById(existingId);
+
+            const convo =
+                existing ??
+                (await conversationController.createConversation(
                     dbUser.uid,
                     match.id,
-                );
-
+                ));
+            
             setSelectedConvoId(convo.conversationId);
+            setSelectedConvoUserId(match.id);
             setOpenConvoList(true);
         } catch (err) {
             console.error("Failed to open conversation:", err);
