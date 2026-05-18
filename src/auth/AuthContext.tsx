@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
             if (currentUser) {
-                await fetchDbUser(currentUser.uid);
+                userController.subscribeToUser(currentUser.uid, setDbUser);
             } else {
                 setDbUser(null);
             }
