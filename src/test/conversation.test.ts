@@ -6,6 +6,7 @@ import {
     doc,
     getDoc,
     getDocs,
+    onSnapshot,
     orderBy,
     query,
     serverTimestamp,
@@ -31,6 +32,7 @@ vi.mock("firebase/firestore", () => ({
     setDoc: vi.fn(),
     updateDoc: vi.fn(),
     where: vi.fn(),
+    onSnapshot: vi.fn(),
 }));
 
 describe("ConversationController", () => {
@@ -58,6 +60,8 @@ describe("ConversationController", () => {
                 {
                     participantIds: ["userAId", "userBId"],
                     created_at: "mock-timestamp",
+                    last_message: "",
+                    last_message_at: "mock-timestamp",
                 },
                 {
                     merge: true,
@@ -191,6 +195,32 @@ describe("ConversationController", () => {
             await controller.updateLastMessage("conversation-1", "Test");
 
             expect(serverTimestamp).toHaveBeenCalled();
+        });
+    });
+
+    describe("subscribeToConversations", () => {
+        it("calls callback with conversation", () => {
+            const callback = vi.fn();
+
+            vi.mocked(onSnapshot).mockImplementation((_q, cb: any) => {
+                cb({
+                    docs: [
+                        {
+                            id: "conversation-1",
+                            data: () => ({
+                                participantIds: ["userAId", "userBId"],
+                                created_at: "time-1",
+                            }),
+                        },
+                    ],
+                });
+
+                return vi.fn();
+            });
+
+            controller.subscribeToConversations("userAId", callback);
+
+            expect(callback).toHaveBeenCalled();
         });
     });
 });
