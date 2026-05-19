@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { PanelRightClose , PanelLeftClose, Monitor, CalendarDays, UserPlus, Newspaper, House, Settings, LogOut, Menu, X } from 'lucide-react';
+import { PanelRightClose , PanelLeftClose, Monitor, CalendarDays, UserPlus, Settings, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../auth/useAuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,8 +11,6 @@ const NavLinks = [
     { to: '/dashboard', label: 'Dashboard', icon: Monitor },
     { to: '/calendar', label: 'Calendar', icon: CalendarDays },
     { to: '/matching', label: 'Matchmaking', icon: UserPlus },
-    { to: '/newsletter', label: 'Newsletter', icon: Newspaper },
-    { to: '/home', label: 'Home', icon: House }
 ];
 
 const NavFooterLinks = [
