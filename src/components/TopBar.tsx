@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../auth/useAuthContext";
 import { getInitials } from "../utils";
-import { Mail, BellRing } from "lucide-react";
+import { Mail, BellRing, Play, UserRound, CircleQuestionMark } from "lucide-react";
 
 function nameForInitials(
     dbFullName: string | undefined,
@@ -18,7 +19,7 @@ function nameForInitials(
 }
 
 const circleBtn =
-    "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-BBNDarkGreen/25 bg-white/40 text-xl font-semibold text-BBNDarkGreen hover:outline hover:outline-2 hover:outline-black transition-all ease-in-out duration-300";
+    "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-BBNDarkGreen/50 text-xl font-semibold text-BBNDarkGreen group-hover:outline group-hover:outline-2 group-hover:outline-black transition-hover ease-in-out duration-500";
 
 export default function TopBar() {
     const { user, dbUser } = useAuth();
@@ -28,6 +29,21 @@ export default function TopBar() {
 
     const name = nameForInitials(fullName, user?.displayName, user?.email);
     const initials = getInitials(name);
+    const email = user?.email ?? "";
+
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!menuOpen) return;
+        const handleClickOutside = (e: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+                setMenuOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [menuOpen]);
 
     return (
         <header
@@ -49,14 +65,58 @@ export default function TopBar() {
                 >
                     <Mail size={35} aria-hidden />
                 </Link>
-                <Link
-                    to="/user-profile"
-                    className={`${circleBtn} border-BBNDarkGreen bg-BBNDarkGreen text-black`}
-                    aria-label="Your profile"
-                    title={name}
-                >
-                    {initials}
-                </Link>
+                <div ref={menuRef} className="relative">
+                    <button
+                        type="button"
+                        onClick={() => setMenuOpen((v) => !v)}
+                        aria-label="Your profile"
+                        aria-expanded={menuOpen}
+                        aria-haspopup="menu"
+                        title={name}
+                        className="group flex items-center text-black cursor-pointer"
+                    >
+                        <span className={circleBtn}>{initials}</span>
+                        <Play
+                            className={`ml-2 group-hover:text-BBNDarkGreen group-hover:scale-125 transition-all ease-in-out duration-300 ${menuOpen ? "rotate-270" : "rotate-90"}`}
+                            size={15}
+                            aria-hidden
+                        />
+                    </button>
+
+                    {menuOpen && (
+                        <div
+                            role="menu"
+                            className="absolute right-0 top-full mt-2 w-48 sm:w-64 rounded-lg border border-gray-200 bg-white shadow-lg z-50"
+                        >
+                            <div className="border-b border-gray-200 px-4 py-3">
+                                <p className="font-semibold text-black truncate">{name}</p>
+                                {email && (
+                                    <p className="text-sm text-gray-600 truncate">{email}</p>
+                                )}
+                            </div>
+                            <div className="py-1">
+                                <Link
+                                    to="/user-profile"
+                                    role="menuitem"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="flex items-center gap-2 px-4 py-2 text-sm text-black hover:bg-BBNDarkGreen/20"
+                                >
+                                    <UserRound size={18} aria-hidden />
+                                    <span>Your Profile</span>
+                                </Link>
+                                <Link
+                                    to="/help"
+                                    role="menuitem"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="flex items-center gap-2 px-4 py-2 text-sm text-black hover:bg-BBNDarkGreen/20"
+                                >
+                                    <CircleQuestionMark size={18} aria-hidden />
+                                    <span>Help</span>
+                                </Link>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
         </header>
     );
