@@ -12,8 +12,8 @@ import MentorProfilePage from "./pages/MentorProfilePage/MentorProfile";
 import LoggedInLayout from "./components/LoggedInLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./auth/AuthContext";
-import OnboardingPage from "./components/Onboarding";
 import { Toaster } from "sonner";
+import OnboardingPage from "./components/Onboarding/OnboardingPage";
 
 function App() {
   return (
