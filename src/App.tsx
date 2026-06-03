@@ -33,7 +33,7 @@ function App() {
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/matching" element={<MatchingPage />} />
             <Route path="/user-profile" element={<UserProfilePage />} />
-            <Route path="/mentor-profile" element={<MentorProfilePage />} />
+            <Route path="/mentor-profile/:uid" element={<MentorProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Routes>

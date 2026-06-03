@@ -32,7 +32,6 @@ const PRONOUNS = [
     "He/Him",
     "She/Her",
     "They/Them",
-    "Ze/Zir",
     "Prefer not to say",
 ];
 

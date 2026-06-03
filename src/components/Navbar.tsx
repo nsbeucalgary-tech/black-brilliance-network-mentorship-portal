@@ -181,7 +181,7 @@ function DesktopMenu() {
         <>
             <aside
                 aria-expanded={isOpen}
-                className={`hidden md:h-screen md:flex flex-col bg-gray-200
+                className={`relative hidden md:sticky md:top-0 md:h-dvh md:flex flex-col bg-gray-200
                 transition-all duration-300 will-change-[width] rounded-3xl
                 ${isOpen ? 'w-72' : 'w-20'}`}
             >
