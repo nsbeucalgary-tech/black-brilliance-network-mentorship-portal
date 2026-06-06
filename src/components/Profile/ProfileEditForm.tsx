@@ -183,19 +183,11 @@ export default function ProfileEditForm({
                     <h3 className="text-sm font-semibold text-BBNDarkGreen xl:text-base">
                         Experience
                     </h3>
-                    <button
-                        type="button"
-                        onClick={addExperience}
-                        className="inline-flex items-center gap-1 rounded-lg border border-BBNBrightGreen bg-white px-2.5 py-1.5 text-xs font-semibold text-BBNDarkGreen hover:bg-BBNLightGreen xl:px-3.5 xl:py-2 xl:text-sm"
-                    >
-                        <Plus size={14} aria-hidden />
-                        Add
-                    </button>
                 </div>
 
                 {fields.experiences.length === 0 ? (
                     <p className="text-xs text-BBNDarkAvocadoGreen xl:text-sm">
-                        No experiences yet. Click Add to create one.
+                        No experiences yet. Use Add at the bottom to create one.
                     </p>
                 ) : (
                     <div className="grid gap-3 xl:gap-4">
@@ -298,15 +290,24 @@ export default function ProfileEditForm({
                                 <button
                                     type="button"
                                     onClick={() => removeExperience(index)}
-                                    className="inline-flex w-fit items-center gap-1 px-2 py-1 border rounded-lg border-BBNBrightGreen text-xs font-semibold text-BBNDarkAvocadoGreen hover:bg-BBNLightGreen xl:text-sm"
+                                    className="group inline-flex w-fit items-center gap-1 px-2 py-1 border rounded-lg border-BBNBrightGreen text-xs font-semibold text-BBNDarkAvocadoGreen hover:bg-BBNLightGreen xl:text-sm"
                                 >
-                                    <Trash2 size={14} aria-hidden />
+                                    <Trash2 size={14} aria-hidden className="group-hover:scale-125 transition-transform duration-200" />
                                     Remove
                                 </button>
                             </div>
                         ))}
                     </div>
                 )}
+
+                <button
+                    type="button"
+                    onClick={addExperience}
+                    className="group inline-flex w-fit items-center gap-1 rounded-lg border border-BBNBrightGreen bg-white px-2.5 py-1.5 text-xs font-semibold text-BBNDarkGreen hover:bg-BBNLightGreen xl:px-3.5 xl:py-2 xl:text-sm"
+                >
+                    <Plus size={14} aria-hidden className="group-hover:scale-125 transition-transform duration-200" />
+                    Add
+                </button>
             </div>
         </section>
     );

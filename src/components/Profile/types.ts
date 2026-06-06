@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-export type ProfileMode = "self" | "other";
+export type ProfileMode = "self" | "mentor" | "other";
 
 export type EditableFields = {
     pronouns: string;
@@ -13,12 +13,15 @@ export type EditableFields = {
     experiences: EditableExperience[];
 };
 
-export type EditableExperience = {
-    company: string;
-    role: string;
+export type ExperiencePeriod = {
     start_date: string;
     end_date: string;
     is_present: boolean;
+};
+
+export type EditableExperience = ExperiencePeriod & {
+    company: string;
+    role: string;
 };
 
 export type EditableFieldsSetter = Dispatch<SetStateAction<EditableFields>>;

@@ -47,7 +47,7 @@ export default function TopBar() {
 
     return (
         <header
-            className="flex w-full shrink-0 items-center bg-transparent border-b border-gray-300 px-4 py-3"
+            className="flex w-full sticky top-0 z-50 shrink-0 items-center bg-white border-b border-gray-300 px-4 py-3"
             role="banner"
         >
             <div className="mt-auto ml-auto flex items-center gap-3">

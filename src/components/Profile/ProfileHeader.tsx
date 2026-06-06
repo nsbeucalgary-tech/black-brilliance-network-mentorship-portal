@@ -1,4 +1,4 @@
-import { MapPin, Pencil, Save, X } from "lucide-react";
+import { MapPin, Pencil } from "lucide-react";
 
 type ProfileHeaderProps = {
     initials: string;
@@ -8,10 +8,7 @@ type ProfileHeaderProps = {
     location?: string;
     canEdit: boolean;
     isEditing: boolean;
-    isSaving: boolean;
     onStartEdit: () => void;
-    onSave: () => void;
-    onCancel: () => void;
 };
 
 export default function ProfileHeader({
@@ -22,10 +19,7 @@ export default function ProfileHeader({
     location,
     canEdit,
     isEditing,
-    isSaving,
     onStartEdit,
-    onSave,
-    onCancel,
 }: ProfileHeaderProps) {
     return (
         <header className="mb-8 flex flex-col justify-between gap-6 lg:flex-row xl:mb-10 xl:gap-8">
@@ -69,27 +63,6 @@ export default function ProfileHeader({
                         <Pencil size={16} aria-hidden className="group-hover:scale-125 transition-transform duration-200"/>
                         Edit profile
                     </button>
-                    </>
-                )}
-                {isEditing && (
-                    <>
-                        <button
-                            type="button"
-                            onClick={onSave}
-                            disabled={isSaving}
-                            className="group inline-flex items-center gap-2 rounded-lg bg-BBNDarkGreen px-3 py-2 text-sm font-semibold text-white hover:bg-BBNDarkAvocadoGreen disabled:opacity-60 xl:px-4 xl:py-2.5 xl:text-base"
-                        >
-                            <Save size={16} aria-hidden  className="group-hover:scale-125 transition-transform duration-200"/>
-                            {isSaving ? "Saving..." : "Save"}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={onCancel}
-                            className="group inline-flex items-center gap-2 rounded-lg border border-BBNBrightGreen bg-white px-3 py-2 text-sm font-semibold text-BBNDarkAvocadoGreen hover:bg-BBNLightGreen xl:px-4 xl:py-2.5 xl:text-base"
-                        >
-                            <X size={16} aria-hidden  className="group-hover:scale-125 transition-transform duration-200"/>
-                            Cancel
-                        </button>
                     </>
                 )}
             </div>

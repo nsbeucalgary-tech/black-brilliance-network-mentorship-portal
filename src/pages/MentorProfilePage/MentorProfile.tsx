@@ -95,5 +95,5 @@ export default function MentorProfilePage() {
         );
     }
 
-    return <Profile profile={displayProfile} mode="other" />;
+    return <Profile profile={displayProfile} mode="mentor" />;
 }

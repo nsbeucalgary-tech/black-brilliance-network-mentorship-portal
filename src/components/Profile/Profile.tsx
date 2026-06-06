@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { UserRound } from "lucide-react";
+import { Save, X } from "lucide-react";
 import { toast } from "sonner";
 import type { UpdateUserPayload, User } from "../../types/User";
 import { getInitials } from "../../utils";
@@ -11,6 +11,8 @@ import ProfileSidebar from "./ProfileSidebar";
 import type { EditableFields, ProfileMode } from "./types";
 import {
     profileName,
+    sortEditableExperiences,
+    sortProfileExperiences,
     stringifyExperiencePeriod,
     toEditableFields,
     toProfileLinks,
@@ -42,7 +44,10 @@ export default function Profile({
     const initials = getInitials(name || profile.email || "User");
     const canEdit = mode === "self";
     const links = useMemo(() => toProfileLinks(profile), [profile]);
-    const experiences = useMemo(() => profile.experiences ?? [], [profile]);
+    const experiences = useMemo(
+        () => sortProfileExperiences(profile.experiences ?? []),
+        [profile],
+    );
     const isIncomplete = !profile.bio || !profile.title || !profile.location;
 
     async function handleSave() {
@@ -58,9 +63,9 @@ export default function Profile({
         const hasIncompleteExperience = fields.experiences.some((exp) => {
             const hasAnyExperienceContent = Boolean(
                 exp.company.trim() ||
-                    exp.role.trim() ||
-                    exp.start_date.trim() ||
-                    exp.end_date.trim(),
+                exp.role.trim() ||
+                exp.start_date.trim() ||
+                exp.end_date.trim(),
             );
 
             if (!hasAnyExperienceContent) return false;
@@ -99,7 +104,7 @@ export default function Profile({
                     ? withHttps(fields.linkedin_url.trim())
                     : undefined,
                 interests: fields.interests,
-                experiences: fields.experiences
+                experiences: sortEditableExperiences(fields.experiences)
                     .map((exp) => ({
                         company: exp.company.trim(),
                         role: exp.role.trim(),
@@ -141,17 +146,46 @@ export default function Profile({
                 location={profile.location}
                 canEdit={canEdit}
                 isEditing={isEditing}
-                isSaving={isSaving}
                 onStartEdit={() => setIsEditing(true)}
-                onSave={handleSave}
-                onCancel={resetFields}
             />
 
             {isEditing ? (
-                <ProfileEditForm fields={fields} setFields={setFields} />
+                <>
+                    <ProfileEditForm fields={fields} setFields={setFields} />
+
+                    <div className="mt-4 flex justify-start">
+                        <div className="flex items-center gap-2 p-2">
+                            <button
+                                type="button"
+                                onClick={handleSave}
+                                disabled={isSaving}
+                                className="group inline-flex items-center gap-2 rounded-lg bg-BBNDarkGreen px-3 py-2 text-sm font-semibold text-white hover:bg-BBNDarkAvocadoGreen disabled:opacity-60 xl:px-4 xl:py-2.5 xl:text-base"
+                            >
+                                <Save
+                                    size={16}
+                                    aria-hidden
+                                    className="group-hover:scale-125 transition-transform duration-200"
+                                />
+                                {isSaving ? "Saving..." : "Save"}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={resetFields}
+                                className="group inline-flex items-center gap-2 rounded-lg border border-BBNBrightGreen bg-white px-3 py-2 text-sm font-semibold text-BBNDarkAvocadoGreen hover:bg-BBNLightGreen xl:px-4 xl:py-2.5 xl:text-base"
+                            >
+                                <X
+                                    size={16}
+                                    aria-hidden
+                                    className="group-hover:scale-125 transition-transform duration-200"
+                                />
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </>
             ) : (
                 <div className="grid gap-8 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[320px_minmax(0,1fr)] xl:gap-10">
-                    <ProfileSidebar links={links} interests={profile.interests ?? []} />
+                    <ProfileSidebar links={links} interests={profile.interests ?? []} role={mode} />
                     <ProfileContent bio={profile.bio} experiences={experiences} />
                 </div>
             )}
