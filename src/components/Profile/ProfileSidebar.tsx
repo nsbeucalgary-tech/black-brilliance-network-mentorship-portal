@@ -1,6 +1,7 @@
 import { Link as LinkIcon, Gem } from "lucide-react";
 import type { ProfileLink, ProfileMode } from "./types";
 import { withHttps } from "./profileUtils";
+import { LinkedInLogoIcon } from "../Logos";
 
 type ProfileSidebarProps = {
     links: ProfileLink[];
@@ -25,7 +26,13 @@ export default function ProfileSidebar({ links, interests, role }: ProfileSideba
                             rel="noreferrer"
                             className="flex items-center gap-2 break-all text-sm font-semibold text-BBNDarkGreen hover:underline xl:text-base"
                         >
-                            <LinkIcon size={16} aria-hidden />
+                            {link.type === "website" ? (
+                                <LinkIcon size={30} aria-hidden />
+                            ) : (
+                                <span aria-hidden>
+                                    <LinkedInLogoIcon />
+                                </span>
+                            )}
                             {link.type === "website" ? "Website" : "LinkedIn"}
                         </a>
                     ))}
