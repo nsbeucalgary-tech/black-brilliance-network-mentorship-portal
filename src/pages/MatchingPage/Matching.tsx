@@ -39,24 +39,6 @@ export default function Matching() {
         return () => document.removeEventListener("mousedown", onDocClick);
     }, []);
 
-    // Mock profiles (swap for DB later)
-    const matches: Match[] = useMemo(
-        () => [
-            ...Array.from({ length: 12 }).map((_, i) => ({
-                id: `seed-${i}`,
-                name: i % 2 === 0 ? "Temidayo Ope" : "Collin Bobbins",
-                title: "Marketing and Operation Manager",
-                company: "Google",
-                matchPercent: i % 5 !== 0 ? 99 : 87,
-                avatarUrl:
-                    i % 2 === 0
-                        ? "https://i.pinimg.com/236x/74/7f/bb/747fbb0ba576d5453583a8e26c51fa2e.jpg"
-                        : "https://i.pinimg.com/170x/b5/4f/c0/b54fc0fc3bd8a5775a08061ee30843a1.jpg",
-                isFavourite: i % 3 === 0,
-            })),
-        ],
-        [],
-    );
     // Load users
     useEffect(() => {
         if (!currentUserId) return;
@@ -118,7 +100,7 @@ export default function Matching() {
         "text-[#2d3a1f] font-semibold border-b-2 border-[#2d3a1f]";
 
     return (
-        <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+        <div className="min-h-full bg-white">
             <FiltersDrawer
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
@@ -359,7 +341,7 @@ export default function Matching() {
                     {/* Results row */}
                     <div className="flex items-center gap-3 text-sm text-[#7a9b5c]">
                         <span>
-                            Showing {visibleMatches.length} of {matches.length}{" "}
+                            Showing {visibleMatches.length} of {users.length}{" "}
                             results
                         </span>
                         <button

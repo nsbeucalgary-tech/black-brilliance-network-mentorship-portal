@@ -3,10 +3,8 @@ import LandingPage from "./pages/LandingPage/Landing";
 import ExamplePage from "./_db_controller/example/page";
 import SettingsPage from "./pages/SettingsPage/Settings";
 import DashboardPage from "./pages/DashboardPage/Dashboard";
-import HomePage from "./pages/HomePage/Home";
 import CalendarPage from "./pages/CalendarPage/Calendar";
 import MatchingPage from "./pages/MatchingPage/Matching";
-import NewsletterPage from "./pages/NewsletterPage/Newsletter";
 import UserProfilePage from "./pages/UserProfilePage/UserProfile";
 import MentorProfilePage from "./pages/MentorProfilePage/MentorProfile";
 import LoggedInLayout from "./components/LoggedInLayout";
@@ -32,12 +30,10 @@ function App() {
           {/* Protected routes with sidebar */}
           <Route element={<ProtectedRoute> <LoggedInLayout /> </ProtectedRoute>}>
             <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/home" element={<HomePage />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/matching" element={<MatchingPage />} />
-            <Route path="/newsletter" element={<NewsletterPage />} />
             <Route path="/user-profile" element={<UserProfilePage />} />
-            <Route path="/mentor-profile" element={<MentorProfilePage />} />
+            <Route path="/mentor-profile/:uid" element={<MentorProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Routes>

@@ -59,7 +59,11 @@ export default function MatchCard({ match }: Props) {
 
     return (
         <span
-            onClick={() => navigate(`/mentor-profile`)}
+            onClick={() =>
+                navigate(`/mentor-profile/${match.id}`, {
+                    state: { preview: match },
+                })
+            }
             className="relative w-full rounded-2xl border border-[#d4e5c3] bg-white p-6 text-center hover:border-[#7a9b5c] hover:shadow-[0_6px_20px_rgba(45,58,31,0.1)] transition-all duration-200 group"
         >
             {/* Favourite heart */}

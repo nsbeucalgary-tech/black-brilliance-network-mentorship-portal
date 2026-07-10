@@ -10,7 +10,7 @@ export default function DashboardPage() {
         dbUser && (!dbUser.bio || !dbUser.title || !dbUser.location);
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-full bg-white">
             {/* Incomplete profile reminder banner */}
             {isProfileIncomplete && (
                 <div className="flex items-center justify-between gap-4 bg-[#e8f3dd] border-b border-[#c5dbb0] px-6 py-3">

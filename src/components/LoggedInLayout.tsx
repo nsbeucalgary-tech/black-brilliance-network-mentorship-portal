@@ -1,15 +1,14 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "./Navbar";
 import TopBar from "./TopBar";
-import ConversationButton from "./Conversation/ConversationButton";
 import { useAuth } from "../auth/useAuthContext";
+import ConversationButton from "./Conversation/ConversationButton";
 import { toast } from "sonner";
 
 const EMAIL_TOAST_ID = "email-verification-toast";
 
 export default function LoggedInLayout() {
-    const location = useLocation();
     const { user } = useAuth();
     const navigate = useNavigate();
 
@@ -40,21 +39,14 @@ export default function LoggedInLayout() {
         }
     }, [user?.emailVerified, navigate]);
 
-    // Any route that starts with /matching will be treated as the "fullscreen" page
-    // This hides the Navbar and lets the Outlet take full width, so the matching page matches the figma design
-    const isMatchingPage = location.pathname.startsWith("/matching");
-
     return (
-        <div className="flex h-screen w-full overflow-hidden">
-            {/* Hide the Navbar on Matching so the page can be fullscreen */}
-            {!isMatchingPage && <Navbar />}
-
-            {/* If Navbar is hidden, let Outlet take full width. Otherwise, it sits beside Navbar. */}
-            <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <div className="flex min-h-screen w-full bg-white">
+            <Navbar />
+            <div className="flex min-w-0 flex-1 flex-col">
                 <TopBar />
-                <div className="min-h-0 flex-1 overflow-y-auto">
-                    <Outlet />
+                <div className="flex-1">
                     <ConversationButton />
+                    <Outlet />
                 </div>
             </div>
         </div>
