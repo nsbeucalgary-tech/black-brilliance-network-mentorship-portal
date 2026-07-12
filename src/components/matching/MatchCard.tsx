@@ -9,7 +9,6 @@ export type Match = {
     id: string;
     name: string;
     title: string;
-    company: string;
     matchPercent: number;
     avatarUrl: string;
     isFavourite?: boolean;
@@ -102,7 +101,7 @@ export default function MatchCard({ match }: Props) {
         <div className="mt-5">
             <p className="text-sm font-semibold text-neutral-900">{match.name}</p>
             <p className="mt-2 text-[11px] leading-4 text-neutral-400">
-            {match.title} at {match.company}
+            {match.title}
             </p>
         </div>
 
