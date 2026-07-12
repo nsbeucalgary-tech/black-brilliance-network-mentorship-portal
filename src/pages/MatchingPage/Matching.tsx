@@ -9,11 +9,16 @@ import { db } from "../../config/firebase";
 import DefaultAvatar from "../../assets/images/default-avatar.jpg"
 
 type Tab = "TOP_MATCHES" | "FAVOURITES";
+const TABS: { id: Tab; label: string }[] = [
+    { id: "TOP_MATCHES", label: "Top Matches" },
+    { id: "FAVOURITES", label: "Favourites" },
+];
 type SortMode = "BEST_MATCH" | "NAME";
 
 export default function Matching() {
     const { dbUser } = useAuth();
     const [users, setUsers] = useState<Match[]>([]);
+    const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
     const [tab, setTab] = useState<Tab>("TOP_MATCHES");
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [sortMode, setSortMode] = useState<SortMode>("BEST_MATCH");
@@ -21,6 +26,11 @@ export default function Matching() {
     const userController = useMemo(() => {
         return new UserController(db);
     }, []);
+
+    // Seed favourite IDs from the logged-in user's profile
+    useEffect(() => {
+        setFavouriteIds(dbUser?.favourite_ids ?? []);
+    }, [dbUser?.favourite_ids]);
 
     // Load users
     useEffect(() => {
@@ -37,13 +47,11 @@ export default function Matching() {
                         title: u.title ?? (() => {
                             const exp = u.experiences?.at(0);
                             if (exp?.role && exp?.company) return `${exp.role} at ${exp.company}`;
-                            if (exp?.role) return exp.role;
                             return "Professional";
                         })(),
                         matchPercent: Math.floor(Math.random() * 20) + 80,
                         avatarUrl:
                             u.avatar_url || DefaultAvatar,
-                        isFavourite: false,
                     }));
 
                 setUsers(mappedUsers);
@@ -51,8 +59,17 @@ export default function Matching() {
             .catch(console.error);
     }, [currentUserId, userController]);
 
+    const matchesWithFavourites = useMemo(
+        () =>
+            users.map((u) => ({
+                ...u,
+                isFavourite: favouriteIds.includes(u.id),
+            })),
+        [users, favouriteIds],
+    );
+
     const visibleMatches = useMemo(() => {
-        let rows = [...users];
+        let rows = [...matchesWithFavourites];
 
         if (tab === "FAVOURITES") {
             rows = rows.filter((m) => m.isFavourite);
@@ -67,8 +84,31 @@ export default function Matching() {
         }
 
         return rows;
-    }, [users, tab, sortMode]);
+    }, [matchesWithFavourites, tab, sortMode]);
 
+    const handleToggleFavourite = async (id: string) => {
+        if (!currentUserId) return;
+
+        const wasFavourite = favouriteIds.includes(id);
+        const previous = favouriteIds;
+
+        setFavouriteIds(
+            wasFavourite
+                ? favouriteIds.filter((fid) => fid !== id)
+                : [...favouriteIds, id],
+        );
+
+        try {
+            if (wasFavourite) {
+                await userController.removeFavourite(currentUserId, id);
+            } else {
+                await userController.addFavourite(currentUserId, id);
+            }
+        } catch (err) {
+            console.error("Failed to toggle favourite:", err);
+            setFavouriteIds(previous);
+        }
+    };
 
     return (
         <div className="min-h-full bg-white">
@@ -82,19 +122,23 @@ export default function Matching() {
                 <div className="space-y-6">
                     {/* Tabs */}
                     <div className="flex items-center gap-10 border-b border-[#e8f3dd]">
-                        {(["TOP_MATCHES", "FAVOURITES"] as Tab[]).map((t) => (
-                            <button
-                                key={t}
-                                type="button"
-                                className={`pb-3 text-xs tracking-widest font-semibold transition-colors ${tab === t
-                                    ? "text-[#2d3a1f] border-b-2 border-[#2d3a1f] -mb-px"
-                                    : "text-[#8fa878] hover:text-[#4a5c35]"
-                                    }`}
-                                onClick={() => setTab(t)}
-                            >
-                                {t.replace("_", " ")}
-                            </button>
-                        ))}
+                        {TABS.map(({ id, label }) => {
+                            const active = tab === id;
+                            return (
+                                <button
+                                    key={id}
+                                    type="button"
+                                    onClick={() => setTab(id)}
+                                    className={
+                                        active
+                                            ? "pb-3 text-sm tracking-widest font-semibold text-[#2d3a1f] border-b-2 border-[#2d3a1f] -mb-px"
+                                            : "pb-3 text-sm tracking-widest font-semibold text-[#8fa878] hover:text-[#4a5c35]"
+                                    }
+                                >
+                                    {label}
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* Sort + Filters */}
@@ -141,7 +185,16 @@ export default function Matching() {
                     </div>
 
                     {/* Grid */}
-                    <MatchesGrid matches={visibleMatches} />
+                    {tab === "FAVOURITES" && visibleMatches.length === 0 ? (
+                        <p className="py-12 text-center text-sm text-[#8fa878]">
+                            No favourites yet
+                        </p>
+                    ) : (
+                        <MatchesGrid
+                            matches={visibleMatches}
+                            onToggleFavourite={handleToggleFavourite}
+                        />
+                    )}
                 </div>
             </main>
         </div>

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ConversationController } from "../../services/ConversationController";
 import { db } from "../../_db_controller/init";
 import { useAuth } from "../../auth/useAuthContext";
+import { Heart } from "lucide-react";
 
 export type Match = {
     id: string;
@@ -16,12 +17,17 @@ export type Match = {
 
 type Props = {
     match: Match;
+    isFavourite: boolean;
+    onToggleFavourite: (id: string) => void;
 };
 
 const conversationController = new ConversationController(db);
 
-export default function MatchCard({ match }: Props) {
-    const [fav, setFav] = useState(Boolean(match.isFavourite));
+export default function MatchCard({
+    match,
+    isFavourite,
+    onToggleFavourite,
+}: Props) {
     const navigate = useNavigate();
     const [starting, setStarting] = useState(false);
 
@@ -71,12 +77,12 @@ export default function MatchCard({ match }: Props) {
                 aria-label="Toggle favourite"
                 onClick={(e) => {
                     e.stopPropagation();
-                    setFav((v) => !v);
+                    onToggleFavourite(match.id);
                 }}
                 className="absolute right-4 top-4 text-lg transition-transform hover:scale-110"
             >
-                <span className={fav ? "text-[#7a9b5c]" : "text-[#c5dbb0]"}>
-                    ♥
+                <span>
+                <Heart fill={isFavourite ? "var(--color-BBNDarkAvocadoGreen)" : "#ffffff"}/>
                 </span>
             </button>
 

@@ -8,6 +8,8 @@ import {
     getDocs,
     query,
     where,
+    arrayUnion,
+    arrayRemove,
     Timestamp,
     type Firestore,
     type Unsubscribe,
@@ -158,6 +160,20 @@ export class UserController {
         const updated = await this.getUserById(uid);
         if (!updated) throw new Error(`User ${uid} not found after update`);
         return updated;
+    }
+
+    /** Add a user UID to this user's favourite_ids list. */
+    async addFavourite(uid: string, targetUid: string): Promise<void> {
+        await updateDoc(doc(this.db, this.collectionName, uid), {
+            favourite_ids: arrayUnion(targetUid),
+        });
+    }
+
+    /** Remove a user UID from this user's favourite_ids list. */
+    async removeFavourite(uid: string, targetUid: string): Promise<void> {
+        await updateDoc(doc(this.db, this.collectionName, uid), {
+            favourite_ids: arrayRemove(targetUid),
+        });
     }
 
     /** Delete a user's Firestore document (does NOT delete their Auth account). */
