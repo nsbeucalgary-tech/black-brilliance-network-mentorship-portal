@@ -3,16 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import Login from "../LoginPage/Login";
 import Signup from "../SignupPage/Signup.tsx";
 import { InstagramLogoIcon, FacebookLogoIcon, XLogoIcon, LinkedInLogoIcon, RedditLogoIcon } from "../../components/Logos";
-import { Menu, X } from "lucide-react";
 import BBNLogo from "../../assets/BBNLogo.svg";
 
 type SectionId = "about" | "gallery" | "blog";
-
-const NAV_LINKS: { id: SectionId; label: string; href: string }[] = [
-    { id: "about", label: "About", href: "#about" },
-    { id: "gallery", label: "Gallery", href: "#gallery" },
-    { id: "blog", label: "Blog", href: "#blog" },
-];
 
 const CAROUSEL_ITEMS = 6;
 const LIGHTBOX_ITEMS = 1 + CAROUSEL_ITEMS; // main photo + carousel thumbnails
@@ -43,45 +36,12 @@ const year = new Date().getFullYear();
 export default function LandingPage() {
     const navigate = useNavigate();
     const location = useLocation();
-
     const [showLogin, setShowLogin] = useState<boolean>(false);
     const [showSignUp, setShowSignUp] = useState<boolean>(false);
     const [hideButtons, setHideButtons] = useState<boolean>(false);
-    const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (location.pathname === "/login") {
-            setShowLogin(true);
-            setShowSignUp(false);
-            setHideButtons(true);
-        } else if (location.pathname === "/signup") {
-            setShowSignUp(true);
-            setShowLogin(false);
-            setHideButtons(true);
-        } else {
-            setShowLogin(false);
-            setShowSignUp(false);
-            setHideButtons(false);
-        }
-        setMobileNavOpen(false);
-    }, [location.pathname]);
-
-
     const openLogin = () => navigate("/login");
     const openSignup = () => navigate("/signup");
     const closePopup = () => navigate("/");
-
-    const [activeSection, setActiveSection] = useState<SectionId>("about");
-
-    const handleNavClick = (id: SectionId) => {
-        setActiveSection(id);
-        setMobileNavOpen(false);
-    };
-
-    const handleRegisterClick = () => {
-        navigate("/signup");
-        setMobileNavOpen(false);
-    };
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -113,8 +73,21 @@ export default function LandingPage() {
         return () => window.removeEventListener("keydown", onKeyDown);
     }, [lightboxIndex]);
 
-
-
+    useEffect(() => {
+        if (location.pathname === "/login") {
+            setShowLogin(true);
+            setShowSignUp(false);
+            setHideButtons(true);
+        } else if (location.pathname === "/signup") {
+            setShowSignUp(true);
+            setShowLogin(false);
+            setHideButtons(true);
+        } else {
+            setShowLogin(false);
+            setShowSignUp(false);
+            setHideButtons(false);
+        }
+    }, [location.pathname]);
 
     return (
         <div className="flex min-h-dvh w-full flex-col overflow-x-hidden bg-white pt-16 font-sans text-BBNDarkGreen md:pt-[84px]">
@@ -123,75 +96,14 @@ export default function LandingPage() {
                 <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 md:h-[84px] md:px-10">
                     {/* Brand */}
                     <a href="#top" className="flex items-center gap-3 no-underline">
-                    <img src={BBNLogo} alt="BBN Logo" className="w-16 h-16" />
+                        <img src={BBNLogo} alt="BBN Logo" className="w-16 h-16" />
 
                         <div className="text-sm font-medium leading-tight md:text-base">
                             <span className="block text-BBNDarkGreen">Black</span>
                             <span className="block text-BBNBrightGreen">Brilliance</span>
                         </div>
                     </a>
-
-                    {/* Desktop nav */}
-                    <nav className="hidden items-center gap-8 md:flex">
-                        {NAV_LINKS.map((link) => (
-                            <a
-                                key={link.id}
-                                href={link.href}
-                                onClick={() => handleNavClick(link.id)}
-                                className={`relative text-sm font-medium tracking-tight no-underline transition-colors duration-150 ${activeSection === link.id
-                                    ? "text-BBNDarkGreen after:absolute after:-bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-BBNDarkGreen after:content-['']"
-                                    : "text-gray-500 hover:text-BBNDarkGreen"
-                                    }`}
-                            >
-                                {link.label}
-                            </a>
-                        ))}
-                        <button
-                            type="button"
-                            onClick={handleRegisterClick}
-                            className="cursor-pointer rounded-full bg-BBNDarkAvocadoGreen px-5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-BBNDarkGreen"
-                        >
-                            Register
-                        </button>
-                    </nav>
-
-                    {/* Mobile toggle */}
-                    <button
-                        type="button"
-                        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg text-BBNDarkGreen transition-colors hover:bg-BBNLightGreen md:hidden"
-                        onClick={() => setMobileNavOpen((prev) => !prev)}
-                        aria-label={mobileNavOpen ? "Close navigation menu" : "Open navigation menu"}
-                        aria-expanded={mobileNavOpen}
-                    >
-                        {mobileNavOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                    </button>
                 </div>
-
-                {/* Mobile menu panel */}
-                {mobileNavOpen && (
-                    <nav className="flex flex-col gap-1 border-t border-gray-200 bg-white px-4 py-3 md:hidden">
-                        {NAV_LINKS.map((link) => (
-                            <a
-                                key={link.id}
-                                href={link.href}
-                                onClick={() => handleNavClick(link.id)}
-                                className={`rounded-lg px-3 py-2.5 text-base font-medium no-underline transition-colors w-fit ${activeSection === link.id
-                                    ? "bg-BBNLightGreen text-BBNDarkGreen"
-                                    : "text-gray-600 hover:bg-BBNLightGreen hover:text-BBNDarkGreen"
-                                    }`}
-                            >
-                                {link.label}
-                            </a>
-                        ))}
-                        <button
-                            type="button"
-                            onClick={handleRegisterClick}
-                            className="w-fit mt-2 cursor-pointer rounded-full bg-BBNDarkAvocadoGreen px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-BBNDarkGreen"
-                        >
-                            Register
-                        </button>
-                    </nav>
-                )}
             </header>
 
             {/* HERO SECTION */}

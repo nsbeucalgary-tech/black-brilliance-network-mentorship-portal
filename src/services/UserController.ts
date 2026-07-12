@@ -10,6 +10,8 @@ import {
     where,
     Timestamp,
     type Firestore,
+    type Unsubscribe,
+    onSnapshot,
 } from "firebase/firestore";
 import type {
     User,
@@ -171,5 +173,41 @@ export class UserController {
     /** Returns true if an email address is already registered in Firestore. */
     async emailExists(email: string): Promise<boolean> {
         return (await this.getUserByEmail(email)) !== null;
+    }
+
+    /**
+     * Realtime listener for a user profile document. 
+     * 
+     * Automatically updates whenever:
+     * - the user's profileinformation changes
+     * - the user's role changes
+     * - any tracked Firestore user fields are updated
+     * 
+     * IMPORTANT:
+     * Call the returned unsubscribe function when the component unmounts.
+     * 
+     * @param uid - The Firestore Authentication UID for the user.
+     * @param callback - Function triggered whenever users update.
+     * @returns Firestore unsubscribe function.
+     */
+    subscribeToUser(
+        uid: string,
+        callback: (user: User | null) => void,
+    ): Unsubscribe {
+        const ref = doc(this.db, this.collectionName, uid);
+
+        return onSnapshot(ref, (snapshot) => {
+            if (!snapshot.exists()) {
+                callback(null);
+                return;
+            }
+
+            callback(
+                this.firestoreDataToUser(
+                    snapshot.id,
+                    snapshot.data() as UserFirestoreData,
+                ),
+            );
+        });
     }
 }

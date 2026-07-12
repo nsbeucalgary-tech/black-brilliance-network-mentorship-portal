@@ -10,6 +10,7 @@ import { googleProvider } from "../../_db_controller/init";
 import { PublicOnlyRoute } from "../../components/PublicRoute";
 import { GoogleLogoIcon } from "../../components/Logos";
 import PasswordInput from "../../components/PasswordInput";
+import { toast } from "sonner";
 
 type SignupProps = {
   onBack?: () => void;
@@ -22,30 +23,29 @@ function SignupComponent({ onBack }: SignupProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [signUpError, setSignUpError] = useState<string>("");
-  const [passwordValidationError, setPasswordValidationError] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [remember, setRemember] = useState(false);
 
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
 
-    if (!firstName) return alert("Please enter your first name.");
-    if (!lastName) return alert("Please enter your last name.");
-    if (!email) return alert("Please enter an email.");
-    if (!password) return alert("Please enter a password.");
-    if (password !== confirm) return alert("Passwords do not match.");
-
+    if (!firstName || !lastName || !email || !password || !confirm) return toast.warning("Please fill in all fields.");
+    if (password !== confirm) return toast.warning("Passwords do not match.");
     setLoading(true);
 
     try {
       const errors = await validateUserPassword(password);
       if (errors.length > 0) {
-        setPasswordValidationError(errors);
+        toast.error(<div>
+          <ul className="list-disc list-inside">
+            <span className="text-sm font-semibold">Password requirements not met:</span>
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>, {duration: 10000});
         return;
       }
-
-      setPasswordValidationError([]);
 
       const error = await signUpWithEmailAndPassword(
         firstName,
@@ -56,14 +56,13 @@ function SignupComponent({ onBack }: SignupProps) {
       );
 
       if (error) {
-        setSignUpError(error);
+        toast.error(error);
       } else {
-        setSignUpError("");
         navigate("/onboarding");
       }
     } catch (err) {
       console.error(err);
-      setSignUpError("Error occurred. Please try again.");
+      toast.error("Error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -77,9 +76,8 @@ function SignupComponent({ onBack }: SignupProps) {
     try {
       const error = await signInWithProvider(provider, providerName, remember);
       if (error) {
-        setSignUpError(error);
+        toast.error(error);
       } else {
-        setSignUpError("");
         navigate("/dashboard");
       }
     } finally {
@@ -123,18 +121,6 @@ function SignupComponent({ onBack }: SignupProps) {
         <p className="whitespace-nowrap">or via email</p>
         <div className="w-full h-[2px] bg-gray-400 mx-auto"></div>
       </div>
-
-      {signUpError && <div className="text-red-500">
-        {signUpError}
-      </div>}
-
-      {(passwordValidationError.length > 0) && <div className="text-red-500">
-        <ul>
-          {passwordValidationError.map((error, index) => (
-            <li key={index}>{error}</li>
-          ))}
-        </ul>
-      </div>}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 font-semibold">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

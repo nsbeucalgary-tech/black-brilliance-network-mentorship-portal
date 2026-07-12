@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { PanelRightClose , PanelLeftClose, Monitor, CalendarDays, UserPlus, Newspaper, House, Settings, LogOut, Menu, X } from 'lucide-react';
+import { PanelRightClose , PanelLeftClose, Monitor, CalendarDays, UserPlus, Settings, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../auth/useAuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,8 +11,6 @@ const NavLinks = [
     { to: '/dashboard', label: 'Dashboard', icon: Monitor },
     { to: '/calendar', label: 'Calendar', icon: CalendarDays },
     { to: '/matching', label: 'Matchmaking', icon: UserPlus },
-    { to: '/newsletter', label: 'Newsletter', icon: Newspaper },
-    { to: '/home', label: 'Home', icon: House }
 ];
 
 const NavFooterLinks = [
@@ -133,18 +131,18 @@ function MobileMenu() {
 
             {/* Slide-in Menu */}
             <aside
-                className={`fixed top-0 left-0 h-full w-48 sm:w-64
+                className={`fixed top-0 left-0 h-full w-[60%] max-w-64
                 bg-BBNDarkGreen z-50 flex flex-col
                 transform transition-transform duration-300
                 ${open ? 'translate-x-0' : '-translate-x-full'}`}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-2 sm:px-4 py-2 border-b border-white">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                        <img src={BBNLogoWhite} alt="BBN Logo" className="w-8 h-8 sm:w-14 sm:h-14" />
+                <div className="flex items-center justify-between px-4 py-2 border-b border-white">
+                    <div className="flex items-center gap-3">
+                        <img src={BBNLogoWhite} alt="BBN Logo" className="w-10 h-10 sm:w-14 sm:h-14" />
                         <div className="flex flex-col text-xl font-semibold leading-tight">
-                            <span className="text-white text-sm sm:text-base">Black</span>
-                            <span className="text-BBNBrightGreen text-sm sm:text-base">Brilliance</span>
+                            <span className="text-white text-base sm:text-lg">Black</span>
+                            <span className="text-[#aad576] text-base sm:text-lg">Brilliance</span>
                         </div>
                     </div>
                     <button
@@ -183,7 +181,7 @@ function DesktopMenu() {
         <>
             <aside
                 aria-expanded={isOpen}
-                className={`hidden md:flex flex-col bg-gray-200
+                className={`relative hidden md:sticky md:top-0 md:h-dvh md:flex flex-col bg-gray-200
                 transition-all duration-300 will-change-[width] rounded-3xl
                 ${isOpen ? 'w-64 lg:w-82' : 'w-20'}`}
             >

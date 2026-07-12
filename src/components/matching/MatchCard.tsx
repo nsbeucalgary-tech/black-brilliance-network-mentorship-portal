@@ -1,4 +1,9 @@
+import { MessageCircle } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ConversationController } from "../../services/ConversationController";
+import { db } from "../../_db_controller/init";
+import { useAuth } from "../../auth/useAuthContext";
 
 export type Match = {
     id: string;
@@ -14,28 +19,81 @@ type Props = {
     match: Match;
 };
 
-export default function MatchCard({ match }: Props) {
-  const [fav, setFav] = useState(Boolean(match.isFavourite));
-  const [showTestPopup, setShowTestPopup] = useState(false);
+const conversationController = new ConversationController(db);
 
-  return (
-    <>
-        <button
-        type="button"
-        onClick={() => setShowTestPopup(true)}
-        className="relative w-full rounded-lg border border-neutral-200 bg-white p-6 text-center hover:border-neutral-300 transition"
+export default function MatchCard({ match }: Props) {
+    const [fav, setFav] = useState(Boolean(match.isFavourite));
+    const navigate = useNavigate();
+    const [starting, setStarting] = useState(false);
+
+    const { dbUser, setOpenConvoList, setSelectedConvoId, setSelectedConvoUserId } = useAuth();
+
+    const handleMessageClick = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (!dbUser?.uid || starting) return;
+
+        try {
+            setStarting(true);
+
+            const existingId = [dbUser.uid, match.id].sort().join("_");
+            console.log(existingId);
+            const existing =
+                await conversationController.getConversationById(existingId);
+
+            const convo =
+                existing ??
+                (await conversationController.createConversation(
+                    dbUser.uid,
+                    match.id,
+                ));
+            
+            setSelectedConvoId(convo.conversationId);
+            setSelectedConvoUserId(match.id);
+            setOpenConvoList(true);
+        } catch (err) {
+            console.error("Failed to open conversation:", err);
+        } finally {
+            setStarting(false);
+        }
+    };
+
+    return (
+        <span
+            onClick={() =>
+                navigate(`/mentor-profile/${match.id}`, {
+                    state: { preview: match },
+                })
+            }
+            className="relative w-full rounded-2xl border border-[#d4e5c3] bg-white p-6 text-center hover:border-[#7a9b5c] hover:shadow-[0_6px_20px_rgba(45,58,31,0.1)] transition-all duration-200 group"
         >
-        <button
-            type="button"
-            aria-label="Toggle favourite"
-            onClick={(e) => {
-            e.stopPropagation();
-            setFav((v) => !v);
-            }}
-            className="absolute right-4 top-4 text-lg"
-        >
-            <span className={fav ? "text-red-400" : "text-neutral-300"}>♥</span>
-        </button>
+            {/* Favourite heart */}
+            <button
+                type="button"
+                aria-label="Toggle favourite"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setFav((v) => !v);
+                }}
+                className="absolute right-4 top-4 text-lg transition-transform hover:scale-110"
+            >
+                <span className={fav ? "text-[#7a9b5c]" : "text-[#c5dbb0]"}>
+                    ♥
+                </span>
+            </button>
+
+            <button
+                type="button"
+                aria-label="Message this person"
+                onClick={handleMessageClick}
+                disabled={starting}
+                className="absolute right-4 top-12 transition-transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                <MessageCircle
+                    size={20}
+                    strokeWidth={1.8}
+                    className={`transition-colors ${starting ? "text-[#c5dbb0]" : "text-[#283618] hover:text-[#7a9b5c]"}`}
+                />
+            </button>
 
         <div className="inline-flex items-center !m-5 mx-auto mt-2 h-24 w-24 overflow-hidden rounded-full bg-neutral-200">
             <img src={match.avatarUrl} alt={match.name} className="h-full w-full object-cover" />
@@ -48,56 +106,12 @@ export default function MatchCard({ match }: Props) {
             </p>
         </div>
 
-        <div className="mt-6 flex justify-center">
-            <span className="!mb-2 rounded-full bg-[#eaf2df] px-4 text-[11px] font-medium text-[#3a4a2a]">
-            {match.matchPercent}% Match
-            </span>
-        </div>
-        </button>
-            
-            
-        {showTestPopup && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl text-center">
-                    <div className="!mt-3 flex flex-col items-center text-center">
-                        <img
-                            src={match.avatarUrl}
-                            alt={match.name}
-                            className="h-24 w-24 rounded-full object-cover border-2 border-[#d4e5c3]"
-                        />
-
-                        <h2 className="mt-4 text-xl font-semibold text-[#2d3a1f]">
-                            {match.name}
-                        </h2>
-
-                        <p className="mt-1 text-sm text-[#7a9b5c]">
-                            {match.title}
-                        </p>
-
-                        <p className="text-sm text-gray-600">
-                            {match.company}
-                        </p>
-
-                        <p className="!mt-3 !text-md text-gray-700 font-style: italic">
-                            About the Mentor
-                        </p>
-                        <p className="!mx-4 !my-2 text-sm text-gray-400">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                            do eiusmod tempor incididunt ut labore et dolore magna
-                            aliqua.
-                        </p>
-                    </div>
-
-                    <button
-                        type="button"
-                        onClick={() => setShowTestPopup(false)}
-                        className="!mt-3 !mb-3 !px-2 rounded-lg bg-[#7a9b5c] px-4 py-2 text-white !text-sm hover:opacity-90"
-                    >
-                        Done
-                    </button>
-                </div>
+            {/* Match percent badge */}
+            <div className="mt-5 flex justify-center">
+                <span className="rounded-full bg-[#e8f3dd] border border-[#c5dbb0] px-4 py-1 text-[11px] font-semibold text-[#3d4a2b]">
+                    {match.matchPercent}% Match
+                </span>
             </div>
-        )}
-    </>
-  );
+        </span>
+    );
 }

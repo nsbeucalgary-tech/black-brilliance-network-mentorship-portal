@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import type { ReactNode } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import type { User as FirebaseUser } from "firebase/auth";
 import { auth, db } from "../_db_controller/init";
@@ -18,14 +18,29 @@ interface AuthContextType {
     /** True while the initial auth + profile load is in progress */
     loading: boolean;
     logout: () => Promise<void>;
+
+    // Open conversation list
+    openConvoList: boolean;
+    setOpenConvoList: Dispatch<SetStateAction<boolean>>;
+
+    // Store selected conversation Id
+    selectedConvoId: string;
+    setSelectedConvoId: Dispatch<SetStateAction<string>>;
+
+    selectedConvoUserId: string;
+    setSelectedConvoUserId: Dispatch<SetStateAction<string>>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<FirebaseUser | null>(null);
     const [dbUser, setDbUser] = useState<DBUser | null>(null);
     const [loading, setLoading] = useState(true);
+    const [openConvoList, setOpenConvoList] = useState(false);
+    const [selectedConvoId, setSelectedConvoId] = useState("");
+    const [selectedConvoUserId, setSelectedConvoUserId] = useState("");
 
     const fetchDbUser = async (uid: string) => {
         try {
@@ -48,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
             if (currentUser) {
-                await fetchDbUser(currentUser.uid);
+                userController.subscribeToUser(currentUser.uid, setDbUser);
             } else {
                 setDbUser(null);
             }
@@ -64,7 +79,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <AuthContext.Provider
-            value={{ user, dbUser, refreshDbUser, loading, logout }}
+            value={{
+                user,
+                dbUser,
+                refreshDbUser,
+                loading,
+                logout,
+                openConvoList,
+                setOpenConvoList,
+                selectedConvoId,
+                setSelectedConvoId,
+                selectedConvoUserId,
+                setSelectedConvoUserId,
+            }}
         >
             {!loading && children}
         </AuthContext.Provider>
