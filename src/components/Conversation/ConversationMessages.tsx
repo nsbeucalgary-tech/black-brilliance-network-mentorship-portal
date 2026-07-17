@@ -7,6 +7,7 @@ import { UserController } from "../../services/UserController";
 import { db } from "../../_db_controller/init";
 import type { Message } from "../../types/message.types";
 import type { User } from "../../types/User";
+import { getInitials } from "../../utils";
 
 const messageController = new MessageController(db);
 const userController = new UserController(db);
@@ -115,12 +116,10 @@ export default function ConversationMessages() {
         }
     };
 
-    const initials = otherUser
-        ? `${otherUser.first_name[0]}${otherUser.last_name[0]}`.toUpperCase()
-        : "··";
     const displayName = otherUser
-        ? `${otherUser.first_name} ${otherUser.last_name}`
+        ? `${otherUser.first_name} ${otherUser.last_name}`.trim()
         : "Conversation";
+    const initials = otherUser ? getInitials(displayName) : "··";
 
     return (
         <div className="flex flex-col flex-1 overflow-hidden bg-BBNAmnesiacWhite">

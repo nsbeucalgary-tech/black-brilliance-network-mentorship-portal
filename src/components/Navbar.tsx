@@ -61,8 +61,8 @@ function NavItem({ to, label, icon: Icon, navType, desktopOpen, mobileOnClick }:
                 onClick={generalOnClick}
                 className="flex items-center justify-end gap-4 text-white
                 transform transition-all duration-300 ease-in-out
-                active:-translate-y-1 active:text-[#aad576]
-                active:underline underline-offset-8 decoration-[#aad576]
+                active:-translate-y-1 active:text-BBNBrightGreen
+                active:underline underline-offset-8 decoration-BBNBrightGreen
                 active:rounded-md"
             >
                 <span className="text-lg">{label}</span>
@@ -183,7 +183,7 @@ function DesktopMenu() {
                 aria-expanded={isOpen}
                 className={`relative hidden md:sticky md:top-0 md:h-dvh md:flex flex-col bg-gray-200
                 transition-all duration-300 will-change-[width] rounded-3xl
-                ${isOpen ? 'w-72' : 'w-20'}`}
+                ${isOpen ? 'w-64 lg:w-82' : 'w-20'}`}
             >
                 {/* Green Background Stripe */}
                 <div className="absolute top-0 left-0 bottom-0 w-20 bg-BBNDarkGreen rounded-r-3xl z-0" />

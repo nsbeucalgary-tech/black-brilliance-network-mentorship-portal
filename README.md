@@ -57,6 +57,22 @@ Revert "<b>&lt;reverted commit subject line&gt;</b>"
 
 - `chore` — Miscellaneous tasks (e.g., changes to `.gitignore`)
 
+## Function Definition Template
+
+Use this JSDoc shape when documenting functions:
+
+```ts
+/**
+ * [Short summary sentence]
+ *
+ * [Optional extra explanation / important context]
+ *
+ * @param paramName - Description
+ * @param anotherParam - Description
+ * @returns Description of returned value
+ */
+```
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

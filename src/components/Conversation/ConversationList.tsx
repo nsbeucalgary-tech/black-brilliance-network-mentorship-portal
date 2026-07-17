@@ -5,6 +5,7 @@ import { db } from "../../_db_controller/init";
 import type { Conversation } from "../../types/conversation.types";
 import type { User } from "../../types/User";
 import type { Timestamp } from "firebase/firestore";
+import { getInitials } from "../../utils";
 
 type Props = {
     conversations: Conversation[];
@@ -80,12 +81,10 @@ export function ConversationList({ conversations, currentUserId }: Props) {
     return (
         <div className="flex flex-col w-full overflow-y-auto">
             {resolved.map(({ conversation: c, otherUser }) => {
-                const initials = otherUser
-                    ? `${otherUser.first_name[0]}${otherUser.last_name[0]}`.toUpperCase()
-                    : "??";
                 const displayName = otherUser
-                    ? `${otherUser.first_name} ${otherUser.last_name}`
+                    ? `${otherUser.first_name} ${otherUser.last_name}`.trim()
                     : "Unknown user";
+                const initials = otherUser ? getInitials(displayName) : "??";
                 const otherUserId = otherUser ? otherUser.uid : "";
 
                 return (

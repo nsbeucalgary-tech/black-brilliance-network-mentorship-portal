@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { ConversationController } from "../../services/ConversationController";
 import { db } from "../../_db_controller/init";
 import { useAuth } from "../../auth/useAuthContext";
+import { Heart } from "lucide-react";
 
 export type Match = {
     id: string;
     name: string;
     title: string;
-    company: string;
     matchPercent: number;
     avatarUrl: string;
     isFavourite?: boolean;
@@ -17,12 +17,17 @@ export type Match = {
 
 type Props = {
     match: Match;
+    isFavourite: boolean;
+    onToggleFavourite: (id: string) => void;
 };
 
 const conversationController = new ConversationController(db);
 
-export default function MatchCard({ match }: Props) {
-    const [fav, setFav] = useState(Boolean(match.isFavourite));
+export default function MatchCard({
+    match,
+    isFavourite,
+    onToggleFavourite,
+}: Props) {
     const navigate = useNavigate();
     const [starting, setStarting] = useState(false);
 
@@ -72,12 +77,12 @@ export default function MatchCard({ match }: Props) {
                 aria-label="Toggle favourite"
                 onClick={(e) => {
                     e.stopPropagation();
-                    setFav((v) => !v);
+                    onToggleFavourite(match.id);
                 }}
                 className="absolute right-4 top-4 text-lg transition-transform hover:scale-110"
             >
-                <span className={fav ? "text-[#7a9b5c]" : "text-[#c5dbb0]"}>
-                    ♥
+                <span>
+                <Heart fill={isFavourite ? "var(--color-BBNDarkAvocadoGreen)" : "#ffffff"}/>
                 </span>
             </button>
 
@@ -95,24 +100,16 @@ export default function MatchCard({ match }: Props) {
                 />
             </button>
 
-            {/* Avatar */}
-            <div className="inline-flex items-center mx-auto mt-2 h-24 w-24 overflow-hidden rounded-full border-2 border-[#d4e5c3] bg-[#e8f3dd] group-hover:border-[#7a9b5c] transition-colors">
-                <img
-                    src={match.avatarUrl}
-                    alt={match.name}
-                    className="h-full w-full object-cover"
-                />
-            </div>
+        <div className="inline-flex items-center !m-5 mx-auto mt-2 h-24 w-24 overflow-hidden rounded-full bg-neutral-200">
+            <img src={match.avatarUrl} alt={match.name} className="h-full w-full object-cover" />
+        </div>
 
-            {/* Info */}
-            <div className="mt-4">
-                <p className="text-sm font-semibold text-[#2d3a1f]">
-                    {match.name}
-                </p>
-                <p className="mt-1.5 text-[11px] leading-4 text-[#7a9b5c]">
-                    {match.title} at {match.company}
-                </p>
-            </div>
+        <div className="mt-5">
+            <p className="text-sm font-semibold text-neutral-900">{match.name}</p>
+            <p className="mt-2 text-[11px] leading-4 text-neutral-400">
+            {match.title}
+            </p>
+        </div>
 
             {/* Match percent badge */}
             <div className="mt-5 flex justify-center">

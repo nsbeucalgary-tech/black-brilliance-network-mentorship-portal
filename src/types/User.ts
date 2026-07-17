@@ -37,7 +37,7 @@ export interface User {
     /** Current job title e.g. "Software Engineer at Google" */
     title?: string;
 
-    /** Profile avatar URL (uploaded or OAuth photo) */
+    /** Profile avatar URL (uploaded default avatar) */
     avatar_url?: string;
 
     /** Personal or portfolio website */
@@ -48,6 +48,9 @@ export interface User {
 
     /** List of interest tags */
     interests?: string[];
+
+    /** UIDs of users this person has favourited */
+    favourite_ids?: string[];
 
     /** Work experience entries */
     experiences?: UserExperience[];
